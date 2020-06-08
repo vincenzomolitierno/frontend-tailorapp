@@ -1,0 +1,103 @@
+p {
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.form-frame {
+    width: 750px;
+    text-align: left;
+}
+
+
+/* 
+mat-form-field {
+    width: 75%;
+    padding-top: 0;
+} */
+
+h2,
+h3 {
+    text-transform: uppercase;
+}
+
+.shift-indicator.bar {
+    text-align: left;
+    width: 100%;
+}
+
+.left-si-bar {
+    float: left;
+    width: 50%;
+}
+
+.right-si-bar {
+    float: left;
+    width: 50%;
+}
+
+.grid-container {
+    display: grid;
+    padding: 5px;
+    width: 100%;
+}
+
+.three-columns-template {
+    grid-template-columns: 33% 33% 33%;
+}
+
+.two-columns-template {
+    grid-template-columns: 50% 50%;
+}
+
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    text-align: left;
+}
+
+.three-columns-span {
+    grid-column: 1 / span 3;
+}
+
+.tag-measure {
+    width: 100%;
+    text-align: center;
+}
+
+.control-measure {
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+    display: inline-table;
+    margin-bottom: 10px;
+}
+
+.minus-button,
+.plus-button {
+    float: left;
+    width: auto;
+}
+
+.value-set {
+    float: left;
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.gap {
+    height: 15px;
+    display: block;
+}
+
+.mat-radio-button~.mat-radio-button {
+    margin-left: 25px;
+}
+
+.control-measure {
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+    display: inline-table;
+    margin-bottom: 10px;
+}

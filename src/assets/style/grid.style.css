@@ -1,0 +1,121 @@
+h2 {
+    display: inline;
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-transform: uppercase;
+}
+
+mat-dialog-content {
+    margin-top: 15px;
+}
+
+.table-panel {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 25px;
+    clear: both;
+}
+
+.toolbar {
+    margin: auto;
+    vertical-align: middle;
+    margin-top: 25px;
+}
+
+.left-bar {
+    float: left;
+    width: 50%;
+    text-align: left;
+}
+
+.right-bar {
+    float: left;
+    width: 50%;
+    text-align: right;
+}
+
+.search-bar {
+    margin: auto;
+    vertical-align: middle;
+    margin-bottom: 5px;
+}
+
+.left-search-bar {
+    float: left;
+    text-align: right;
+    vertical-align: middle;
+    width: 1%;
+}
+
+.right-search-bar {
+    float: left;
+    width: 99%;
+}
+
+table {
+    width: 100%;
+    text-align: left;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.middle-row-button {
+    width: 65px;
+}
+
+.last-row-button {
+    width: 65px;
+}
+
+.filter-bar {
+    text-align: left;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 95%;
+}
+
+.last-mesaure {
+    width: 80%;
+    margin: auto;
+    margin-top: 25px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    padding: 10px;
+}
+
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: left;
+}
+
+dt {
+    padding: 5px;
+}
+
+.riga:hover {
+    background-color: lightgray;
+}
+
+.name-cell:hover {
+    cursor: context-menu;
+}
+
+td:hover {
+    cursor: context-menu;
+}
+
+@media screen and (max-device-width: 480px) {
+    .grid-container {
+        display: grid;
+        grid-template-columns: 100%;
+    }
+}

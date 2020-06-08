@@ -1,0 +1,66 @@
+<div class="form-frame">
+    <h2 mat-dialog-title>Modulo {{formModal}} cliente</h2>
+    <mat-dialog-content class="mat-typography">
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Nominativo</mat-label>
+                <input matInput placeholder="nome e cognome del nuovo cliente" [(ngModel)]="name">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Telefono</mat-label>
+                <input matInput placeholder="numero di telefono del nuovo cliente">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Codice Fiscale</mat-label>
+                <input matInput placeholder="codice fiscale del nuovo cliente">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Partita IVA</mat-label>
+                <input matInput placeholder="partita IVA del nuovo cliente">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Intestazione Fattura</mat-label>
+                <input matInput placeholder="intestazione della fattura del nuovo cliente">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Indirizzo</mat-label>
+                <input matInput placeholder="indirizzo del nuovo cliente">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Note</mat-label>
+                <textarea matInput placeholder="note varie"></textarea>
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button matTooltip="Annulla {{formModal}} del cliente" matTooltipPosition="above" mat-dialog-close>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
+    </mat-dialog-actions>
+
+</div>

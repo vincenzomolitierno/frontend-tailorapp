@@ -1,0 +1,9 @@
+.form-panel {
+    width: 30%;
+    margin: auto;
+    margin-top: 75px;
+}
+
+mat-form-field {
+    width: 100%;
+}

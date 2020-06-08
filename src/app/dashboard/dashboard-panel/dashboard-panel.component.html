@@ -1,0 +1,37 @@
+<!-- barra degli strumenti -->
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <!-- <button mat-icon-button>
+            <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+        </button> -->
+        <div>
+            <button mat-button routerLink="/dashboard">
+                <h1>TailorAPP</h1>
+            </button>
+        </div>
+        <span class="menu-spacer"></span>
+        <div>
+            <button mat-button routerLink="customers">Clienti</button>
+            <button mat-button routerLink="orders">Ordini</button>
+            <button mat-button routerLink="subcontractors">Fasonisti</button>
+            <button mat-button routerLink="catalogs">Cataloghi</button>
+        </div>
+        <div>
+            <!-- menu di navigazione -->
+            <mat-menu #appMenu="matMenu">
+                <button mat-menu-item routerLink="profile">Profilo</button>
+                <button mat-menu-item routerLink="logout">Logout</button>
+            </mat-menu>
+
+            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- area destinata alle view specifica -->
+<router-outlet></router-outlet>
+
+<!-- contenuto del pannello -->
+<!-- <p>dashboard-panel works!</p> -->

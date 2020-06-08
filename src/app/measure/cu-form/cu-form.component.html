@@ -1,0 +1,281 @@
+<div class="form-frame">
+    <h2 mat-dialog-title>Modulo {{formModal}} misure</h2>
+    <mat-dialog-content class="mat-typography">
+        <h3>Committente {{name}}</h3>
+        <div class="shirt-indicator-bar">
+            <div class="left-si-bar">
+                <mat-form-field appearance="fill">
+                    <mat-label>Misurometro</mat-label>
+                    <mat-select [formControl]="shirtIndicatorControl" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let shirtIndicator of shirtIndicators" [value]="shirtIndicator">
+                            {{shirtIndicator.descrizione}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="shirtIndicatorControl.hasError('required')">Selezionare un misurometro</mat-error>
+                    <!-- <mat-hint>{{shirtIndicatorControl.value?.sound}}</mat-hint> -->
+                </mat-form-field>
+            </div>
+            <div class="right-si-bar">
+                <mat-form-field appearance="fill">
+                    <mat-label>Taglia Misurometro</mat-label>
+                    <mat-select [formControl]="shirtIndicatorControlSize" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let shirtIndicatorSize of shirtIndicatorSizes" [value]="shirtIndicatorSize">
+                            {{shirtIndicatorSize.taglia}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="shirtIndicatorControlSize.hasError('required')">Selezionare una taglia di misurometro</mat-error>
+                    <!-- <mat-hint>{{shirtIndicatorControl.value?.sound}}</mat-hint> -->
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <!-- PRIMA COLONNA DI INPUT -->
+            <div class="grid-item">
+                <!-- INPUT COLLO -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('collo')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Collo<br> {{collo.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('collo')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT SPALLA -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('spalla')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Spalla<br> {{spalla.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('spalla')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT BICIPITE -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bicipite')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Bicipite<br> {{bicipite.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bicipite')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT LUNGHEZZA BICIPITE -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('lunghezza_bicipite')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Lun. Bicipite<br> {{lunghezza_bicipite.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('lunghezza_bicipite')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT VITA DIETRO -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('vita_dietro')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Vita Dietro<br> {{vita_dietro.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('vita_dietro')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+            </div>
+            <!-- SECONDA COLONNA DI INPUT -->
+            <div class="grid-item">
+                <!-- INPUT POLSO -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('polso')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Polso<br> {{polso.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('polso')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT LUNGHEZZA CAMICIA -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('lunghezza_camicia')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Lun. Camicia<br> {{lunghezza_camicia.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('lunghezza_camicia')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT AVAMBRACCIO  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('avambraccio')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Avambraccio<br> {{avambraccio.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('avambraccio')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT LUNGHEZZA AVAMBRACCIO  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('lunghezza_avambraccio')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Lun. Avambr.<br> {{lunghezza_avambraccio.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('lunghezza_avambraccio')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT BACINO DIETRO  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino_dietro')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        Bacino Dietro<br> {{bacino_dietro.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_dietro')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+            </div>
+            <!-- TERZA COLONNA DI INPUT -->
+            <div class="grid-item">
+                <h3>TORACE</h3>
+                <!-- INPUT TORACE 1° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('torace_1_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        1° Bottone<br> {{torace_1_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('torace_1_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT TORACE 2° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('torace_2_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        2° Bottone<br> {{torace_2_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('torace_2_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT TORACE 3° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('torace_3_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        3° Bottone<br> {{torace_3_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('torace_3_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+            </div>
+            <!-- QUARTA COLONNA DI INPUT -->
+            <div class="grid-item">
+                <h3>BACINO</h3>
+                <!-- INPUT BACINO 4° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino_4_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        4° Bottone<br> {{bacino_4_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_4_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT BACINO 5° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino_5_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        5° Bottone<br> {{bacino_5_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_5_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT BACINO 6° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino_6_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        6° Bottone<br> {{bacino_6_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_6_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT BACINO 7° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino_7_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        7° Bottone<br> {{bacino_7_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_7_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+                <!-- INPUT BACINO 8° BOTTONE  -->
+                <div class="control-measure">
+                    <div class="minus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino_8_bottone')"><mat-icon>remove</mat-icon></button>
+                    </div>
+                    <div class="value-set">
+                        8° Bottone<br> {{bacino_8_bottone.toFixed(1)}}
+                    </div>
+                    <div class="plus-button">
+                        <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_8_bottone')"><mat-icon>add</mat-icon></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <!-- inserimento input grafico -->
+        <app-shirt-marks></app-shirt-marks>
+
+        <mat-divider></mat-divider>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button matTooltip="Annulla {{formModal}} della misura" matTooltipPosition="above" mat-dialog-close>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
+    </mat-dialog-actions>
+
+</div>

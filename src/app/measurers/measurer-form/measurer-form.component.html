@@ -1,0 +1,41 @@
+<div class="form-frame">
+    <h2 mat-dialog-title>Modulo {{formModal}} {{tag_form}}</h2>
+    <mat-dialog-content class="mat-typography">
+
+        <!-- 
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>ID</mat-label>
+                <input matInput placeholder="inserire nominativo del {{tag_form}}" [(ngModel)]="idmisurometri">
+                <mat-icon matSuffix>keyboard</mat-icon>
+            </mat-form-field>
+        </p> -->
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Descrizione</mat-label>
+                <input matInput placeholder="inserire descrizione del {{tag_form}}" [(ngModel)]="descrizione">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+        <p>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Fasonista</mat-label>
+                <mat-select [formControl]="subcontractorControl" required>
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor">
+                        {{subcontractor.nominativo}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="subcontractorControl.hasError('required')">Selezionare un fasonatore</mat-error>
+                <mat-icon matSuffix>list_alt</mat-icon>
+            </mat-form-field>
+        </p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" mat-dialog-close>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
+    </mat-dialog-actions>
+
+</div>

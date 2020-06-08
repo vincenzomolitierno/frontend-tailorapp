@@ -1,0 +1,18 @@
+<div class="form-frame">
+    <h2 mat-dialog-title>Modulo {{formModal}} {{nome_catalogo}}</h2>
+    <mat-dialog-content class="mat-typography">
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Descrizione</mat-label>
+                <input matInput placeholder="inserire descrizione del modello di {{nome_catalogo}}" [(ngModel)]="descrizione">
+                <mat-icon matSuffix>keyboard</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+            </mat-form-field>
+        </p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" mat-dialog-close>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
+    </mat-dialog-actions>
+
+</div>

@@ -1,0 +1,33 @@
+.form-frame {
+    width: 750px;
+    text-align: left;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+h2 {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+mat-divider {
+    margin-bottom: 15px;
+}
+
+.left-side {
+    float: left;
+    width: 47.5%;
+    text-align: left;
+    clear: left;
+    padding-right: 2.5%;
+}
+
+.right-side {
+    float: left;
+    width: 47.5%;
+    text-align: left;
+    padding-left: 2.5%;
+    display: block;
+}

@@ -1,0 +1,31 @@
+<div class="form-panel">
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Vecchia Password</mat-label>
+            <input matInput placeholder="digitare la vecchia password" [(ngModel)]="vecchia_password">
+            <mat-icon matSuffix>keyboard</mat-icon>
+            <!-- <mat-hint>Hint</mat-hint> -->
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Nuova Password</mat-label>
+            <input matInput [type]="hide1 ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1">
+            <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Conferma Nuova Password</mat-label>
+            <input matInput [type]="hide2 ? 'password' : 'text'" [(ngModel)]="nuova_password">
+            <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+    </p>
+    <p>
+        <button mat-raised-button>CAMBIA PASSWORD</button>
+    </p>
+</div>

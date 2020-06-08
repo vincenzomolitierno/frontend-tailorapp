@@ -1,0 +1,123 @@
+<div class="table-panel">
+    <!-- filter bar -->
+    <div class="toolbar">
+        <div class="left-bar">
+            <h2>ORDINI</h2>
+        </div>
+        <div class="right-bar">
+            <button mat-raised-button matTooltip="Inserisci nuovo ordine" matTooltipPosition="left" (click)="openOrderDialog('inserimento','')" [disabled]="true"><mat-icon>create_new_folder</mat-icon></button>
+        </div>
+    </div>
+
+    <!-- filter bar -->
+    <div class="search-bar" *ngIf="true">
+        <div class="left-search-bar">
+            <button mat-icon-button (click)="clearSearch()" matTooltip="Cancella" matTooltipPosition="left"><mat-icon>clear</mat-icon></button>
+        </div>
+        <div class="right-search-bar">
+            <mat-form-field>
+                <mat-label>Cerca</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="testo" [(ngModel)]="testo_ricerca">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- table -->
+
+    <div class="mat-elevation-z8" style="clear: left;">
+        <table mat-table [dataSource]="dataSourceOrder" matSort #table1>
+            <!-- Numero Ordine Column -->
+            <ng-container matColumnDef="idordini">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Num Ordine </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.idordini}} </td>
+            </ng-container>
+
+            <!-- Numero Data Ordine Column -->
+            <ng-container matColumnDef="data_ordine">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Ordine </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.data_ordine}} </td>
+            </ng-container>
+
+            <!-- Cliente Column -->
+            <ng-container matColumnDef="clienti_idclienti">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.clienti_idclienti}} </td>
+            </ng-container>
+
+            <!-- Data Consegna Column -->
+            <ng-container matColumnDef="data_consegna">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Consegna </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.data_consegna}} </td>
+            </ng-container>
+
+            <!-- Modalità Consegna Column -->
+            <ng-container matColumnDef="mod_consegna">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Modalità Consegna </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.mod_consegna}} </td>
+            </ng-container>
+
+            <!-- Totale Column -->
+            <ng-container matColumnDef="totale">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Totale </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.totale}} </td>
+            </ng-container>
+
+            <!-- Consegnato Column -->
+            <ng-container matColumnDef="consegnato">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Consegnato </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.consegnato}} </td>
+            </ng-container>
+
+            <!-- Saldato Column -->
+            <ng-container matColumnDef="saldato">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Saldato </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.saldato}} </td>
+            </ng-container>
+
+
+
+            <!-- Update Column -->
+            <ng-container matColumnDef="update">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let row" class="middle-row-button">
+                    <button mat-raised-button matTooltip="Modifica ordine" matTooltipPosition="right" (click)="openOrderDialog('aggiornamento',row.idordini)"><mat-icon>create</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- Delete Column -->
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let row" class="middle-row-button">
+                    <button mat-raised-button matTooltip="Elimina ordine" matTooltipPosition="right"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- View Orders Column -->
+            <ng-container matColumnDef="view_orders">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let row" class="middle-row-button">
+                    <button mat-raised-button matTooltip="Visualizza ordine" matTooltipPosition="right" (click)="openViewOrder()"><mat-icon>pageview</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- View Orders Subcontractor Column -->
+            <ng-container matColumnDef="view_orders_subcontractor">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let row" class="last-row-button">
+                    <button mat-raised-button matTooltip="Visualizza per fasonista" matTooltipPosition="left" (click)="openViewOrderSubcontractor()"><mat-icon>preview</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- inserimento dell'intestazione e corpo della tabella -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="riga"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- chiusura table panel -->
+</div>
