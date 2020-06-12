@@ -11,6 +11,11 @@ export class SubcontractorFormComponent implements OnInit {
   tag_form: string = 'fasonista';
   formModal: string = '';
 
+  nominativo: string = '';
+  telefono: string = '';
+  email: string = '';
+  nome_catalogo: string = '';
+
   constructor(@Inject(MAT_DIALOG_DATA) data) {
     this.formModal = data.formModal;
    }

@@ -28,7 +28,7 @@
             <!-- Nominativo Column -->
             <ng-container matColumnDef="nominativo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Nominativo </th>
-                <td mat-cell *matCellDef="let element" (click)="openDetails(element.nominativo)" class="name-cell"> {{element.nominativo}} </td>
+                <td mat-cell *matCellDef="let element" (click)="openDetails(element.nominativo)" class="name-cell" style="cursor: pointer;"> {{element.nominativo}} </td>
             </ng-container>
 
             <!-- Telefono Column -->

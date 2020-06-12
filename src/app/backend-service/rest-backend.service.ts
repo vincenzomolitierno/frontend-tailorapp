@@ -3,33 +3,27 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { BackendServer } from './backend-server.model';
-import { BackendRestApi } from './backend-rest-api.model';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    // 'Authorization': 'fuelmatic'
-  })
-};
 
 @Injectable({
   providedIn: 'root'
 })
 export class RESTBackendService {
 
-  //Backend Server
-  server: BackendServer;
-
-  //REST API Resource
-  resourcesAPI: BackendRestApi;
-
-  apiUrlClienti: string;
-
-  //Array delle persone presenti nel database
-  // elencoPersonale: Persona[];
+  //Backend Server, oggetto che modella il server che offre il servizio con API REST
+  private server: BackendServer;
 
   //Stringa per i messaggi di errore
-  errorMessage: string;
+  private errorMessage: string = '';
+  private token: string = '';
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.token
+    })
+  };
+   
 
   /**
    * Constructor method of the component
@@ -40,21 +34,29 @@ export class RESTBackendService {
 
     this.server = new BackendServer;
 
-    this.resourcesAPI = new BackendRestApi;
+  }
 
-    this.apiUrlClienti = this.resourcesAPI.protocol +
-      '://' + this.server.host +
-      ':' + this.server.port +
-      this.resourcesAPI.apiResourceClienti;    
+  public loginToServer(username: string, password: string ){
+
+    return this._http.get<any>(
+      this.server.getApiResource('authenticate'),
+      this.httpOptions
+      ).pipe(catchError(this.handleError));
 
   }
 
-  // ************* CLIENTI *************
+  public setToken(_token: string): void{
+    this.token = _token;
+    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEwMCIsIm5iZiI6MTU5MTYxMjE0NywiZXhwIjoxNTkyMjE2OTQ3LCJpYXQiOjE1OTE2MTIxNDd9.WFR8ywORDpeMN3eFme8dJy6OwcS9FCWFBMYZrUF3-Cg';
+  }
 
-  getClienti(): Observable<any> {
+  // ************* CRUD FOR CUSTOMERS *************
+
+  public getCustomers(): Observable<any> {
 
     return this._http.get<any>(
-      this.apiUrlClienti,
+      this.server.getApiResource('customers'),
+      this.httpOptions
       ).pipe(catchError(this.handleError));
 
   }

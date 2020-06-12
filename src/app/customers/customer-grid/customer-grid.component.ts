@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { RESTBackendService } from '../service/rest-backend.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { CuFormComponent as CustomerFormComponent } from '../cu-form/cu-form.component';
 import { CuFormComponent as TakeMeasureFormComponent } from '../../measure/cu-form/cu-form.component';
 import { OrderFormComponent } from 'src/app/orders/order-form/order-form.component';
+import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 
 
 interface ClientElement {  
@@ -47,79 +47,69 @@ export class CustomerGridComponent implements OnInit {
   @ViewChild('table', { read: MatSort, static: true }) sortClient: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginatorClient: MatPaginator;
 
-
   constructor( 
     private restBackendService: RESTBackendService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) {
+
+    }
 
   ngOnInit() {
 
-    this.getRemoteData();
-    this.dataSourceClient.sort = this.sortClient;
-    this.dataSourceClient.paginator = this.paginatorClient;
-
-    // Overrride default filter behaviour of Material Datatable
-    // this.dataSourceClient.filterPredicate = this.createFilter();    
+    this.getResource();
+ 
   }
 
-  // Get remote serve data using HTTP call
-  getRemoteData() {
-  
-    const CLIENTS_DATA: ClientElement[] = [
-      {
-        idclienti: 1,
-        nominativo: 'Aversano Nazaro',
-        telefono: 3395656854,
-        // email: 'Aversano@Nazaro.it',
-        // cf: 'CODICEFISCALE',
-        // partita_iva: '01982233',
-        // indirizzo: 'Via con i Baffi 9',
-        // int_fattura: 'Fattura ....',
-        note: 'note 1'    
-      },
-      {
-        idclienti: 2,
-        nominativo: 'Vincenzo Molitierno',
-        telefono: 3287474598,
-        // email: 'vincenzomolitierno@idealprogetti.it',
-        // cf: 'CODICEFISCALE',
-        // partita_iva: '36563299',
-        // indirizzo: 'Via Masaniello 18',
-        // int_fattura: 'Fattura ....',
-        note: 'note 2'    
-      },
-      {
-        idclienti: 3,
-        nominativo: 'Carlo Magno',
-        telefono: 3208654896,
-        // email: 'carlo@magno.it',
-        // cf: 'CODICEFISCALE',
-        // partita_iva: '36563299',
-        // indirizzo: 'Via Masaniello 18',
-        // int_fattura: 'Fattura ....',
-        note: 'note 3'    
-      }
-    ];
+   /**
+   * Metodo per ottenere l'elenco del personale dal backend REST
+   */
+  resource: Array<ClientElement> = [];   //Elenco delle persone recuperate dal backend
 
-    this.dataSourceClient = new MatTableDataSource(CLIENTS_DATA);  
-
-
-    //##############################
+  getResource() {
 
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-    this.restBackendService.getClienti().subscribe(
+    this.restBackendService.getCustomers().subscribe(
       (data) => {
-        this.dataSourceClient = new MatTableDataSource(data);        
+        this.resource = data; 
+        console.log(data);              
+        // Si carica la tabella con i clienti
+        this.dataSourceClient = new MatTableDataSource(this.resource);   
+        // Si associano ordinamento e paginatore
+        this.dataSourceClient.sort = this.sortClient;
+        this.dataSourceClient.paginator = this.paginatorClient;
+
             },
       (error) => {
+
         this.errorHttpErrorResponse = error;
         this.errorMessage = error.message;
-      },
-    );
 
-    //################################
+        // Si associano ordinamento e paginatore
+        this.resource = [
+          {
+            idclienti: 1,
+            nominativo: 'Vincenzo Molitierno',
+            telefono: 3258879574,
+            note: 'nota'
+        },
+        {
+          idclienti: 2,
+          nominativo: 'Nazaro Aversano',
+          telefono: 3258879000,
+          note: 'nota del cliente'
+      }      ];
+
+        this.dataSourceClient = new MatTableDataSource(this.resource);   
+        this.dataSourceClient.sort = this.sortClient;
+        this.dataSourceClient.paginator = this.paginatorClient;
+
+      }
+    );
+    
+
+
   }
 
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSourceClient.filter = filterValue.trim().toLowerCase();
@@ -158,10 +148,14 @@ export class CustomerGridComponent implements OnInit {
   openTakeMeasureDialog(formModal: string, name: string){
 
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {idCustomer: "vincenzo", formModal: formModal, nominativo: name };
+    dialogConfig.data = {
+      idCustomer: "vincenzo", 
+      formModal: formModal, 
+      nominativo: name ,
+      base64: ''
+    };
 
     const dialogRef = this.dialog.open(TakeMeasureFormComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog result: ${result}');
     });    

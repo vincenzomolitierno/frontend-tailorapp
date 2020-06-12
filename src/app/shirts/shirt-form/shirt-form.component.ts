@@ -31,6 +31,9 @@ export class ShirtFormComponent implements OnInit {
 
   pannello_iniziali: boolean = false;
 
+  colour: string = '';
+  tipo_bottone: string = '';
+
   // attributi della camicia
   shirt: Shirt;
 

@@ -1,3 +1,22 @@
-<image-drawing [width]="width" [height]="height" borderCss="0px solid black" [showCancelButton]="false" [enableLoadAnotherImage]="false" [enableRemoveImage]="false" src="../../assets/images/CamiciaCompleta.jpg" [i18n]="i18n" [locale]="locale" [drawingSizes]="{  medium: 5 }"
-    [colors]="{ black: 1 }">
-</image-drawing>
+<div style="width: 100%; margin-top: 25px;">
+
+    <div style="float: left; width: 70%;">
+        <image-drawing [showToolbox]="false" borderCss="1px solid black" [showCancelButton]="false" [enableLoadAnotherImage]="false" [enableRemoveImage]="false" [src]="Appunti" outputMimeType="'image/jpeg'" [i18n]="i18n" [locale]="locale" [drawingSizes]="{  medium: 5 }"
+            [colors]="{  black: '#000'}">
+        </image-drawing>
+    </div>
+    <div style="float: left; width: 30%; text-align: left;">
+        <button mat-raised-button matTooltip="Pulisci segni" matTooltipPosition="right" (click)="pulisci()"><mat-icon>backspace</mat-icon></button>
+    </div>
+</div>
+
+<div *ngIf="false">
+
+    <button (click)="CaricaBase($event)">Carica Camicia Base</button>
+    <button (click)="catturadisegno()">Cattura da Componente</button>
+
+    <h2> Memoria Locale:</h2>
+    <h2 [textContent]="AppuntiBase64"></h2>
+    <button (click)="CaricaModificata($event)">Carica Camicia da Locale Nel Componente</button>
+
+</div>

@@ -13,6 +13,9 @@ export class MeasurerFormComponent implements OnInit {
   tag_form: string = 'misurometri';
   formModal: string = '';
 
+  nome_catalogo: string = '';
+  descrizione: string = '';
+
   constructor(@Inject(MAT_DIALOG_DATA) data) {
     this.formModal = data.formModal;
    }
