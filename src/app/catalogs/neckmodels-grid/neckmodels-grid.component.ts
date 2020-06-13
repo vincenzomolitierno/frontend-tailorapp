@@ -65,7 +65,7 @@ export class NeckmodelsGridComponent implements OnInit {
     getRemoteData() {
 
           //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-    this.restBackendService.getNeckmodel().subscribe(
+    this.restBackendService.getResource('neckmodel').subscribe(
       (data) => {
         
         this.resource = data; 
@@ -83,22 +83,6 @@ export class NeckmodelsGridComponent implements OnInit {
 
         this.errorHttpErrorResponse = error;
         this.errorMessage = error.message;
-
-        // Si associano ordinamento e paginatore
-        this.resource = [
-          {
-            idmodello: 1,
-            modello: 'tipo 1',
-          },
-          {
-            idmodello: 2,
-            modello: 'tipo 2',
-          }      
-        ];
-
-        this.dataSourceCatalog = new MatTableDataSource(this.resource);   
-        this.dataSourceCatalog.sort = this.sortCatalog;
-        this.dataSourceCatalog.paginator = this.paginatorCatalog;
 
       }
     );

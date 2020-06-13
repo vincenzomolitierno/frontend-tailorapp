@@ -1,48 +1,49 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatDialogConfig, MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { Catalog } from '../catalog.model';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogConfig, MatDialog } from '@angular/material';
 import { BacksidemodelFormComponent } from '../backsidemodel-form/backsidemodel-form.component';
+import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { GridModel } from 'src/app/backend-service/datagrid.model';
+import { BacksideModel } from '../data.model';
 
 @Component({
   selector: 'app-backsidemodels-grid',
   templateUrl: './backsidemodels-grid.component.html',
   styleUrls: ['../catalogs.style.css']
 })
-export class BacksidemodelsGridComponent implements OnInit {
+export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
  
   nome_catalogo: string = 'dietro';
 
-  testo_ricerca: string = "";  
-
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
-    // 'idcamicie',
+    // 'idmodello',
     'descrizione', 
     'update',
     'delete'
   ];
   
-  dataSourceCatalog;  
-
-  @ViewChild('table', { read: MatSort, static: true }) sortCatalog: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginatorCatalog: MatPaginator;  
-
-  
   constructor(
+    restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog
-  ) { }
-
-  ngOnInit() {
-    this.getRemoteData();
-    this.dataSourceCatalog.sort = this.sortCatalog;
-    this.dataSourceCatalog.paginator = this.paginatorCatalog;     
+  ) { 
+    super(restBackendService); // si innesca il costruttore della classe padre
+    this.resource = Array<BacksideModel>();
   }
 
-  openCatalogDialog(formModal: string, idCatolog: string){
+  //Si inizializza il componente caricando i dati nella tabella
+  ngOnInit() {
+
+    //si invoca il metodo ereditato per caricare i dati dal backend, passando come
+    //parametro in ingresso il tag che identifica la risorsa da recuperare
+    this.getRemoteData('backsidemodel');     
+
+  }
+
+  openCatalogDialog(formModal: string, idModello: string){
 
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
-        idordini: idCatolog, 
+        idordini: idModello, 
         formModal: formModal, 
       };
   
@@ -53,33 +54,6 @@ export class BacksidemodelsGridComponent implements OnInit {
       });    
       
     } 
-
-    getRemoteData() {
-    
-      const CATALOG_DATA: Catalog[] = [
-        {
-          idcatalogo: 1,
-          descrizione: 'tipo 1',
-        },
-        {
-          idcatalogo: 2,
-          descrizione: 'tipo 2',
-        }          
-      ];
-  
-      this.dataSourceCatalog = new MatTableDataSource(CATALOG_DATA);  
-    }     
-
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSourceCatalog.filter = filterValue.trim().toLowerCase();
- 
-    }  
-  
-    clearSearch(){
-      this.dataSourceCatalog.filter = "";
-      this.testo_ricerca = "";
-    }    
 
 }
 

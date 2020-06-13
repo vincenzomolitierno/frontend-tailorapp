@@ -36,7 +36,4 @@ export class Order {
     id_misure_ordinate: number
   }
 
-  export class NeckModel {
-    idmodello: number;
-    modello: string;
-  }
+  

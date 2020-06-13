@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { BackendServer } from './backend-server.model';
-import { NeckModel } from './data.model';
 
 
 @Injectable({
@@ -105,17 +104,19 @@ export class RESTBackendService {
 
 //   } 
 
-// ************* CRUD FOR NECKMODEL *************
-public getNeckmodel(): Observable<any> {
+// ************* READ RESOURCE *************
+public getResource(tagResource: string): Observable<any> {
 
-  return this._http.get<NeckModel>(
-    this.server.getApiResource('neckmodel'),
+  return this._http.get<any>(
+    this.server.getApiResource(tagResource),
     this.httpOptions
     ).pipe(catchError(this.handleError));
 
 }
-  
 
+ 
+
+// ************* UTILITY METHODS *************
   /**
    * Method to handling the issues from the backend service call
    * 

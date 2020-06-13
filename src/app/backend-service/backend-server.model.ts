@@ -9,7 +9,11 @@ export class BackendServer {
     private apiResourceAuthtoken: string = this.base + '/users/authenticate';
     private apiResourceCustomers: string = this.base + '/clienti';
 
+    // CATALOGHI
     private apiResourceNeckmodel: string = this.base + '/modellocollo';
+    private apiResourceWirstmodel: string = this.base + '/modellopolso';
+    private apiResourceForwardside: string = this.base + '/avanti';
+    private apiResourceBackside: string = this.base + '/indietro';
 
     constructor() {
     }  
@@ -41,11 +45,20 @@ export class BackendServer {
 
             case 'authenticate':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceAuthtoken;                  
-
+                
             case 'neckmodel':
-
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceNeckmodel;   
-    
+
+            case 'wirstmodel':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceWirstmodel;   
+
+            case 'forwardside':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceForwardside;   
+
+            case 'backsidemodel':
+                console.log(this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBackside);
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBackside;   
+                            
             default:
                 break;
         }
