@@ -52,11 +52,10 @@ export class BackendServer {
             case 'wirstmodel':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceWirstmodel;   
 
-            case 'forwardside':
+            case 'forwardsidemodel':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceForwardside;   
 
             case 'backsidemodel':
-                console.log(this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBackside);
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBackside;   
                             
             default:

@@ -1,25 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
-import { NeckmodelFormComponent } from '../neckmodel-form/neckmodel-form.component';
-import { Catalog } from '../catalog.model';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogConfig, MatDialog } from '@angular/material';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
-import { NeckModel } from 'src/app/backend-service/data.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import { GridModel } from 'src/app/backend-service/datagrid.model';
+import { NeckModel } from '../data.model';
+import { NeckmodelFormComponent } from '../neckmodel-form/neckmodel-form.component';
 
 @Component({
   selector: 'app-neckmodels-grid',
   templateUrl: './neckmodels-grid.component.html',
   styleUrls: ['../catalogs.style.css']
 })
-export class NeckmodelsGridComponent implements OnInit {
+export class NeckmodelsGridComponent extends GridModel implements OnInit {
 
   nome_catalogo: string = 'collo';
-
-  testo_ricerca: string = "";  
-
-  // Stringhe di messaggio per il debug
-  errorMessage: string;     //Stringa di errore
-  errorHttpErrorResponse: HttpErrorResponse;  
 
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
@@ -28,24 +21,25 @@ export class NeckmodelsGridComponent implements OnInit {
     'update',
     'delete'
   ];
-  dataSourceCatalog;  
-
-  @ViewChild('table', { read: MatSort, static: true }) sortCatalog: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginatorCatalog: MatPaginator;  
-
   
   constructor(
-    private restBackendService: RESTBackendService,
+    restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog
-  ) { }
-
-  ngOnInit() {
-
-    this.getRemoteData();
-    
+  ) { 
+    super(restBackendService); // si innesca il costruttore della classe padre
+    this.resource = Array<NeckModel>();
   }
 
-  openCatalogDialog(formModal: string, idCatolog: string){
+  //Si inizializza il componente caricando i dati nella tabella
+  ngOnInit() {
+
+    //si invoca il metodo ereditato per caricare i dati dal backend, passando come
+    //parametro in ingresso il tag che identifica la risorsa da recuperare
+    this.getRemoteData('neckmodel');     
+
+  }
+
+  openResourceDialog(formModal: string, idCatolog: string){
 
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
@@ -60,58 +54,6 @@ export class NeckmodelsGridComponent implements OnInit {
       });    
       
     } 
-
-    private resource: Array<NeckModel> = [];
-    getRemoteData() {
-
-          //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-    this.restBackendService.getResource('neckmodel').subscribe(
-      (data) => {
-        
-        this.resource = data; 
-
-        // Si carica la tabella con i clienti
-        this.dataSourceCatalog = new MatTableDataSource(this.resource);   
-        // Si associano ordinamento e paginatore
-        this.dataSourceCatalog.sort = this.sortCatalog;
-        this.dataSourceCatalog.paginator = this.paginatorCatalog;
-
-            },
-      (error) => {
-
-        console.log("KO");     
-
-        this.errorHttpErrorResponse = error;
-        this.errorMessage = error.message;
-
-      }
-    );
-    
-      // const CATALOG_DATA: Catalog[] = [
-      //   {
-      //     idcatalogo: 1,
-      //     descrizione: 'tipo 1',
-      //   },
-      //   {
-      //     idcatalogo: 2,
-      //     descrizione: 'tipo 2',
-      //   }          
-      // ];
-  
-      // this.dataSourceCatalog = new MatTableDataSource(CATALOG_DATA);  
-
-
-    }     
-
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSourceCatalog.filter = filterValue.trim().toLowerCase();
  
-    }  
-  
-    clearSearch(){
-      this.dataSourceCatalog.filter = "";
-      this.testo_ricerca = "";
-    }    
 
-}
+  }

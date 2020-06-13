@@ -39,9 +39,11 @@ export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
 
   }
 
-  openCatalogDialog(formModal: string, idModello: string){
+  //Metodo che permette di aprire la finestra di dialogo in modalità di inserimento o modifica della risorsa
+  openResourceDialog(formModal: string, idModello: string){
 
       const dialogConfig = new MatDialogConfig();
+
       dialogConfig.data = {
         idordini: idModello, 
         formModal: formModal, 
@@ -56,4 +58,3 @@ export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
     } 
 
 }
-

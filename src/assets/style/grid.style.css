@@ -18,7 +18,7 @@ mat-dialog-content {
 }
 
 .table-container {
-    height: 400px;
+    /* height: 200px; */
     overflow: auto;
 }
 
@@ -50,12 +50,12 @@ mat-dialog-content {
     float: left;
     text-align: right;
     vertical-align: middle;
-    width: 1%;
+    width: 8%;
 }
 
 .right-search-bar {
     float: left;
-    width: 99%;
+    width: 92%;
 }
 
 table {

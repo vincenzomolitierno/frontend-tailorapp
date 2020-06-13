@@ -1,18 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatPaginator, MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { GridModel } from 'src/app/backend-service/datagrid.model';
+import {  WirstModel } from '../data.model';
 import { WristmodelFormComponent } from '../wristmodel-form/wristmodel-form.component';
-import { Catalog } from '../catalog.model';
 
 @Component({
   selector: 'app-wristmodels-grid',
   templateUrl: './wristmodels-grid.component.html',
   styleUrls: ['../catalogs.style.css']
 })
-export class WristmodelsGridComponent implements OnInit {
+export class WristmodelsGridComponent extends GridModel implements OnInit {
 
   nome_catalogo: string = 'polso';
-
-  testo_ricerca: string = "";  
 
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
@@ -21,22 +21,25 @@ export class WristmodelsGridComponent implements OnInit {
     'update',
     'delete'
   ];
-  dataSourceCatalog;  
-
-  @ViewChild('table', { read: MatSort, static: true }) sortCatalog: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginatorCatalog: MatPaginator;  
 
   constructor(
+    restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog
-  ) { }
-
-  ngOnInit() {
-    this.getRemoteData();
-    this.dataSourceCatalog.sort = this.sortCatalog;
-    this.dataSourceCatalog.paginator = this.paginatorCatalog;     
+  ) { 
+    super(restBackendService); // si innesca il costruttore della classe padre
+    this.resource = Array<WirstModel>();
   }
 
-  openCatalogDialog(formModal: string, idCatolog: string){
+  //Si inizializza il componente caricando i dati nella tabella
+  ngOnInit() {
+
+    //si invoca il metodo ereditato per caricare i dati dal backend, passando come
+    //parametro in ingresso il tag che identifica la risorsa da recuperare
+    this.getRemoteData('wirstmodel');     
+
+  }
+
+  openResourceDialog(formModal: string, idCatolog: string){
 
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
@@ -50,33 +53,6 @@ export class WristmodelsGridComponent implements OnInit {
         console.log('Dialog result: ${result}');
       });    
       
-    } 
-
-    getRemoteData() {
-    
-      const CATALOG_DATA: Catalog[] = [
-        {
-          idcatalogo: 1,
-          descrizione: 'tipo 1',
-        },
-        {
-          idcatalogo: 2,
-          descrizione: 'tipo 2',
-        }          
-      ];
-  
-      this.dataSourceCatalog = new MatTableDataSource(CATALOG_DATA);  
-    }     
-
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSourceCatalog.filter = filterValue.trim().toLowerCase();
- 
-    }  
-  
-    clearSearch(){
-      this.dataSourceCatalog.filter = "";
-      this.testo_ricerca = "";
-    }    
+    }   
 
 }
