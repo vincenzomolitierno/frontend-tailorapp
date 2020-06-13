@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { BackendServer } from './backend-server.model';
+import { NeckModel } from './data.model';
 
 
 @Injectable({
@@ -15,12 +16,12 @@ export class RESTBackendService {
 
   //Stringa per i messaggi di errore
   private errorMessage: string = '';
-  private token: string = '';
+  private token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEwMCIsIm5iZiI6MTU5MTYxMjE0NywiZXhwIjoxNTkyMjE2OTQ3LCJpYXQiOjE1OTE2MTIxNDd9.WFR8ywORDpeMN3eFme8dJy6OwcS9FCWFBMYZrUF3-Cg';
 
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.token
+      'Authorization': 'Bearer ' + this.token,
     })
   };
    
@@ -47,7 +48,6 @@ export class RESTBackendService {
 
   public setToken(_token: string): void{
     this.token = _token;
-    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEwMCIsIm5iZiI6MTU5MTYxMjE0NywiZXhwIjoxNTkyMjE2OTQ3LCJpYXQiOjE1OTE2MTIxNDd9.WFR8ywORDpeMN3eFme8dJy6OwcS9FCWFBMYZrUF3-Cg';
   }
 
   // ************* CRUD FOR CUSTOMERS *************
@@ -104,6 +104,16 @@ export class RESTBackendService {
 //       httpOptions).pipe(catchError(this.handleError));
 
 //   } 
+
+// ************* CRUD FOR NECKMODEL *************
+public getNeckmodel(): Observable<any> {
+
+  return this._http.get<NeckModel>(
+    this.server.getApiResource('neckmodel'),
+    this.httpOptions
+    ).pipe(catchError(this.handleError));
+
+}
   
 
   /**
@@ -133,6 +143,7 @@ export class RESTBackendService {
         `Error error: ${error.error}. ` + "\n" +
         `Error message: ${error.message}. `;
     }
+
     console.error(this.errorMessage);
     // return an observable with a user-facing error message
     // return throwError('Something bad happened; please try again later.');

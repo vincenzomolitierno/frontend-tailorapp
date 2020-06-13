@@ -105,8 +105,6 @@ export class CustomerGridComponent implements OnInit {
       }
     );
     
-
-
   }
 
   

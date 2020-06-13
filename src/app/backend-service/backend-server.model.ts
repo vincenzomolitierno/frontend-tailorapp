@@ -9,6 +9,8 @@ export class BackendServer {
     private apiResourceAuthtoken: string = this.base + '/users/authenticate';
     private apiResourceCustomers: string = this.base + '/clienti';
 
+    private apiResourceNeckmodel: string = this.base + '/modellocollo';
+
     constructor() {
     }  
 
@@ -35,15 +37,15 @@ export class BackendServer {
 
         switch (keyResource) {
             case 'customers':
-
-                this.protocol + '://' + this.host + ':' + this.port + this.apiResourceCustomers;                  
-                break;
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceCustomers;                  
 
             case 'authenticate':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceAuthtoken;                  
 
-                this.protocol + '://' + this.host + ':' + this.port + this.apiResourceAuthtoken;                  
-                break;
-        
+            case 'neckmodel':
+
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceNeckmodel;   
+    
             default:
                 break;
         }

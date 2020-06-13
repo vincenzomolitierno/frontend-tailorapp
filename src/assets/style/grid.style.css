@@ -11,10 +11,15 @@ mat-dialog-content {
 }
 
 .table-panel {
-    width: 80%;
+    width: 90%;
     margin: auto;
     margin-bottom: 25px;
     clear: both;
+}
+
+.table-container {
+    height: 400px;
+    overflow: auto;
 }
 
 .toolbar {

@@ -35,3 +35,8 @@ export class Order {
     fasonatori_idfasonatori: number;
     id_misure_ordinate: number
   }
+
+  export class NeckModel {
+    idmodello: number;
+    modello: string;
+  }
