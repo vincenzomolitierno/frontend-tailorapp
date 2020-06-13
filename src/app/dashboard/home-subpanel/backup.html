@@ -1,0 +1,133 @@
+<div style="height: 20px; display: block; clear: left;"></div>
+<div class="table-panel">
+    <h2>Ordini Non Consegnati</h2>
+
+    <!-- filter bar -->
+    <div class="search-bar" *ngIf="true">
+        <div class="left-search-bar">
+            <button mat-icon-button (click)="clearSearchUndeliveredOrder()" matTooltip="Cancella" matTooltipPosition="left"><mat-icon>clear</mat-icon></button>
+        </div>
+        <div class="right-search-bar">
+            <mat-form-field>
+                <mat-label>Cerca</mat-label>
+                <input matInput (keyup)="applyFilterUndeliveredOrder($event)" placeholder="testo" [(ngModel)]="testo_ricerca_ordini_non_consegnati">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- table -->
+    <div class="mat-elevation-z2" style="clear: left;">
+        <table mat-table [dataSource]="dataSourceUndeliveredOrder" matSort #table1>
+            <!-- Position Column -->
+            <ng-container matColumnDef="order_number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> N° Ord. </th>
+                <td mat-cell *matCellDef="let element"> {{element.order_number}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="customer_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                <td mat-cell *matCellDef="let element"> {{element.customer_name}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="delivery_date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Consegna </th>
+                <td mat-cell *matCellDef="let element"> {{element.delivery_date}} </td>
+            </ng-container>
+
+            <!-- View Order Column -->
+            <ng-container matColumnDef="view">
+                <th mat-header-cell *matHeaderCellDef>
+
+                </th>
+                <td mat-cell *matCellDef="let row" class="middle-row-button">
+                    <button mat-raised-button><mat-icon>pageview</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- Confirm Order Column -->
+            <ng-container matColumnDef="confirm">
+                <th mat-header-cell *matHeaderCellDef>
+
+                </th>
+                <td mat-cell *matCellDef="let row" class="last-row-button">
+                    <button mat-raised-button><mat-icon>send</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- inserimento dell'intestazione e corpo della tabella -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+
+<div style="height: 20px; display: block; clear: left;"></div>
+
+<div class="table-panel">
+    <h2>Ordini Non Saldati</h2>
+
+    <!-- filter bar -->
+    <div class="search-bar" *ngIf="true">
+        <div class="left-search-bar">
+            <button mat-icon-button (click)="clearSearchUnpaidOrder()" matTooltip="Cancella" matTooltipPosition="left"><mat-icon>clear</mat-icon></button>
+        </div>
+        <div class="right-search-bar">
+            <mat-form-field>
+                <mat-label>Cerca</mat-label>
+                <input matInput (keyup)="applyFilterUndpaidOrder($event)" placeholder="testo" [(ngModel)]="testo_ricerca_ordini_non_saldati">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- table -->
+    <div class="mat-elevation-z2" style="clear: left;">
+        <table mat-table [dataSource]="dataSourceUnpaidOrder" matSort #table2>
+            <!-- Position Column -->
+            <ng-container matColumnDef="order_number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> N° Ord. </th>
+                <td mat-cell *matCellDef="let element"> {{element.order_number}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="customer_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                <td mat-cell *matCellDef="let element"> {{element.customer_name}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="delivery_date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Consegna </th>
+                <td mat-cell *matCellDef="let element"> {{element.delivery_date}} </td>
+            </ng-container>
+
+            <!-- View Order Column -->
+            <ng-container matColumnDef="view">
+                <th mat-header-cell *matHeaderCellDef>
+
+                </th>
+                <td mat-cell *matCellDef="let row" class="middle-row-button">
+                    <button mat-raised-button><mat-icon>pageview</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- Confirm Order Column -->
+            <ng-container matColumnDef="confirm">
+                <th mat-header-cell *matHeaderCellDef>
+
+                </th>
+                <td mat-cell *matCellDef="let row" class="last-row-button">
+                    <button mat-raised-button><mat-icon>euro_symbol</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <!-- inserimento dell'intestazione e corpo della tabella -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+</div>

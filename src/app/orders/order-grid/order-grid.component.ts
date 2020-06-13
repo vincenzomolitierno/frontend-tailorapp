@@ -6,35 +6,20 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { OrderFormComponent } from '../order-form/order-form.component';
 import { OrderViewComponent } from '../order-view/order-view.component';
-
-interface OrderElement {  
-  idordini: number,
-  note: string,
-  acconto: string,
-  saldo: string,
-  totale: string,
-  consegnato: string,
-  saldato: string,
-  note_x_fasonista: string,
-  mod_consegna: string,
-  data_ordine: string,
-  data_consegna: string,
-  clienti_idclienti: string,
-  fasonatori_idfasonatori: number,
-  id_misure_ordinate: number
-}
+import { GridModel } from 'src/app/backend-service/datagrid.model';
+import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { Order } from '../data.model';
 
 @Component({
   selector: 'app-order-grid',
   templateUrl: './order-grid.component.html',
   styleUrls: ['./order-grid.component.css']
 })
-export class OrderGridComponent implements OnInit {
+export class OrderGridComponent extends GridModel implements OnInit {
 
   // Dati coinvolti nel binding
   orderTagFocused: string = "";
   dummy_data: string = "X,Y"
-  testo_ricerca: string = ""; 
   
    // Colonne visualizzate in tabella
    displayedColumns: string[] = [
@@ -48,59 +33,26 @@ export class OrderGridComponent implements OnInit {
      'saldato',  
      'update', 'delete', 'view_orders', 'view_orders_subcontractor',
     ];
-   dataSourceOrder;
- 
-   @ViewChild('table', { read: MatSort, static: true }) sortOrder: MatSort;
-   @ViewChild(MatPaginator, {static: true}) paginatorOrder: MatPaginator;
+   
+    constructor(
+      restBackendService: RESTBackendService, // si inietta il servizio
+      public dialog: MatDialog
+    ) { 
+      super(restBackendService); // si innesca il costruttore della classe padre
+      this.resource = Array<Order>();
+    }
 
-  constructor(
-    public dialog: MatDialog
-  ) { }
-
+  //Si inizializza il componente caricando i dati nella tabella
   ngOnInit() {
-    this.getRemoteData();
-    this.dataSourceOrder.sort = this.sortOrder;
-    this.dataSourceOrder.paginator = this.paginatorOrder;    
+
+    //si invoca il metodo ereditato per caricare i dati dal backend, passando come
+    //parametro in ingresso il tag che identifica la risorsa da recuperare
+    this.getRemoteData('orders');     
+
   }
 
-  // Get remote serve data using HTTP call
-  getRemoteData() {
-    
-    const ORDERS_DATA: OrderElement[] = [
-      {
-        idordini: 1,
-        note: 'nota',
-        acconto: '€ 100',
-        saldo: '€250',
-        totale: '€350',
-        consegnato: 'SI',
-        saldato: 'NO',
-        note_x_fasonista: 'nota fasonista',
-        mod_consegna: 'consegna a mano',
-        data_ordine: '10/05/2020',
-        data_consegna: '30/05/2020',
-        clienti_idclienti: "Carlo Magno",
-        fasonatori_idfasonatori: 1,
-        id_misure_ordinate: 1   
-      }
-    ];
 
-    this.dataSourceOrder = new MatTableDataSource(ORDERS_DATA);  
-  }  
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceOrder.filter = filterValue.trim().toLowerCase();
-    this.orderTagFocused = "";    
-  }  
-
-  clearSearch(){
-    this.dataSourceOrder.filter = "";
-    this.testo_ricerca = "";
-    this.orderTagFocused = "";
-  }
-
-  openOrderDialog(formModal: string, idOrdine: string){
+  openResourceDialog(formModal: string, idOrdine: string){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {

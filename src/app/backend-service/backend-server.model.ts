@@ -8,6 +8,7 @@ export class BackendServer {
     private base: string = '/api';
     private apiResourceAuthtoken: string = this.base + '/users/authenticate';
     private apiResourceCustomers: string = this.base + '/clienti';
+    private apiResourceOrders: string = this.base + '/ordini';
 
     // CATALOGHI
     private apiResourceNeckmodel: string = this.base + '/modellocollo';
@@ -43,6 +44,9 @@ export class BackendServer {
             case 'customers':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceCustomers;                  
 
+            case 'orders':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceOrders;                  
+    
             case 'authenticate':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceAuthtoken;                  
                 

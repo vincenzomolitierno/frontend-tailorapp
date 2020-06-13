@@ -8,129 +8,66 @@ import { CuFormComponent as CustomerFormComponent } from '../cu-form/cu-form.com
 import { CuFormComponent as TakeMeasureFormComponent } from '../../measure/cu-form/cu-form.component';
 import { OrderFormComponent } from 'src/app/orders/order-form/order-form.component';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
-
-
-interface ClientElement {  
-  idclienti: number,
-  nominativo: string,
-  telefono: number,
-  // email: string,
-  // cf: string,
-  // partita_iva: string,
-  // indirizzo: string,
-  // int_fattura: string,
-  note: string
-}
+import { GridModel } from 'src/app/backend-service/datagrid.model';
+import { Customer } from '../data.model';
 
 @Component({
   selector: 'app-customer-grid',
   templateUrl: './customer-grid.component.html',
   styleUrls: ['./customer-grid.component.css']
 })
-export class CustomerGridComponent implements OnInit {
+export class CustomerGridComponent extends GridModel implements OnInit {
 
   // Dati coinvolti nel binding
   viewDetails: boolean = false;
   customerNameFocused: string = "";
   dummy_data: string = "X,Y"
-  testo_ricerca: string = "";
-
-  // Stringhe di messaggio per il debug
-  errorMessage: string;     //Stringa di errore
-  errorHttpErrorResponse: HttpErrorResponse;
 
   // Colonne visualizzate in tabella
-  displayedColumns: string[] = ['nominativo', 'telefono', 'note', 'update', 'delete', 'measure', 'view_orders', 'new_order'];
-  // displayedColumns: string[] = ['nominativo', 'telefono', 'email', 'cf', 'partita_iva', 'indirizzo', 'int_fattura', 'note'];
-  dataSourceClient;
+  displayedColumns: string[] = [
+    'nominativo', 
+    'telefono', 
+    'note', 
+    'update', 
+    'delete', 
+    'measure', 
+    'view_orders', 
+    'new_order'];
 
-  @ViewChild('table', { read: MatSort, static: true }) sortClient: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginatorClient: MatPaginator;
-
-  constructor( 
-    private restBackendService: RESTBackendService,
-    public dialog: MatDialog) {
-
+    constructor(
+      restBackendService: RESTBackendService, // si inietta il servizio
+      public dialog: MatDialog
+    ) { 
+      super(restBackendService); // si innesca il costruttore della classe padre
+      this.resource = Array<Customer>();
     }
 
+  //Si inizializza il componente caricando i dati nella tabella
   ngOnInit() {
 
-    this.getResource();
+    //si invoca il metodo ereditato per caricare i dati dal backend, passando come
+    //parametro in ingresso il tag che identifica la risorsa da recuperare
+    this.getRemoteData('customers');     
+
+  }
  
-  }
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   this.viewDetails = false;
+  //   this.customerNameFocused = "";    
+  // }  
 
-   /**
-   * Metodo per ottenere l'elenco del personale dal backend REST
-   */
-  resource: Array<ClientElement> = [];   //Elenco delle persone recuperate dal backend
 
-  getResource() {
 
-    //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-    this.restBackendService.getCustomers().subscribe(
-      (data) => {
-        this.resource = data; 
-        console.log(data);              
-        // Si carica la tabella con i clienti
-        this.dataSourceClient = new MatTableDataSource(this.resource);   
-        // Si associano ordinamento e paginatore
-        this.dataSourceClient.sort = this.sortClient;
-        this.dataSourceClient.paginator = this.paginatorClient;
+  // clearSearch(){
+  //   this.dataSource.filter = "";
+  //   this.testo_ricerca = "";
+  //   this.viewDetails = false;
+  //   this.customerNameFocused = "";
+  // }
 
-            },
-      (error) => {
-
-        this.errorHttpErrorResponse = error;
-        this.errorMessage = error.message;
-
-        // Si associano ordinamento e paginatore
-        this.resource = [
-          {
-            idclienti: 1,
-            nominativo: 'Vincenzo Molitierno',
-            telefono: 3258879574,
-            note: 'nota'
-        },
-        {
-          idclienti: 2,
-          nominativo: 'Nazaro Aversano',
-          telefono: 3258879000,
-          note: 'nota del cliente'
-      }      ];
-
-        this.dataSourceClient = new MatTableDataSource(this.resource);   
-        this.dataSourceClient.sort = this.sortClient;
-        this.dataSourceClient.paginator = this.paginatorClient;
-
-      }
-    );
-    
-  }
-
-  
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceClient.filter = filterValue.trim().toLowerCase();
-    this.viewDetails = false;
-    this.customerNameFocused = "";    
-  }  
-
-  openDetails(inpunString: string){
-    this.testo_ricerca = inpunString;
-    const filterValue = inpunString;
-    this.customerNameFocused = inpunString;
-    this.dataSourceClient.filter = filterValue.trim().toLowerCase()    
-    this.viewDetails = true;
-  }
-
-  clearSearch(){
-    this.dataSourceClient.filter = "";
-    this.testo_ricerca = "";
-    this.viewDetails = false;
-    this.customerNameFocused = "";
-  }
-
-  openCustomerDialog(formModal: string, name: string){
+  openResourceDialog(formModal: string, name: string){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {idCustomer: "vincenzo", formModal: formModal, nominativo: name };
@@ -142,6 +79,14 @@ export class CustomerGridComponent implements OnInit {
     });    
     
   }    
+
+  openDetails(inpunString: string){
+    this.testo_ricerca = inpunString;
+    const filterValue = inpunString;
+    this.customerNameFocused = inpunString;
+    this.dataSource.filter = filterValue.trim().toLowerCase()    
+    this.viewDetails = true;
+  }
 
   openTakeMeasureDialog(formModal: string, name: string){
 

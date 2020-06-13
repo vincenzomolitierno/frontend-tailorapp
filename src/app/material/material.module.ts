@@ -18,7 +18,8 @@ import {
   MatDividerModule,
   MatSliderModule,
   MatDatepickerModule,
-  MatRadioModule
+  MatRadioModule,
+  MatTabsModule
 } from '@angular/material';
 
 const modules = [
@@ -39,7 +40,8 @@ const modules = [
   MatDividerModule,
   MatSliderModule,
   MatDatepickerModule,
-  MatRadioModule
+  MatRadioModule,
+  MatTabsModule
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-<div class="grid-container">
+<!-- <div class="grid-container">
     <div class="grid-item">
         <app-neckmodels-grid></app-neckmodels-grid>
     </div>
@@ -11,8 +11,23 @@
     <div class="grid-item">
         <app-backsidemodels-grid></app-backsidemodels-grid>
     </div>
+</div> -->
 
-</div>
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Modelli Collo">
+        <app-neckmodels-grid></app-neckmodels-grid>
+    </mat-tab>
+    <mat-tab label="Modelli Polso">
+        <app-wristmodels-grid></app-wristmodels-grid>
+    </mat-tab>
+    <mat-tab label="Modelli Avanti">
+        <app-forwardsidemodels-grid></app-forwardsidemodels-grid>
+    </mat-tab>
+    <mat-tab label="Modelli Dietro">
+        <app-backsidemodels-grid></app-backsidemodels-grid>
+    </mat-tab>
+</mat-tab-group>
+
 
 <!-- <app-neckmodels-grid></app-neckmodels-grid>
 

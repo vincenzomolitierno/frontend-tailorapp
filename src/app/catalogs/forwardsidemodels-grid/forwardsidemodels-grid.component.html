@@ -23,7 +23,7 @@
     </div>
 
     <!-- table -->
-    <div class="mat-elevation-z2" style="clear: left;">
+    <div class="mat-elevation-z2 table-container" style="clear: left;">
         <table mat-table [dataSource]="dataSource" matSort #table>
 
             <!-- Description Column -->
@@ -54,7 +54,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="riga"></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="paginator-sticky"></mat-paginator>
     </div>
 
     <!-- chiusura table panel -->
