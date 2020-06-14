@@ -19,6 +19,7 @@ import { OrdersModule } from '../orders/orders.module';
 import { SubcontractorsModule } from '../subcontractors/subcontractors.module';
 import { MeasurersModule } from '../measurers/measurers.module';
 import { CatalogsModule } from '../catalogs/catalogs.module';
+import { UtilitiesModule } from '../utilities/utilities.module';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { CatalogsModule } from '../catalogs/catalogs.module';
     SubcontractorsModule,
     MeasurersModule,
     SubcontractorsModule,
-    CatalogsModule
+    CatalogsModule,
+    UtilitiesModule
   ]
 })
 export class DashboardModule { }

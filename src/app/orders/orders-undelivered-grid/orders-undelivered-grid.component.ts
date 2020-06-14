@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
 import { OrderFormComponent } from '../order-form/order-form.component';
 import { OrderViewComponent } from '../order-view/order-view.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Order } from '../data.model';
+import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 
 @Component({
-  selector: 'app-order-grid',
-  templateUrl: './order-grid.component.html',
-  styleUrls: ['./order-grid.component.css']
+  selector: 'app-orders-undelivered-grid',
+  templateUrl: './orders-undelivered-grid.component.html',
+  styleUrls: ['./orders-undelivered-grid.component.css']
 })
-export class OrderGridComponent extends GridModel implements OnInit {
+export class OrdersUndeliveredGridComponent extends GridModel implements OnInit {
 
   // Dati coinvolti nel binding
   orderTagFocused: string = "";
@@ -27,7 +28,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
      'totale',   
      'consegnato',
      'saldato',  
-     'update', 'delete', 'view_orders', 'view_orders_subcontractor',
+     'view', 'confirm',
     ];
    
     constructor(
@@ -43,8 +44,36 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
     //si invoca il metodo ereditato per caricare i dati dal backend, passando come
     //parametro in ingresso il tag che identifica la risorsa da recuperare
-    this.getRemoteData('orders');     
+    this.getRemoteData('orders');    
+     
 
+  }
+
+  //OVERRIDE
+  private restBackendService: RESTBackendService;
+  
+  public getRemoteData(tagResourse: string):any {
+    //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+    this.restBackendService.getResource(tagResourse).subscribe(
+      (data) => {
+        
+            //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
+            this.resource = data;
+            console.log(this.resource);
+            console.log(this.resource.filter(ordine => ordine.consegnato === 'NO'));
+            this.dataSource = new MatTableDataSource(this.resource.filter(ordine => ordine.consegnato === 'NO'));   
+                        
+            this.dataSource.paginator = this.paginatorTable;    
+            this.dataSource.sort = this.sortTable;            
+
+           },
+      (error) => {
+
+         this.errorHttpErrorResponse = error;
+         this.errorMessage = error.message;
+
+      }
+    );
   }
 
 
@@ -70,12 +99,6 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
   }
 
-  openViewOrderSubcontractor(){
-     
-    this.openView(true);
-
-  }
-
   openView(subcontractorView: boolean){
 
     const dialogConfig = new MatDialogConfig();
@@ -90,6 +113,32 @@ export class OrderGridComponent extends GridModel implements OnInit {
     });  
   }
 
- 
+  confirm(){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'Contrassegnare ordine come consegnato?', 
+    };
+
+    const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:' + result);
+
+      switch (result) {
+        case true: //dialog OK
+          
+          break;
+      
+      case false: //dialog NOT OK
+          break;
+
+      default: //dialog escape
+          break;
+      }
+
+    });    
+       
+  }
 
 }

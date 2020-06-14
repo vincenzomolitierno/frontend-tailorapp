@@ -47,7 +47,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
     //si invoca il metodo ereditato per caricare i dati dal backend, passando come
     //parametro in ingresso il tag che identifica la risorsa da recuperare
-    this.getRemoteData('customers');     
+    this.getRemoteData('customers');   
 
   }
  

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginSigninComponent } from './login/login-signin/login-signin.component';
 import { DashboardPanelComponent } from './dashboard/dashboard-panel/dashboard-panel.component';
-import { DummySubpanelComponent } from './dashboard/dummy-subpanel/dummy-subpanel.component';
 import { HomeSubpanelComponent } from './dashboard/home-subpanel/home-subpanel.component';
 import { ProfileSubpanelComponent } from './dashboard/profile-subpanel/profile-subpanel.component';
 import { CustomersSubpanelComponent } from './dashboard/customers-subpanel/customers-subpanel.component';

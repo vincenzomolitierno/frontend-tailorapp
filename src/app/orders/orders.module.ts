@@ -8,12 +8,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ShirtsModule } from '../shirts/shirts.module';
 import { OrderViewComponent } from './order-view/order-view.component';
+import { OrdersUndeliveredGridComponent } from './orders-undelivered-grid/orders-undelivered-grid.component';
+import { OrdersUndepaidGridComponent } from './orders-undepaid-grid/orders-undepaid-grid.component';
 
 @NgModule({
   declarations: [
     OrderFormComponent, 
     OrderGridComponent, 
-    OrderViewComponent
+    OrderViewComponent, 
+    OrdersUndeliveredGridComponent, 
+    OrdersUndepaidGridComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +29,9 @@ import { OrderViewComponent } from './order-view/order-view.component';
     ShirtsModule
   ],
   exports: [
-    OrderGridComponent
+    OrderGridComponent,
+    OrdersUndeliveredGridComponent,
+    OrdersUndepaidGridComponent
   ],
   entryComponents: [
     OrderFormComponent,

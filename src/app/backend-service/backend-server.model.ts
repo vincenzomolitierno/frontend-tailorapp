@@ -10,6 +10,7 @@ export class BackendServer {
     private apiResourceCustomers: string = this.base + '/clienti';
     private apiResourceOrders: string = this.base + '/ordini';
     private apiResourceSubcontractors: string = this.base + '/fasonatori';
+    private apiResourceMeasurers: string = this.base + '/misurometri';
 
     // CATALOGHI
     private apiResourceNeckmodel: string = this.base + '/modellocollo';
@@ -54,6 +55,9 @@ export class BackendServer {
             case 'subcontractors':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceSubcontractors;                  
                     
+            case 'measurers':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceMeasurers;                  
+
             case 'neckmodel':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceNeckmodel;   
 

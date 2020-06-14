@@ -20,7 +20,8 @@ export class GridModel {
     private restBackendService: RESTBackendService;
 
     //Attributi che servono alla classe derivata per 
-    @ViewChild('table', { read: MatSort, static: true }) sortTable: MatSort;
+    // @ViewChild('table', { read: MatSort, static: true }) sortTable: MatSort;
+    @ViewChild(MatSort, {static: true}) sortTable: MatSort;
     @ViewChild(MatPaginator, {static: true}) paginatorTable: MatPaginator;  
 
     constructor(_restBackendService: RESTBackendService){
@@ -34,9 +35,9 @@ export class GridModel {
           
               this.resource = data;
               this.dataSource = new MatTableDataSource(this.resource);   
-              // Si associano ordinamento e paginatore
-              this.dataSource.sort = this.sortTable;
-              this.dataSource.paginator = this.paginatorTable;              
+                          
+              this.dataSource.paginator = this.paginatorTable;    
+              this.dataSource.sort = this.sortTable;            
 
              },
         (error) => {
@@ -47,6 +48,7 @@ export class GridModel {
         }
       );
     }
+
     
 
     public applyFilter(event: Event) {

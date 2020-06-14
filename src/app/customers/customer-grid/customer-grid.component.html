@@ -23,8 +23,8 @@
     </div>
 
     <!-- table -->
-    <div class="mat-elevation-z2" style="clear: left;">
-        <table mat-table [dataSource]="dataSource" matSort #table1>
+    <div class="mat-elevation-z2 table-container" style="clear: left;">
+        <table mat-table [dataSource]="dataSource" matSort>
             <!-- Nominativo Column -->
             <ng-container matColumnDef="nominativo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Nominativo </th>

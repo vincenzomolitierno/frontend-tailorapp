@@ -51,14 +51,14 @@ export class RESTBackendService {
 
   // ************* CRUD FOR CUSTOMERS *************
 
-  public getCustomers(): Observable<any> {
+  // public getCustomers(): Observable<any> {
 
-    return this._http.get<any>(
-      this.server.getApiResource('customers'),
-      this.httpOptions
-      ).pipe(catchError(this.handleError));
+  //   return this._http.get<any>(
+  //     this.server.getApiResource('customers'),
+  //     this.httpOptions
+  //     ).pipe(catchError(this.handleError));
 
-  }
+  // }
 
 // /**
 //    * Method to add a new element in the company staff
