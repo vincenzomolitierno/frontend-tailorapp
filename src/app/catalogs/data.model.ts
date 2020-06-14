@@ -1,4 +1,5 @@
 
+  
   export class NeckModel {
     idmodello: number;
     modello: string;

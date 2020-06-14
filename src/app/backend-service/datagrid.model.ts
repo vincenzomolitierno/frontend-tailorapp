@@ -17,7 +17,7 @@ export class GridModel {
 
     //Attributo che serve per ricevere il riferimento al servizio del 
     //backend iniettato nella classe derivata
-    private restBackendService: RESTBackendService;
+    public restBackendService: RESTBackendService;
 
     //Attributi che servono alla classe derivata per 
     // @ViewChild('table', { read: MatSort, static: true }) sortTable: MatSort;

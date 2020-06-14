@@ -50,13 +50,13 @@ export class OrdersUndeliveredGridComponent extends GridModel implements OnInit 
   }
 
   //OVERRIDE
-  private restBackendService: RESTBackendService;
+  // private restBackendService: RESTBackendService;
   
   public getRemoteData(tagResourse: string):any {
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResource(tagResourse).subscribe(
       (data) => {
-        
+
             //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
             this.resource = data;
             console.log(this.resource);
