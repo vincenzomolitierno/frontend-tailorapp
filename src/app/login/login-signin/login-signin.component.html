@@ -6,11 +6,12 @@
         </mat-card-title>
 
         <mat-card-content>
-            <form [formGroup]="form" (ngSubmit)="submit()">
+            <form [formGroup]="loginForm">
+                <!--  (ngSubmit)="submit()"-->
                 <p>
                     <mat-form-field appearance="fill">
                         <mat-label>Username</mat-label>
-                        <input matInput placeholder="username dell'utente" formControlName="username">
+                        <input matInput placeholder="inserisci la username utente" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
                         <mat-icon matSuffix>keyboard</mat-icon>
                         <!-- <mat-hint>Hint</mat-hint> -->
                     </mat-form-field>
@@ -18,9 +19,13 @@
 
                 <p>
                     <mat-form-field appearance="fill">
-                        <mat-label>Username</mat-label>
-                        <input matInput type="password" placeholder="password dell'utente" formControlName="password">
-                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <mat-label>Password</mat-label>
+
+                        <input matInput [type]="hide ? 'password' : 'text'" placeholder="password dell'utente" formControlName="password">
+
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
                         <!-- <mat-hint>Hint</mat-hint> -->
                     </mat-form-field>
                 </p>
@@ -30,7 +35,7 @@
                 </p>
 
                 <div class="button" matTooltip="Accedi a Tailor APP" matTooltipPosition="above">
-                    <button type="submit" mat-raised-button>LOGIN</button>
+                    <button type="submit" mat-raised-button (click)="submit()">LOGIN</button>
                 </div>
 
             </form>

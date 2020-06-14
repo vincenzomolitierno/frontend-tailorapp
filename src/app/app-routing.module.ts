@@ -9,12 +9,14 @@ import { SubcontractorsSubpanelComponent } from './dashboard/subcontractors-subp
 import { OrdersSubpanelComponent } from './dashboard/orders-subpanel/orders-subpanel.component';
 import { CatalogsSubpanelComponent } from './dashboard/catalogs-subpanel/catalogs-subpanel.component';
 import { HelpdeskSubpanelComponent } from './dashboard/helpdesk-subpanel/helpdesk-subpanel.component';
+import { AuthGuard } from './authentication/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginSigninComponent },
   { path: 'dashboard', 
     component: DashboardPanelComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: HomeSubpanelComponent, pathMatch: 'full' },
       { path: 'customers', component: CustomersSubpanelComponent },
