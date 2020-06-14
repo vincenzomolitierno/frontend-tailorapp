@@ -1,8 +1,10 @@
+import server from "../../assets/setting/server.json";
+
+
 export class BackendServer {
 
-    // private host: string = 'gbiot.ddns.net';
-    private host: string = 'localhost';
-    private port: string = '5003';
+    private host: string = '';
+    private port: string = '';
     private protocol: string = 'http';
     
     private base: string = '/api';
@@ -19,7 +21,19 @@ export class BackendServer {
     private apiResourceBackside: string = this.base + '/indietro';
 
     constructor() {
+        //si recuperano host e porta del backend dal file di configurazione
+        this.getSetting();
     }  
+
+    private getSetting(){
+
+        console.log('Reading local json files');
+        console.log(server);      
+        
+        this.host = server.host;
+        this.port = server.port;
+
+    }
 
 
     public getHost(): string {

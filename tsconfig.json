@@ -17,6 +17,9 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    //aggiunte per la lettura del file txt
+    "resolveJsonModule": true, 
+    "esModuleInterop": true     
   }
 }

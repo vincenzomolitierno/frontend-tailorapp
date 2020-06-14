@@ -1,11 +1,10 @@
-:host {
+/* :host {
     display: flex;
     justify-content: center;
-}
+} */
 
-.mat-form-field {
-    width: 100%;
-    min-width: 300px;
+mat-card {
+    min-width: 350px;
 }
 
 mat-card-title,
@@ -14,6 +13,19 @@ mat-card-content {
     justify-content: center;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+mat-form-field {
+    min-width: 320px;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .error {
@@ -25,5 +37,13 @@ mat-card-content {
 
 .button {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+}
+
+button {
+    width: 100%;
+}
+
+.footer {
+    margin-top: 25px;
 }

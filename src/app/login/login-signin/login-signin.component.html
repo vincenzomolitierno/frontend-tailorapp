@@ -1,27 +1,48 @@
-<mat-card>
-    <mat-card-title><img width="200" alt="idealprogetti.com Logo" src="../assets/images/logo_tailor.png"></mat-card-title>
-    <mat-card-content>
-        <form [formGroup]="form" (ngSubmit)="submit()">
-            <p>
-                <mat-form-field>
-                    <input type="text" matInput placeholder="Username" formControlName="username">
-                </mat-form-field>
-            </p>
+<div class="center">
+    <mat-card>
 
-            <p>
-                <mat-form-field>
-                    <input type="password" matInput placeholder="Password" formControlName="password">
-                </mat-form-field>
-            </p>
+        <mat-card-title>
+            <img width="200" alt="idealprogetti.com Logo" src="../assets/images/logo_tailor.png">
+        </mat-card-title>
 
-            <p *ngIf="error" class="error">
-                {{ error }}
-            </p>
+        <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <p>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Username</mat-label>
+                        <input matInput placeholder="username dell'utente" formControlName="username">
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </p>
 
-            <div class="button">
-                <button type="submit" mat-raised-button>LOGIN</button>
-            </div>
+                <p>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Username</mat-label>
+                        <input matInput type="password" placeholder="password dell'utente" formControlName="password">
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </p>
 
-        </form>
-    </mat-card-content>
-</mat-card>
+                <p *ngIf="error" class="error">
+                    {{ error }}
+                </p>
+
+                <div class="button" matTooltip="Accedi a Tailor APP" matTooltipPosition="above">
+                    <button type="submit" mat-raised-button>LOGIN</button>
+                </div>
+
+            </form>
+
+        </mat-card-content>
+
+        <div class="footer">
+            Powered by
+            <a target="_blank" rel="noopener" href="http://idealprogetti.com/">
+                <img height="30px" alt="idealprogetti.com Logo" src="../assets/images/logo_idelprogetti.png">
+            </a>
+            &copy; 2020
+        </div>
+    </mat-card>
+</div>
