@@ -20,7 +20,7 @@
             <!-- menu di navigazione -->
             <mat-menu #appMenu="matMenu">
                 <button mat-menu-item routerLink="profile">Profilo</button>
-                <button mat-menu-item routerLink="logout">Logout</button>
+                <button mat-menu-item (click)="logout()">Logout</button>
             </mat-menu>
 
             <button mat-icon-button [matMenuTriggerFor]="appMenu">

@@ -15,7 +15,7 @@ export class RESTBackendService {
 
   //Stringa per i messaggi di errore
   private errorMessage: string = '';
-  private token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEwMCIsIm5iZiI6MTU5MTYxMjE0NywiZXhwIjoxNTkyMjE2OTQ3LCJpYXQiOjE1OTE2MTIxNDd9.WFR8ywORDpeMN3eFme8dJy6OwcS9FCWFBMYZrUF3-Cg';
+  private token: string = '';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -36,16 +36,8 @@ export class RESTBackendService {
 
   }
 
-  public loginToServer(username: string, password: string ){
-
-    return this._http.get<any>(
-      this.server.getApiResource('authenticate'),
-      this.httpOptions
-      ).pipe(catchError(this.handleError));
-
-  }
-
   public setToken(_token: string): void{
+    // console.log('Setting Token: ' + _token);  
     this.token = _token;
   }
 
@@ -106,6 +98,15 @@ export class RESTBackendService {
 
 // ************* READ RESOURCE *************
 public getResource(tagResource: string): Observable<any> {
+
+  // console.log('Using Token: ' + this.token);  
+
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.token,
+    })
+  };
 
   return this._http.get<any>(
     this.server.getApiResource(tagResource),

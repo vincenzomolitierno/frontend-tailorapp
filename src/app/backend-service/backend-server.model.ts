@@ -27,8 +27,8 @@ export class BackendServer {
 
     private getSetting(){
 
-        console.log('Reading local json files');
-        console.log(server);      
+        // console.log('Reading local json files');
+        // console.log(server);      
         
         this.host = server.host;
         this.port = server.port;

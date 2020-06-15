@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
-import { ConditionalExpr } from '@angular/compiler';
 import { first } from 'rxjs/operators';
 
 
@@ -40,7 +39,8 @@ export class LoginSigninComponent implements OnInit {
     });
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';    
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';    
+    this.returnUrl = '/dashboard';
   }
 
   // form: FormGroup = new FormGroup({
@@ -59,6 +59,7 @@ export class LoginSigninComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
+      console.log('Form non valido');
         return;
     }
 
@@ -70,6 +71,7 @@ export class LoginSigninComponent implements OnInit {
                 this.router.navigate([this.returnUrl]);
             },
             error => {
+              console.log(error);
                 this.error = error;
                 this.loading = false;
             });  

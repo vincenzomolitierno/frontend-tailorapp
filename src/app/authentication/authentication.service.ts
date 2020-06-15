@@ -3,15 +3,25 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from './data.model';
+import { BackendServer } from '../backend-service/backend-server.model';
+import { RESTBackendService } from '../backend-service/rest-backend.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient) {
+    private handlerBackendServer: BackendServer;
+    private handlerRestBackendService: RESTBackendService;
+    
+    constructor(private http: HttpClient,
+        restBackendService: RESTBackendService
+        ) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
+
+        this.handlerBackendServer = new BackendServer();
+        this.handlerRestBackendService = restBackendService;
     }
 
     public get currentUserValue(): User {
@@ -21,10 +31,16 @@ export class AuthenticationService {
     login(username: string, password: string) {
 
         console.log('Username: ' + username);
-        console.log('Passord: ' + password);
+        console.log('Password: ' + password);
 
-        return this.http.post<any>(`/users/authenticate`, { username, password })
+        return this.http.post<any>(
+            this.handlerBackendServer.getApiResource('authenticate'), 
+            { username, password }
+            )
             .pipe(map(user => {
+                console.log('user mapping');
+                console.log('Token: ' + user.token);                
+                this.handlerRestBackendService.setToken(user.token);
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
