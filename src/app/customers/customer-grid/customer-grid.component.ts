@@ -51,22 +51,6 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
   }
  
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  //   this.viewDetails = false;
-  //   this.customerNameFocused = "";    
-  // }  
-
-
-
-  // clearSearch(){
-  //   this.dataSource.filter = "";
-  //   this.testo_ricerca = "";
-  //   this.viewDetails = false;
-  //   this.customerNameFocused = "";
-  // }
-
   openResourceDialog(formModal: string, name: string){
 
     const dialogConfig = new MatDialogConfig();
@@ -75,7 +59,13 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(CustomerFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+
+      if(result){
+
+        console.log('post');
+
+      }
+      
     });    
     
   }    

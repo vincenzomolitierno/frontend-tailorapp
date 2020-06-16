@@ -96,7 +96,14 @@ export class RESTBackendService {
 
 //   } 
 
-// ************* READ RESOURCE *************
+
+/**
+ *
+ *
+ * @param {string} tagResource
+ * @returns {Observable<any>}
+ * @memberof RESTBackendService
+ */
 public getResource(tagResource: string): Observable<any> {
 
   // console.log('Using Token: ' + this.token);  
@@ -114,6 +121,17 @@ public getResource(tagResource: string): Observable<any> {
     ).pipe(catchError(this.handleError));
 
 }
+
+
+  public postResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
+
+    return this._http.post<HttpErrorResponse>(
+      this.server.getApiResource(tagResource),
+      body, 
+      this.httpOptions
+      ).pipe(catchError(this.handleError));
+
+  }
 
  
 

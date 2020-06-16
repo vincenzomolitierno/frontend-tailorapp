@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA} from "@angular/material";
+import { Customer } from '../data.model';
 
 @Component({
   selector: 'app-cu-form',
@@ -11,13 +12,22 @@ export class CuFormComponent implements OnInit {
   formModal: string = "empty";
   name: string = "empty";
 
+  private customer: Customer;
+
   constructor(@Inject(MAT_DIALOG_DATA) data) {
 
     this.formModal = data.formModal;
     this.name = data.nominativo;
+
+    this.customer = new Customer();
+    
    }
 
   ngOnInit() {
+  }
+
+  submitForm(){
+    console.log('submit');
   }
 
 }
