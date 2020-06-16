@@ -30,8 +30,8 @@ export class AuthenticationService {
 
     login(username: string, password: string) {
 
-        console.log('Username: ' + username);
-        console.log('Password: ' + password);
+        // console.log('Username: ' + username);
+        // console.log('Password: ' + password);
 
         return this.http.post<any>(
             this.handlerBackendServer.getApiResource('authenticate'), 
@@ -39,7 +39,7 @@ export class AuthenticationService {
             )
             .pipe(map(user => {
                 console.log('user mapping');
-                console.log('Token: ' + user.token);                
+                // console.log('Token: ' + user.token);                
                 this.handlerRestBackendService.setToken(user.token);
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
@@ -52,5 +52,9 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+    }
+
+    public setToken(_token: string){
+        this.handlerRestBackendService.setToken(_token);
     }
 }

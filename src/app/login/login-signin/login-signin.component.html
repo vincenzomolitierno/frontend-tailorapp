@@ -5,16 +5,18 @@
             <img width="200" alt="idealprogetti.com Logo" src="../assets/images/logo_tailor.png">
         </mat-card-title>
 
+
+
         <mat-card-content>
             <form [formGroup]="loginForm">
                 <!--  (ngSubmit)="submit()"-->
                 <p>
-                    <span></span><br><span>admin</span>
+                    <span>admin@sarto.it</span><br><span>Ty57SYF7?fcN</span>
                 </p>
                 <p>
                     <mat-form-field appearance="fill">
                         <mat-label>Username</mat-label>
-                        <input matInput placeholder="inserisci la username utente" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" value="admin@sarto.it">
+                        <input matInput placeholder="inserisci la username utente" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
                         <mat-icon matSuffix>keyboard</mat-icon>
                         <!-- <mat-hint>Hint</mat-hint> -->
                     </mat-form-field>
@@ -24,7 +26,7 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Password</mat-label>
 
-                        <input matInput [type]="hide ? 'password' : 'text'" placeholder="password dell'utente" formControlName="password" value="Ty57SYF7?fcN">
+                        <input matInput [type]="hide ? 'password' : 'text'" placeholder="password dell'utente" formControlName="password">
 
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide">
                             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>

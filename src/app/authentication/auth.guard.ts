@@ -18,6 +18,9 @@ export class AuthGuard implements CanActivate {
         if (currentUser) {
             // logged in so return true
             console.log('logged in');
+            // console.log('Current User: ');   
+            // console.log(currentUser);  
+            this.authenticationService.setToken(currentUser.token); 
             return true;
         }
 
