@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="grid-container">
+        <div class="grid-container" *ngIf="shirtIndicatorControl.dirty && shirtIndicatorControlSize.dirty">
             <!-- PRIMA COLONNA DI INPUT -->
             <div class="grid-item">
                 <!-- INPUT COLLO -->
@@ -266,7 +266,7 @@
             </div>
         </div>
 
-        <mat-divider></mat-divider>
+        <mat-divider *ngIf="shirtIndicatorControl.dirty && shirtIndicatorControlSize.dirty"></mat-divider>
         <!-- inserimento input grafico -->
         <app-shirt-marks></app-shirt-marks>
 

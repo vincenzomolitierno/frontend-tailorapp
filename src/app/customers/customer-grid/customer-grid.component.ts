@@ -22,6 +22,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   customerNameFocused: string = "";
   dummy_data: string = "X,Y"
 
+  item_empty: Customer;
+
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
     'nominativo', 

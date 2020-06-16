@@ -12,7 +12,7 @@ export class CuFormComponent implements OnInit {
   formModal: string = "empty";
   name: string = "empty";
 
-  private customer: Customer;
+  customer: Customer;
 
   constructor(@Inject(MAT_DIALOG_DATA) data) {
 
