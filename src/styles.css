@@ -15,3 +15,8 @@ body {
     float: right;
     margin: 8px;
 }
+
+.custom-dialog-container {
+    max-width: 80vw !important;
+    width: 80vw !important;
+}

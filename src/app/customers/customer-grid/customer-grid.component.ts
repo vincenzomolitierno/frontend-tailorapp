@@ -76,10 +76,12 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     }
     
     //oggetto per configurare la finestra di dialogo
-    dialogConfig.data = {formModal: formModal, customer: customer };
+    dialogConfig.data = {formModal: formModal, customer: customer};
+    dialogConfig.panelClass = 'custom-dialog-container';
 
     //riferimento alla finestra modale per aprirla
     const dialogRef = this.dialog.open(CustomerFormComponent, dialogConfig);
+
     dialogRef.afterClosed().subscribe(result => {
 
       console.log('result:' + result);
@@ -163,7 +165,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = true;
   }
 
-  openTakeMeasureDialog(formModal: string, name: string){
+  private openTakeMeasureDialog(formModal: string, name: string){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -172,6 +174,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       nominativo: name ,
       base64: ''
     };
+
+    dialogConfig.panelClass = 'custom-dialog-container';
 
     const dialogRef = this.dialog.open(TakeMeasureFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {

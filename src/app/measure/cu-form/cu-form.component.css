@@ -1,11 +1,7 @@
+@import url('../../../assets/style/form.style.css');
 p {
     margin-bottom: 0px;
     text-align: center;
-}
-
-.form-frame {
-    width: 900px;
-    text-align: left;
 }
 
 mat-form-field {

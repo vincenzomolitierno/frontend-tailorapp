@@ -1,4 +1,4 @@
-<div class="form-frame">
+<div>
     <h2 mat-dialog-title>Modulo {{formModal}} misure</h2>
     <mat-dialog-content class="mat-typography">
         <h3>Committente {{name}}</h3>
@@ -66,7 +66,7 @@
                         <button mat-mini-fab color="primary" (click)="buttonDecrease('bicipite')"><mat-icon>remove</mat-icon></button>
                     </div>
                     <div class="value-set">
-                        Bicipite<br> {{bicipite.toFixed(1)}}
+                        Lun. Manica<br> {{bicipite.toFixed(1)}}
                     </div>
                     <div class="plus-button">
                         <button mat-mini-fab color="primary" (click)="buttonIncrease('bicipite')"><mat-icon>add</mat-icon></button>
@@ -78,7 +78,7 @@
                         <button mat-mini-fab color="primary" (click)="buttonDecrease('lunghezza_bicipite')"><mat-icon>remove</mat-icon></button>
                     </div>
                     <div class="value-set">
-                        Lun. Bicipite<br> {{lunghezza_bicipite.toFixed(1)}}
+                        Bicipite<br> {{lunghezza_bicipite.toFixed(1)}}
                     </div>
                     <div class="plus-button">
                         <button mat-mini-fab color="primary" (click)="buttonIncrease('lunghezza_bicipite')"><mat-icon>add</mat-icon></button>
@@ -162,7 +162,7 @@
             </div>
             <!-- TERZA COLONNA DI INPUT -->
             <div class="grid-item">
-                <h3>TORACE</h3>
+                <h3>TORACE AVANTI</h3>
                 <!-- INPUT TORACE 1° BOTTONE  -->
                 <div class="control-measure">
                     <div class="minus-button">
@@ -202,7 +202,7 @@
             </div>
             <!-- QUARTA COLONNA DI INPUT -->
             <div class="grid-item">
-                <h3>BACINO</h3>
+                <h3 style="color: white;">'</h3>
                 <!-- INPUT BACINO 4° BOTTONE  -->
                 <div class="control-measure">
                     <div class="minus-button">
