@@ -8,13 +8,13 @@ import { DateAdapter, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 export class ActionConfirmDummyComponent implements OnInit {
 
-  formModal: string = "empty";
+  titol: string = "empty";
 
   constructor(
     public dialogRef: MatDialogRef<ActionConfirmDummyComponent>,
     @Inject(MAT_DIALOG_DATA) data
     ) {
-    this.formModal = data.action;
+    this.titol = data.message;    
    }
 
   ngOnInit() {

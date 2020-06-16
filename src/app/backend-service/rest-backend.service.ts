@@ -41,61 +41,6 @@ export class RESTBackendService {
     this.token = _token;
   }
 
-  // ************* CRUD FOR CUSTOMERS *************
-
-  // public getCustomers(): Observable<any> {
-
-  //   return this._http.get<any>(
-  //     this.server.getApiResource('customers'),
-  //     this.httpOptions
-  //     ).pipe(catchError(this.handleError));
-
-  // }
-
-// /**
-//    * Method to add a new element in the company staff
-//    * 
-//    * @param newItem the item to add in the resource
-//    * 
-//    * @return An `Observable` of the response, with the response body
-//    */
-//   postAzienda(newItem: NuovaAzienda): Observable<HttpErrorResponse> {
-
-//     console.log(newItem);
-
-//     return this._http.post<HttpErrorResponse>(this.apiUrlAzienda, newItem, httpOptions).pipe(catchError(this.handleError));
-
-//   }
-
-//   /**
-//    * Method to delete an item from the resource
-//    * 
-//    * @param itemToRemove  the item to remove from resource
-//    * 
-//    * @returns an observable object to pull up error information
-//    */
-//   deleteAzienda(itemToRemove: Azienda): Observable<HttpErrorResponse> {
-
-//     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: itemToRemove };
-
-//     return this._http.delete<HttpErrorResponse>(this.apiUrlAzienda, httpOptions).pipe(catchError(this.handleError));
-
-//   }
-
-//   /**
-//    * Method to send put command to the REST backend in order to update
-//    * a resource item
-//    * 
-//    * @param itemUpdated the item to update in the resource
-//    */
-//   putAzienda(itemUpdated: Azienda): Observable<HttpErrorResponse> {
-
-//     return this._http.put<HttpErrorResponse>(this.apiUrlAzienda,
-//       itemUpdated,
-//       httpOptions).pipe(catchError(this.handleError));
-
-//   } 
-
 
 /**
  *
@@ -133,7 +78,33 @@ public getResource(tagResource: string): Observable<any> {
 
   }
 
- 
+
+  public delResource(tagResource: string, _body: object): Observable<HttpErrorResponse> {
+
+    const localHttpOptions = { 
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.token,
+      }),
+       body: _body };  
+
+       console.log(localHttpOptions);
+
+    return this._http.delete<HttpErrorResponse>(
+      this.server.getApiResource(tagResource),
+      localHttpOptions
+      ).pipe(catchError(this.handleError));    
+  }  
+
+  public putResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
+
+    return this._http.put<HttpErrorResponse>(
+      this.server.getApiResource(tagResource),
+      body, 
+      this.httpOptions
+      ).pipe(catchError(this.handleError));
+
+  }  
 
 // ************* UTILITY METHODS *************
   /**

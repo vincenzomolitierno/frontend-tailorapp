@@ -40,7 +40,7 @@ export class GridModel {
   }      
   
   /**
-   * Gets the data of tagResource resource from backend service as a JSON data
+   * REST backend call to get the data of tagResource resource as a JSON data
    *
    * @param {string} tagResourse
    * @returns {*}
@@ -50,40 +50,77 @@ export class GridModel {
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResource(tagResourse).subscribe(
       (data) => {
-        
             this.resource = data;
             this.dataSource = new MatTableDataSource(this.resource);   
-                        
+                       
             this.dataSource.paginator = this.paginatorTable;    
             this.dataSource.sort = this.sortTable;            
-
             },
       (error) => {
-
           this.errorHttpErrorResponse = error;
           this.errorMessage = error.message;
-
       }
     );
   }
 
-  public postData(tagResourse: string, body: object):void {
+
+  /**
+   * REST backend call to create new resource item of tagResource with body parameter
+   *
+   * @param {string} tagResourse
+   * @param {object} body
+   * @memberof GridModel
+   */
+  public postData(tagResource: string, body: object):void {
 
     this.errorMessage = '';
 
-    this.restBackendService.postResource(tagResourse, body).subscribe(
+    this.restBackendService.postResource(tagResource, body).subscribe(
       (data) => {     
-
-        this.getRemoteData(tagResourse);
-        
+        this.getRemoteData(tagResource);        
       },
       (error) => {
         this.errorHttpErrorResponse = error;
-        this.errorMessage = error.message;
-        
+        this.errorMessage = error.message;        
       });    
 
   }
+
+  /**
+   * REST backend call to delete resource item of tagResource with id passed through body parameter
+   *
+   * @param {string} tagResourse
+   * @param {object} body
+   * @memberof GridModel
+   */
+  public delData(tagResourse: string, body: object):void {
+
+    this.errorMessage = '';
+    this.restBackendService.delResource(tagResourse, body).subscribe(
+      (data) => {     
+        this.getRemoteData(tagResourse);        
+      },
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;        
+      });      
+
+  }
+
+  public putData(tagResource: string, body: object):void {
+
+    this.errorMessage = '';
+
+    this.restBackendService.putResource(tagResource, body).subscribe(
+      (data) => {     
+        this.getRemoteData(tagResource);        
+      },
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;        
+      });    
+
+  }  
 
 
 

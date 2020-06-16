@@ -18,16 +18,15 @@ export class CuFormComponent implements OnInit {
 
     this.formModal = data.formModal;
     this.name = data.nominativo;
-
+    
     this.customer = new Customer();
+
+    Object.assign(this.customer, data.customer)
+    // this.customer = data.customer;
     
    }
 
   ngOnInit() {
-  }
-
-  submitForm(){
-    console.log('submit');
   }
 
 }

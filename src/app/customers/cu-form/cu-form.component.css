@@ -1,16 +1,1 @@
-p {
-    margin-bottom: 0px;
-}
-
-.form-frame {
-    width: 500px;
-}
-
-mat-form-field {
-    width: 75%;
-    padding-top: 0;
-}
-
-h2 {
-    text-transform: uppercase;
-}
+@import url('../../../assets/style/form.style.css');

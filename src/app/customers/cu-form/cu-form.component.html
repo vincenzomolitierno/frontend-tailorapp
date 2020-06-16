@@ -3,66 +3,81 @@
     <div class="form-frame">
         <h2 mat-dialog-title>Modulo {{formModal}} cliente</h2>
         <mat-dialog-content class="mat-typography">
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Nominativo</mat-label>
-                    <input matInput placeholder="nome e cognome del nuovo cliente" name="nominativo" [(ngModel)]="customer.nominativo" required>
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Telefono</mat-label>
-                    <input matInput placeholder="numero di telefono del nuovo cliente" name="telefono" [(ngModel)]="customer.telefono" required>
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Codice Fiscale</mat-label>
-                    <input matInput placeholder="codice fiscale del nuovo cliente" name="cf" [(ngModel)]="customer.cf">
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Partita IVA</mat-label>
-                    <input matInput placeholder="partita IVA del nuovo cliente" name="partita_iva" [(ngModel)]="customer.partita_iva">
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Intestazione Fattura</mat-label>
-                    <input matInput placeholder="intestazione della fattura del nuovo cliente" name="int_fattura" [(ngModel)]="customer.int_fattura">
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Indirizzo</mat-label>
-                    <input matInput placeholder="indirizzo del nuovo cliente" name="indirizzo" [(ngModel)]="customer.indirizzo">
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
-            <p>
-                <mat-form-field appearance="fill">
-                    <mat-label>Note</mat-label>
-                    <textarea matInput placeholder="note varie" name="note" [(ngModel)]="customer.note"></textarea>
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                    <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-            </p>
+
+            <div class="grid-container">
+
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Nominativo</mat-label>
+                        <input matInput placeholder="nome e cognome del nuovo cliente" name="nominativo" [(ngModel)]="customer.nominativo" required>
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Telefono</mat-label>
+                        <input matInput placeholder="numero di telefono del nuovo cliente" name="telefono" [(ngModel)]="customer.telefono" required>
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Indirizzo</mat-label>
+                        <input matInput placeholder="indirizzo del nuovo cliente" name="indirizzo" [(ngModel)]="customer.indirizzo">
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Codice Fiscale</mat-label>
+                        <input matInput placeholder="codice fiscale del nuovo cliente" name="cf" [(ngModel)]="customer.cf">
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Partita IVA</mat-label>
+                        <input matInput placeholder="partita IVA del nuovo cliente" name="partita_iva" [(ngModel)]="customer.partita_iva">
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Intestazione Fattura</mat-label>
+                        <input matInput placeholder="intestazione della fattura del nuovo cliente" name="int_fattura" [(ngModel)]="customer.int_fattura">
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Note</mat-label>
+                        <textarea matInput placeholder="note varie" name="note" [(ngModel)]="customer.note"></textarea>
+                        <mat-icon matSuffix>keyboard</mat-icon>
+                        <!-- <mat-hint>Hint</mat-hint> -->
+                    </mat-form-field>
+                </div>
+                <div class="grid-item">
+                    <!-- <mat-checkbox name="cartamodello" [(ngModel)]="customer.cartamodello">Carta-Modello</mat-checkbox> -->
+                    <mat-radio-group aria-label="Select an option" name="cartamodello" [(ngModel)]="customer.cartamodello">
+                        <mat-label>Cartamodello</mat-label>
+                        <p>
+                            <mat-radio-button value="SI">SI</mat-radio-button>
+                            <mat-radio-button value="NO">NO</mat-radio-button>
+                        </p>
+                    </mat-radio-group>
+                </div>
+
+            </div>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
             <button mat-raised-button matTooltip="Annulla {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="false" mat-dialog-close cdkFocusInitial>Annulla</button>
-            <button mat-raised-button matTooltip="Conferma {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="true" [disabled]="form.invalid">Conferma</button>
+            <button mat-raised-button matTooltip="Conferma {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="customer" [disabled]="form.invalid||form.pristine">Conferma</button>
         </mat-dialog-actions>
 
     </div>

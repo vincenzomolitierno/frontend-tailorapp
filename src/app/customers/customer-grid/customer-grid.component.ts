@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { CuFormComponent as CustomerFormComponent } from '../cu-form/cu-form.component';
 import { CuFormComponent as TakeMeasureFormComponent } from '../../measure/cu-form/cu-form.component';
 import { OrderFormComponent } from 'src/app/orders/order-form/order-form.component';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { Customer } from '../data.model';
+import { isUndefined } from 'util';
+import { stringify } from 'querystring';
+import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 
 @Component({
   selector: 'app-customer-grid',
@@ -27,6 +26,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   displayedColumns: string[] = [
     'nominativo', 
     'telefono', 
+    'cartamodello', 
     'note', 
     'update', 
     'delete', 
@@ -51,24 +51,109 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
   }
  
-  openResourceDialog(formModal: string, name: string){
+  
+  /**
+   * Open Dialog Form to create or update a resource item
+   *
+   * @param {string} formModal: 'inserimento'|'aggiornamento'
+   * @param {string} name
+   * @memberof CustomerGridComponent
+   */
+  public openResourceDialog(formModal: string, _customer: Customer){
 
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {idCustomer: "vincenzo", formModal: formModal, nominativo: name };
 
+    var customer: Customer;
+
+    //Dati da passare alla finestra modale
+    if(formModal=='inserimento'){
+      customer = new Customer();
+      console.log('inserimento');
+    } else if(formModal=='aggiornamento'){
+      console.log('aggiornamento');
+      // customer = new Customer();
+      customer = _customer;
+    }
+    
+    //oggetto per configurare la finestra di dialogo
+    dialogConfig.data = {formModal: formModal, customer: customer };
+
+    //riferimento alla finestra modale per aprirla
     const dialogRef = this.dialog.open(CustomerFormComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(result => {
+
+      console.log('result:' + result);
 
       if(result){
 
-        console.log('post');
+        if(formModal=='inserimento'){
+          
+          this.postData('customers',        
+          {
+            "nominativo": result.nominativo,
+            "telefono": result.telefono,
+            "email": result.email,
+            "cf": result.cf,
+            "partita_iva": result.partita_iva,
+            "indirizzo": result.indirizzo,
+            "int_fattura": result.int_fattura,
+            "note": result.note,
+            "cartamodello": result.cartamodello
+          });
 
+        } else if(formModal=='aggiornamento'){
+
+          this.putData('customers',        
+          {
+            "idclienti": customer.idclienti,
+            "nominativo": result.nominativo,
+            "telefono": result.telefono,
+            "email": result.email,
+            "cf": result.cf,
+            "partita_iva": result.partita_iva,
+            "indirizzo": result.indirizzo,
+            "int_fattura": result.int_fattura,
+            "note": result.note,
+            "cartamodello": result.cartamodello
+          });      
+
+        }
+
+
+      }      
+    }); 
+    
+  }   
+  
+  /**
+   * Open Dialog Form to confirm the delete of the item with _idItem primary key
+   *
+   * @param {string} _idItem
+   * @param {string} _nominativo
+   * @memberof CustomerGridComponent
+   */
+  public openDeleteDialog(_idItem: string, _nominativo: string){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      idItem: _idItem, 
+      message: 'Eliminare ' + _nominativo +' dall\'archivio dei clienti?',
+    };
+
+    const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.delData('customers',        
+        {
+          "idclienti": parseInt(_idItem)
+        }
+        )
       }
       
-    });    
-    
-  }    
+    });     
+
+  }
 
   openDetails(inpunString: string){
     this.testo_ricerca = inpunString;
@@ -110,5 +195,18 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     });    
     
   }   
+
+  /**
+   * Override the parent's method to manage customer details too
+   *
+   * @memberof CustomerGridComponent
+   */
+  public clearSearch(){
+    this.dataSource.filter = "";
+    this.testo_ricerca = "";
+
+    this.viewDetails = false;
+
+  } 
 
 }
