@@ -6,6 +6,7 @@ import { RESTBackendService } from 'src/app/backend-service/rest-backend.service
 import { Customer } from 'src/app/customers/data.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
 import { Measure } from 'src/app/measurers/data.model';
+import { isUndefined } from 'util';
 
 interface ShirtIndicator {
   idmisurometri: string,
@@ -22,39 +23,42 @@ interface ShirtIndicatorSize {
   templateUrl: './measure-form.component.html',
   styleUrls: ['./measure-form.component.css']
 })
-export class MeasureFormComponent implements OnInit, AfterContentInit  {
+export class MeasureFormComponent implements OnInit  {
 
   private resourceQuery: Array<any> = [];
 
   private measure: Measure;
-  private formModal: string = 'empty';
+  private formModal: string = '';
   private customer: Customer;
   
+  private flagA: boolean;
+  private flagB: boolean;
+
   dummy_data: string = 'X,Y'
 
   // attributi della misura
   //colonna 1
-  collo: number = 45.0;  //valore di default noto
-  spalla: number = 0.0;
-  bicipite: number = 0.0;
-  lunghezza_bicipite: number = 0.0;
-  vita_dietro: number = 0.0;  
-  //colonna 2
-  polso: number = 18.0 //valore di default noto
-  lunghezza_camicia: number = 0.0;
-  avambraccio: number = 0.0;
-  lunghezza_avambraccio: number = 0.0;
-  bacino_dietro: number = 0.0;
-  //colonna 3
-  torace_1_bottone: number = 0.0;
-  torace_2_bottone: number = 0.0;
-  torace_3_bottone: number = 0.0;
-  //colonna 4
-  bacino_4_bottone: number = 0.0;
-  bacino_5_bottone: number = 0.0;
-  bacino_6_bottone: number = 0.0;
-  bacino_7_bottone: number = 0.0;
-  bacino_8_bottone: number = 0.0;
+  // collo: number = 45.0;  //valore di default noto
+  // spalla: number = 0.0;
+  // bicipite: number = 0.0;
+  // lunghezza_bicipite: number = 0.0;
+  // vita_dietro: number = 0.0;  
+  // //colonna 2
+  // polso: number = 18.0 //valore di default noto
+  // lunghezza_camicia: number = 0.0;
+  // avambraccio: number = 0.0;
+  // lunghezza_avambraccio: number = 0.0;
+  // bacino_dietro: number = 0.0;
+  // //colonna 3
+  // torace_1_bottone: number = 0.0;
+  // torace_2_bottone: number = 0.0;
+  // torace_3_bottone: number = 0.0;
+  // //colonna 4
+  // torace_4_bottone: number = 0.0;
+  // torace_5_bottone: number = 0.0;
+  // torace_6_bottone: number = 0.0;
+  // torace_7_bottone: number = 0.0;
+  // torace_8_bottone: number = 0.0;
 
   // ##############################
   public locale: string = 'en';
@@ -100,14 +104,39 @@ export class MeasureFormComponent implements OnInit, AfterContentInit  {
         this.measure = new Measure();
 
         this.formModal = 'inserimento';
+        
+        this.flagA = false;
+        this.flagB = false;
 
         //costruzione del reactive form
         this.reactiveForm = new FormGroup({
           shirtIndicatorControl: new FormControl('', Validators.required),
           shirtIndicatorControlSize: new FormControl('', Validators.required),
+          
           collo: new FormControl(''),
+          spalla: new FormControl(''),
+          lunghezza_manica: new FormControl(''),
+          bicipite: new FormControl(''),
+          vita_dietro: new FormControl(''),
+
+          polso: new FormControl(''),
+          lunghezza_camicia: new FormControl(''),
+          avambraccio: new FormControl(''),
+          lunghezza_avambraccio: new FormControl(''),
+          bacino_dietro: new FormControl(''),
+
+          torace_1_bottone: new FormControl(''),
+          torace_2_bottone: new FormControl(''),
+          torace_3_bottone: new FormControl(''),
+
+          torace_4_bottone: new FormControl(''),
+          torace_5_bottone: new FormControl(''),
+          torace_6_bottone: new FormControl(''),
+          torace_7_bottone: new FormControl(''),
+          torace_8_bottone: new FormControl(''),
 
         });        
+        
    }
 
   ngOnInit() {
@@ -118,22 +147,6 @@ export class MeasureFormComponent implements OnInit, AfterContentInit  {
     //Si cercano le ultime misure se presenti per popolare gli input  
     this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})
 
-  }
-
-  ngAfterContentInit(): void {
-
-    console.log('ngAfterContentInit');
-
-    var value: number;
-
-    if (this.formModal == 'aggiornamento') {  
-          
-      value = parseFloat(this.measure.collo);
-    } else {
-      value = 45.0;
-    }
-    this.reactiveForm.get('collo').setValue(value.toFixed(1));     
-    
   }
 
   private getRemoteDataForShirtIndicators(tagResourse: string):any {
@@ -156,149 +169,212 @@ export class MeasureFormComponent implements OnInit, AfterContentInit  {
     this.restBackendService.getResourceQuery(tagResourse,
       'iclienti' + '=' + queryParameter.idclienti).subscribe(
       (data) => {
-
+            console.log('misura esistente');        
             //ordinamento decrescente in base alla data          
             this.resourceQuery = data;
             this.measure = this.resourceQuery[this.resourceQuery.length-1];
             this.formModal = 'aggiornamento';
 
-            },
+            //si inizializzano i campi del form
+            this.reactiveForm.controls['shirtIndicatorControl'].setValue(this.measure.misurometro);              
+            this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);   
+
+            this.reactiveForm.get('shirtIndicatorControl').setValue('Slim');              
+            this.reactiveForm.get('shirtIndicatorControlSize').setValue('37');   
+
+            this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
+            this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
+            this.reactiveForm.get('lunghezza_manica').setValue(parseFloat(this.measure.lung_bicipite).toFixed(1));   
+            this.reactiveForm.get('bicipite').setValue(parseFloat(this.measure.bicipite).toFixed(1));   
+            this.reactiveForm.get('vita_dietro').setValue(parseFloat(this.measure.vita_dietro).toFixed(1));   
+
+            this.reactiveForm.get('polso').setValue(parseFloat(this.measure.polso).toFixed(1));  
+            this.reactiveForm.get('lunghezza_camicia').setValue(parseFloat(this.measure.lung_camicia).toFixed(1));  
+            this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));  
+            this.reactiveForm.get('lunghezza_avambraccio').setValue(parseFloat(this.measure.lung_avambraccio).toFixed(1));  
+            this.reactiveForm.get('bacino_dietro').setValue(parseFloat(this.measure.bacino_dietro).toFixed(1));  
+
+
+            if(!isNaN(parseFloat(this.measure.torace.split(';')[0])))
+              this.reactiveForm.get('torace_1_bottone').setValue(parseFloat(this.measure.torace.split(';')[0]).toFixed(1));  
+            else
+              this.reactiveForm.get('torace_1_bottone').setValue(0.0);  
+
+            if(isUndefined(this.measure.torace.split(';')[1]))
+              this.reactiveForm.get('torace_2_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_2_bottone').setValue(parseFloat(this.measure.torace.split(';')[1]).toFixed(1));                            
+
+              if(isUndefined(this.measure.torace.split(';')[2]))
+              this.reactiveForm.get('torace_3_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_3_bottone').setValue(parseFloat(this.measure.torace.split(';')[2]).toFixed(1));                            
+
+              if(isUndefined(this.measure.torace.split(';')[3]))
+              this.reactiveForm.get('torace_4_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_4_bottone').setValue(parseFloat(this.measure.torace.split(';')[3]).toFixed(1));                            
+
+              if(isUndefined(this.measure.torace.split(';')[4]))
+              this.reactiveForm.get('torace_5_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_5_bottone').setValue(parseFloat(this.measure.torace.split(';')[4]).toFixed(1));                            
+
+              if(isUndefined(this.measure.torace.split(';')[5]))
+              this.reactiveForm.get('torace_6_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_6_bottone').setValue(parseFloat(this.measure.torace.split(';')[5]).toFixed(1));                            
+
+              if(isUndefined(this.measure.torace.split(';')[6]))
+              this.reactiveForm.get('torace_7_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_7_bottone').setValue(parseFloat(this.measure.torace.split(';')[6]).toFixed(1));                            
+                     
+            if(isUndefined(this.measure.torace.split(';')[7]))
+              this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));                
+            else
+              this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1));                            
+
+        },
       (error) => {
         console.error(error);
         console.error('Message: ' + error.message);
-      }
-    );
+        }
+      );
   }
   
   
 
   buttonIncrease(key: string){
+
     switch (key) {
       case 'collo':
-        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) + 0.5).toFixed(1)  ) ; 
+        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) + 0.5).toFixed(1)  ); 
         break;
       case 'spalla':
-        this.spalla = this.spalla + 0.5; 
+        this.reactiveForm.get('spalla').setValue(  (parseFloat(this.reactiveForm.get('spalla').value) + 0.5).toFixed(1)  ); 
         break;   
-      case 'bicipite':
-        this.bicipite = this.bicipite + 0.5; 
+      case 'lunghezza_manica':
+        this.reactiveForm.get('lunghezza_manica').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_manica').value) + 0.5).toFixed(1)  ); 
         break;          
-      case 'lunghezza_bicipite':
-        this.lunghezza_bicipite = this.lunghezza_bicipite + 0.5; 
+      case 'bicipite':
+        this.reactiveForm.get('bicipite').setValue(  (parseFloat(this.reactiveForm.get('bicipite').value) + 0.5).toFixed(1)  );  
         break;          
       case 'vita_dietro':
-        this.vita_dietro = this.vita_dietro + 0.5; 
+        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) + 0.5).toFixed(1)  ); 
         break;   
                
       case 'polso':
-        this.polso = this.polso + 0.5; 
+        this.reactiveForm.get('polso').setValue(  (parseFloat(this.reactiveForm.get('polso').value) + 0.5).toFixed(1)  ); 
         break;   
       case 'lunghezza_camicia':
-        this.lunghezza_camicia = this.lunghezza_camicia + 0.5; 
+        this.reactiveForm.get('lunghezza_camicia').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_camicia').value) + 0.5).toFixed(1)  ); 
         break;   
       case 'avambraccio':
-        this.avambraccio = this.avambraccio + 0.5; 
+        this.reactiveForm.get('avambraccio').setValue(  (parseFloat(this.reactiveForm.get('avambraccio').value) + 0.5).toFixed(1)  ); 
         break;   
       case 'lunghezza_avambraccio':
-        this.lunghezza_avambraccio = this.lunghezza_avambraccio + 0.5; 
+        this.reactiveForm.get('lunghezza_avambraccio').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_avambraccio').value) + 0.5).toFixed(1)  ); 
         break;   
       case 'bacino_dietro':
-        this.bacino_dietro = this.bacino_dietro + 0.5; 
+        this.reactiveForm.get('bacino_dietro').setValue(  (parseFloat(this.reactiveForm.get('bacino_dietro').value) + 0.5).toFixed(1)  ); 
         break; 
         
       case 'torace_1_bottone':
-        this.torace_1_bottone = this.torace_1_bottone + 0.5; 
+        this.reactiveForm.get('torace_1_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_1_bottone').value) + 0.5).toFixed(1)  ); 
         break;          
       case 'torace_2_bottone':
-        this.torace_2_bottone = this.torace_2_bottone + 0.5; 
+        this.reactiveForm.get('torace_2_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_2_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
       case 'torace_3_bottone':
-        this.torace_3_bottone = this.torace_3_bottone + 0.5; 
+        this.reactiveForm.get('torace_3_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_3_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
         
-      case 'bacino_4_bottone':
-        this.bacino_4_bottone = this.bacino_4_bottone + 0.5; 
+      case 'torace_4_bottone':
+        this.reactiveForm.get('torace_4_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_4_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
-      case 'bacino_5_bottone':
-        this.bacino_5_bottone = this.bacino_5_bottone + 0.5; 
+      case 'torace_5_bottone':
+        this.reactiveForm.get('torace_5_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_5_bottone').value) + 0.5).toFixed(1)  ); 
         break;         
-      case 'bacino_6_bottone':
-        this.bacino_6_bottone = this.bacino_6_bottone + 0.5; 
+      case 'torace_6_bottone':
+        this.reactiveForm.get('torace_6_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_6_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
-      case 'bacino_7_bottone':
-        this.bacino_7_bottone = this.bacino_7_bottone + 0.5; 
+      case 'torace_7_bottone':
+        this.reactiveForm.get('torace_7_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_7_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
-      case 'bacino_8_bottone':
-        this.bacino_8_bottone = this.bacino_8_bottone + 0.5; 
+      case 'torace_8_bottone':
+        this.reactiveForm.get('torace_8_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_8_bottone').value) + 0.5).toFixed(1)  ); 
         break;                         
       default:
         break;
-    }    
+    }
+
   }
 
   buttonDecrease(key: string){
+
     switch (key) {
       case 'collo':
-        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) - 0.5).toFixed(1)  ) ; 
+        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) - 0.5).toFixed(1)  ); 
         break;
       case 'spalla':
-        this.spalla = this.spalla - 0.5; 
-        break; 
+        this.reactiveForm.get('spalla').setValue(  (parseFloat(this.reactiveForm.get('spalla').value) - 0.5).toFixed(1)  ); 
+        break;   
+      case 'lunghezza_manica':
+        this.reactiveForm.get('lunghezza_manica').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_manica').value) - 0.5).toFixed(1)  ); 
+        break;          
       case 'bicipite':
-        this.bicipite = this.bicipite - 0.5; 
-        break; 
-      case 'lunghezza_bicipite':
-        this.lunghezza_bicipite = this.lunghezza_bicipite - 0.5; 
+        this.reactiveForm.get('bicipite').setValue(  (parseFloat(this.reactiveForm.get('bicipite').value) - 0.5).toFixed(1)  );  
         break;          
       case 'vita_dietro':
-        this.vita_dietro = this.vita_dietro - 0.5; 
+        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) - 0.5).toFixed(1)  ); 
         break;   
-                
+               
       case 'polso':
-        this.polso = this.polso - 0.5; 
+        this.reactiveForm.get('polso').setValue(  (parseFloat(this.reactiveForm.get('polso').value) - 0.5).toFixed(1)  ); 
         break;   
       case 'lunghezza_camicia':
-        this.lunghezza_camicia = this.lunghezza_camicia - 0.5; 
+        this.reactiveForm.get('lunghezza_camicia').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_camicia').value) - 0.5).toFixed(1)  ); 
         break;   
       case 'avambraccio':
-        this.avambraccio = this.avambraccio - 0.5; 
+        this.reactiveForm.get('avambraccio').setValue(  (parseFloat(this.reactiveForm.get('avambraccio').value) - 0.5).toFixed(1)  ); 
         break;   
       case 'lunghezza_avambraccio':
-        this.lunghezza_avambraccio = this.lunghezza_avambraccio - 0.5; 
+        this.reactiveForm.get('lunghezza_avambraccio').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_avambraccio').value) - 0.5).toFixed(1)  ); 
         break;   
       case 'bacino_dietro':
-        this.bacino_dietro = this.bacino_dietro - 0.5; 
-        break;  
+        this.reactiveForm.get('bacino_dietro').setValue(  (parseFloat(this.reactiveForm.get('bacino_dietro').value) - 0.5).toFixed(1)  ); 
+        break; 
         
       case 'torace_1_bottone':
-        this.torace_1_bottone = this.torace_1_bottone - 0.5; 
+        this.reactiveForm.get('torace_1_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_1_bottone').value) - 0.5).toFixed(1)  ); 
         break;          
       case 'torace_2_bottone':
-        this.torace_2_bottone = this.torace_2_bottone - 0.5; 
+        this.reactiveForm.get('torace_2_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_2_bottone').value) - 0.5).toFixed(1)  ); 
         break; 
       case 'torace_3_bottone':
-        this.torace_3_bottone = this.torace_3_bottone - 0.5; 
+        this.reactiveForm.get('torace_3_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_3_bottone').value) - 0.5).toFixed(1)  ); 
         break; 
         
-      case 'bacino_4_bottone':
-        this.bacino_4_bottone = this.bacino_4_bottone - 0.5; 
+      case 'torace_4_bottone':
+        this.reactiveForm.get('torace_4_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_4_bottone').value) - 0.5).toFixed(1)  ); 
         break; 
-      case 'bacino_5_bottone':
-        this.bacino_5_bottone = this.bacino_5_bottone - 0.5; 
+      case 'torace_5_bottone':
+        this.reactiveForm.get('torace_5_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_5_bottone').value) - 0.5).toFixed(1)  ); 
         break;         
-      case 'bacino_6_bottone':
-        this.bacino_6_bottone = this.bacino_6_bottone - 0.5; 
+      case 'torace_6_bottone':
+        this.reactiveForm.get('torace_6_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_6_bottone').value) - 0.5).toFixed(1)  ); 
         break; 
-      case 'bacino_7_bottone':
-        this.bacino_7_bottone = this.bacino_7_bottone - 0.5; 
+      case 'torace_7_bottone':
+        this.reactiveForm.get('torace_7_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_7_bottone').value) - 0.5).toFixed(1)  ); 
         break; 
-      case 'bacino_8_bottone':
-        this.bacino_8_bottone = this.bacino_8_bottone - 0.5; 
-        break;    
-
+      case 'torace_8_bottone':
+        this.reactiveForm.get('torace_8_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_8_bottone').value) - 0.5).toFixed(1)  ); 
+        break;                         
       default:
         break;
-    }   
+    } 
+
   }
 
 }

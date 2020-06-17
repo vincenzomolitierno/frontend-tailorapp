@@ -175,39 +175,20 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    * @memberof CustomerGridComponent
    */
   private openTakeMeasureDialog(_customer: Customer){
-
-    //Si cercano le ultime misure se presenti
-    var formModal: string;
     
-    this.getRemoteDataQuery(
-        'measuresQuery',
-        {idclienti: String(_customer.idclienti)})
-      .subscribe(x => { console.log(x);});
+    //Dati per la configurazione iniziale del form dialog
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      customer: _customer,
+    };
+    dialogConfig.panelClass = 'custom-dialog-container';
 
-    console.log('query');
-    console.log(this.resourceQuery);
-
-    // if (!this.resourceQuery) {      
-    //   formModal = 'inserimento'; 
-    // } 
-    // else {
-    //   formModal = 'aggiornamento'; 
-    // }
-      
-    // //Dati per la configurazione iniziale del form dialog
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    //   formModal: formModal,
-    //   customer: _customer,
-    // };
-    // dialogConfig.panelClass = 'custom-dialog-container';
-
-    // //Apertura del form dialog
-    // const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('Dialog result:' + result);
-    //   console.log(result);
-    // });    
+    //Apertura del form dialog
+    const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:' + result);
+      console.log(result);
+    });    
     
   }
 

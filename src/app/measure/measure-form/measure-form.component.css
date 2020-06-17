@@ -41,8 +41,8 @@ h3 {
 
 .grid-item {
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 5px;
-    text-align: left;
+    text-align: center;
+    padding: 0px;
 }
 
 .tag-measure {
@@ -55,7 +55,7 @@ h3 {
 
 .control-measure {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 30% 40% 30%;
     height: fit-content;
     margin-bottom: 10px;
     text-align: center;
@@ -84,4 +84,10 @@ h3 {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+@media only screen and (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 50% 50%;
+    }
 }
