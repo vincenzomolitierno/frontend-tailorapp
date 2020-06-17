@@ -28,7 +28,7 @@ export class MeasureFormComponent implements OnInit  {
   private resourceQuery: Array<any> = [];
 
   private measure: Measure;
-  private formModal: string = '';
+  private formModal: string = 'inserimento';
   private customer: Customer;
   
   private flagA: boolean;
@@ -96,9 +96,7 @@ export class MeasureFormComponent implements OnInit  {
   constructor(@Inject(MAT_DIALOG_DATA) data,
        public restBackendService: RESTBackendService) {
          
-        //inizializzazione delle strutture dati
-        this.formModal = data.formModal;     
-        
+        //inizializzazione delle strutture dati    
         this.customer = new Customer();
         Object.assign(this.customer, data.customer)
         this.measure = new Measure();
@@ -110,6 +108,9 @@ export class MeasureFormComponent implements OnInit  {
 
         //costruzione del reactive form
         this.reactiveForm = new FormGroup({
+          
+          idcliente: new FormControl(''),
+
           shirtIndicatorControl: new FormControl('', Validators.required),
           shirtIndicatorControlSize: new FormControl('', Validators.required),
           
@@ -135,8 +136,9 @@ export class MeasureFormComponent implements OnInit  {
           torace_7_bottone: new FormControl(''),
           torace_8_bottone: new FormControl(''),
 
-        });        
-        
+          note_grafiche: new FormControl('')
+
+        });                
    }
 
   ngOnInit() {
@@ -167,73 +169,106 @@ export class MeasureFormComponent implements OnInit  {
     this.resourceQuery = [];
       // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResourceQuery(tagResourse,
-      'iclienti' + '=' + queryParameter.idclienti).subscribe(
+      'idclienti' + '=' + queryParameter.idclienti).subscribe(
       (data) => {
-            console.log('misura esistente');        
-            //ordinamento decrescente in base alla data          
+
+            this.reactiveForm.get('idcliente').setValue(this.customer.idclienti);            
+            
             this.resourceQuery = data;
-            this.measure = this.resourceQuery[this.resourceQuery.length-1];
-            this.formModal = 'aggiornamento';
+            if(this.resourceQuery.length > 0){
 
-            //si inizializzano i campi del form
-            this.reactiveForm.controls['shirtIndicatorControl'].setValue(this.measure.misurometro);              
-            this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);   
+              console.log('misura esistente');        
+              this.measure = this.resourceQuery[this.resourceQuery.length-1];
+              this.formModal = 'aggiornamento';
+  
+              //si inizializzano i campi del form
+              this.reactiveForm.controls['shirtIndicatorControl'].setValue(this.measure.misurometro);              
+              this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);   
+  
+              this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
+              this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
+              this.reactiveForm.get('lunghezza_manica').setValue(parseFloat(this.measure.lung_bicipite).toFixed(1));   
+              this.reactiveForm.get('bicipite').setValue(parseFloat(this.measure.bicipite).toFixed(1));   
+              this.reactiveForm.get('vita_dietro').setValue(parseFloat(this.measure.vita_dietro).toFixed(1));   
+  
+              this.reactiveForm.get('polso').setValue(parseFloat(this.measure.polso).toFixed(1));  
+              this.reactiveForm.get('lunghezza_camicia').setValue(parseFloat(this.measure.lung_camicia).toFixed(1));  
+              this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));  
+              this.reactiveForm.get('lunghezza_avambraccio').setValue(parseFloat(this.measure.lung_avambraccio).toFixed(1));  
+              this.reactiveForm.get('bacino_dietro').setValue(parseFloat(this.measure.bacino_dietro).toFixed(1));  
+  
+  
+              if(!isNaN(parseFloat(this.measure.torace.split(';')[0])))
+                this.reactiveForm.get('torace_1_bottone').setValue(parseFloat(this.measure.torace.split(';')[0]).toFixed(1));  
+              else
+                this.reactiveForm.get('torace_1_bottone').setValue(Number(0).toFixed(1));  
+  
+              if(isUndefined(this.measure.torace.split(';')[1]))
+                this.reactiveForm.get('torace_2_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_2_bottone').setValue(parseFloat(this.measure.torace.split(';')[1]).toFixed(1));                            
+  
+                if(isUndefined(this.measure.torace.split(';')[2]))
+                this.reactiveForm.get('torace_3_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_3_bottone').setValue(parseFloat(this.measure.torace.split(';')[2]).toFixed(1));                            
+  
+                if(isUndefined(this.measure.torace.split(';')[3]))
+                this.reactiveForm.get('torace_4_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_4_bottone').setValue(parseFloat(this.measure.torace.split(';')[3]).toFixed(1));                            
+  
+                if(isUndefined(this.measure.torace.split(';')[4]))
+                this.reactiveForm.get('torace_5_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_5_bottone').setValue(parseFloat(this.measure.torace.split(';')[4]).toFixed(1));                            
+  
+                if(isUndefined(this.measure.torace.split(';')[5]))
+                this.reactiveForm.get('torace_6_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_6_bottone').setValue(parseFloat(this.measure.torace.split(';')[5]).toFixed(1));                            
+  
+                if(isUndefined(this.measure.torace.split(';')[6]))
+                this.reactiveForm.get('torace_7_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_7_bottone').setValue(parseFloat(this.measure.torace.split(';')[6]).toFixed(1));                            
+                       
+              if(isUndefined(this.measure.torace.split(';')[7]))
+                this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));                
+              else
+                this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1)); 
+                                
+              this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche); 
+                
+              this.flagA = true;
+              this.flagB = true;
 
-            this.reactiveForm.get('shirtIndicatorControl').setValue('Slim');              
-            this.reactiveForm.get('shirtIndicatorControlSize').setValue('37');   
+            } else {
 
-            this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
-            this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
-            this.reactiveForm.get('lunghezza_manica').setValue(parseFloat(this.measure.lung_bicipite).toFixed(1));   
-            this.reactiveForm.get('bicipite').setValue(parseFloat(this.measure.bicipite).toFixed(1));   
-            this.reactiveForm.get('vita_dietro').setValue(parseFloat(this.measure.vita_dietro).toFixed(1));   
+              this.reactiveForm.get('collo').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('spalla').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('lunghezza_manica').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('bicipite').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('vita_dietro').setValue(Number(0).toFixed(1));   
+  
+              this.reactiveForm.get('polso').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('lunghezza_camicia').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('avambraccio').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('lunghezza_avambraccio').setValue(Number(0).toFixed(1));   
+              this.reactiveForm.get('bacino_dietro').setValue(Number(0).toFixed(1));   
 
-            this.reactiveForm.get('polso').setValue(parseFloat(this.measure.polso).toFixed(1));  
-            this.reactiveForm.get('lunghezza_camicia').setValue(parseFloat(this.measure.lung_camicia).toFixed(1));  
-            this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));  
-            this.reactiveForm.get('lunghezza_avambraccio').setValue(parseFloat(this.measure.lung_avambraccio).toFixed(1));  
-            this.reactiveForm.get('bacino_dietro').setValue(parseFloat(this.measure.bacino_dietro).toFixed(1));  
-
-
-            if(!isNaN(parseFloat(this.measure.torace.split(';')[0])))
-              this.reactiveForm.get('torace_1_bottone').setValue(parseFloat(this.measure.torace.split(';')[0]).toFixed(1));  
-            else
-              this.reactiveForm.get('torace_1_bottone').setValue(0.0);  
-
-            if(isUndefined(this.measure.torace.split(';')[1]))
+              this.reactiveForm.get('torace_1_bottone').setValue(Number(0).toFixed(1));  
               this.reactiveForm.get('torace_2_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_2_bottone').setValue(parseFloat(this.measure.torace.split(';')[1]).toFixed(1));                            
-
-              if(isUndefined(this.measure.torace.split(';')[2]))
               this.reactiveForm.get('torace_3_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_3_bottone').setValue(parseFloat(this.measure.torace.split(';')[2]).toFixed(1));                            
-
-              if(isUndefined(this.measure.torace.split(';')[3]))
               this.reactiveForm.get('torace_4_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_4_bottone').setValue(parseFloat(this.measure.torace.split(';')[3]).toFixed(1));                            
-
-              if(isUndefined(this.measure.torace.split(';')[4]))
               this.reactiveForm.get('torace_5_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_5_bottone').setValue(parseFloat(this.measure.torace.split(';')[4]).toFixed(1));                            
-
-              if(isUndefined(this.measure.torace.split(';')[5]))
               this.reactiveForm.get('torace_6_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_6_bottone').setValue(parseFloat(this.measure.torace.split(';')[5]).toFixed(1));                            
-
-              if(isUndefined(this.measure.torace.split(';')[6]))
               this.reactiveForm.get('torace_7_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_7_bottone').setValue(parseFloat(this.measure.torace.split(';')[6]).toFixed(1));                            
-                     
-            if(isUndefined(this.measure.torace.split(';')[7]))
-              this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));                
-            else
-              this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1));                            
+              this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));  
+              
+              this.reactiveForm.get('note_grafiche').setValue('');
+
+            }        
 
         },
       (error) => {

@@ -186,8 +186,11 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     //Apertura del form dialog
     const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result:' + result);
+
+      console.log('Misura salvata:');
+
       console.log(result);
+
     });    
     
   }

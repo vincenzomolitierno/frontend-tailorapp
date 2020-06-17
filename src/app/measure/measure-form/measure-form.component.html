@@ -1,8 +1,11 @@
 <form novalidate [formGroup]="reactiveForm">
     <h2 mat-dialog-title>Modulo {{formModal}} misure</h2>
     <mat-dialog-content class="mat-typography">
+
         <h3 *ngIf="formModal=='aggiornamento'">Data ultima misura: <b>{{measure.data_misure | removeStringTime}}</b></h3>
+
         <h3>Committente <b>{{customer.nominativo}}</b></h3>
+        <input type="text" formControlName="idcliente" class="value-display" readonly>
         <div class="shirt-indicator-bar">
             <div class="left-si-bar">
                 <mat-form-field appearance="fill">
@@ -348,7 +351,7 @@
                         </div>
                     </div>
                     <div class="value-set">
-                        <p>7 Bottone</p>
+                        <p>7° Bottone</p>
                         <input type="text" formControlName="torace_7_bottone" class="value-display" readonly>
                     </div>
                     <div class="container-button">
@@ -379,6 +382,8 @@
             </div>
 
         </div>
+
+        <input type="text" formControlName="note_grafiche" style="display: none;">
 
         <mat-divider></mat-divider>
         <!-- inserimento input grafico -->

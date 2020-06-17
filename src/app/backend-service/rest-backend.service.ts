@@ -78,6 +78,8 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
     })
   };
 
+  console.log(this.server.getApiResource(tagQuery) + '?' + tagParameter);
+
   return this._http.get<any>(
     this.server.getApiResource(tagQuery) + '?' + tagParameter,
     this.httpOptions
