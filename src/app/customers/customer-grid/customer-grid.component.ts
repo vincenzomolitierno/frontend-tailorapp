@@ -8,8 +8,6 @@ import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { Customer } from '../data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
-import { stringify } from 'querystring';
-import { QueryParameter } from 'src/app/backend-service/data.model';
 
 @Component({
   selector: 'app-customer-grid',
@@ -19,11 +17,12 @@ import { QueryParameter } from 'src/app/backend-service/data.model';
 export class CustomerGridComponent extends GridModel implements OnInit {
 
   // Dati coinvolti nel binding
-  viewDetails: boolean = false;
-  customerNameFocused: string = "";
-  dummy_data: string = "X,Y"
+  private viewDetails: boolean = false;
+  private customerNameFocused: string = '';
+  private customerTelefonoFocused: string = '';
+  private dummy_data: string = 'X,Y';
 
-  item_empty: Customer;
+  private item_empty: Customer;
 
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
@@ -160,11 +159,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
   }
 
-  openDetails(inpunString: string){
-    this.testo_ricerca = inpunString;
-    const filterValue = inpunString;
-    this.customerNameFocused = inpunString;
-    this.dataSource.filter = filterValue.trim().toLowerCase()    
+  openDetails(customer: Customer){
+   
+    this.customerNameFocused = customer.nominativo;
+    this.customerTelefonoFocused = customer.telefono;
     this.viewDetails = true;
   }
 
