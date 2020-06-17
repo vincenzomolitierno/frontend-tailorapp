@@ -4,6 +4,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ViewChild } from '@angular/core';
 
 import { QueryParameter } from './data.model';
+import { Observable } from 'rxjs';
 
 // interface QueryParameter {
 //   [key: string]: string;
@@ -72,9 +73,9 @@ export class GridModel {
 
   public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
 
-    this.resourceQuery = [];
+     this.resourceQuery = [];
 
-      // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+    // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResourceQuery(tagResourse,
       'iclienti' + '=' + queryParameter.idclienti).subscribe(
       (data) => {
@@ -86,6 +87,7 @@ export class GridModel {
           this.errorMessage = error.message;
       }
     );
+   
   }  
 
 

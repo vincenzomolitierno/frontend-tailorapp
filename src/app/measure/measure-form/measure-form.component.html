@@ -2,7 +2,7 @@
     <h2 mat-dialog-title>Modulo {{formModal}} misure</h2>
     <mat-dialog-content class="mat-typography">
         <h3 *ngIf="formModal=='aggiornamento'">Data ultima misura: <b>{{measure.data_misure | removeStringTime}}</b></h3>
-        <h3>Committente <b>{{name}}</b></h3>
+        <h3>Committente <b>{{customer.nominativo}}</b></h3>
         <div class="shirt-indicator-bar">
             <div class="left-si-bar">
                 <mat-form-field appearance="fill">
@@ -37,7 +37,6 @@
         </div>
 
         <div class="grid-container" *ngIf="reactiveForm.controls.shirtIndicatorControl.dirty && reactiveForm.controls.shirtIndicatorControlSize.dirty">
-            <!-- <div class="grid-container"> -->
             <!-- PRIMA COLONNA DI INPUT -->
             <div class="grid-item">
                 <!-- INPUT COLLO -->
@@ -62,17 +61,24 @@
 
                 <!-- INPUT SPALLA -->
                 <div class="control-measure">
-
-                    <div class="minus-button">
-                        <button mat-mini-fab color="primary" (click)="buttonDecrease('spalla')"><mat-icon>remove</mat-icon></button>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('spalla')"><mat-icon>remove</mat-icon></button>
+                        </div>
                     </div>
                     <div class="value-set">
-                        Spalla<br> {{spalla.toFixed(1)}}
+                        <p>Spalla</p>
+                        <input type="text" formControlName="spalla" class="value-display" readonly>
                     </div>
-                    <div class="plus-button">
-                        <button mat-mini-fab color="primary" (click)="buttonIncrease('spalla')"><mat-icon>add</mat-icon></button>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('spalla')"><mat-icon>add</mat-icon></button>
+                        </div>
                     </div>
                 </div>
+
+
+
                 <!-- INPUT BICIPITE -->
                 <div class="control-measure">
                     <div class="minus-button">

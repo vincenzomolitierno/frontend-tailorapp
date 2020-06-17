@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterContentInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { I18nInterface } from 'ngx-image-drawing';
@@ -22,7 +22,7 @@ interface ShirtIndicatorSize {
   templateUrl: './measure-form.component.html',
   styleUrls: ['./measure-form.component.css']
 })
-export class MeasureFormComponent implements OnInit {
+export class MeasureFormComponent implements OnInit, AfterContentInit  {
 
   private resourceQuery: Array<any> = [];
 
@@ -30,7 +30,6 @@ export class MeasureFormComponent implements OnInit {
   private formModal: string = 'empty';
   private customer: Customer;
   
-  name: string = 'empty';
   dummy_data: string = 'X,Y'
 
   // attributi della misura
@@ -94,8 +93,7 @@ export class MeasureFormComponent implements OnInit {
        public restBackendService: RESTBackendService) {
          
         //inizializzazione delle strutture dati
-        this.formModal = data.formModal;
-        this.name = data.customer.nominativo;
+        this.formModal = data.formModal;     
         
         this.customer = new Customer();
         Object.assign(this.customer, data.customer)
@@ -112,7 +110,6 @@ export class MeasureFormComponent implements OnInit {
         });        
    }
 
-
   ngOnInit() {
 
     //Si recuperano i misuratori per popolare il combobox
@@ -121,24 +118,22 @@ export class MeasureFormComponent implements OnInit {
     //Si cercano le ultime misure se presenti per popolare gli input  
     this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})
 
-    // console.log('query' + this.resourceQuery);
+  }
 
-    // if (!this.resourceQuery) {      
-    //   this.formModal = 'inserimento'; 
-    // } 
-    // else {
-    //   this.formModal = 'aggiornamento'; 
-    // }
+  ngAfterContentInit(): void {
+
+    console.log('ngAfterContentInit');
 
     var value: number;
 
-    if (this.formModal = 'aggiornamento') {
+    if (this.formModal == 'aggiornamento') {  
+          
       value = parseFloat(this.measure.collo);
     } else {
       value = 45.0;
     }
-    this.reactiveForm.get('collo').setValue(value.toFixed(1));
-
+    this.reactiveForm.get('collo').setValue(value.toFixed(1));     
+    
   }
 
   private getRemoteDataForShirtIndicators(tagResourse: string):any {

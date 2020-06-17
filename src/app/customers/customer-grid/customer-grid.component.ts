@@ -176,35 +176,38 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    */
   private openTakeMeasureDialog(_customer: Customer){
 
-    // //Si cercano le ultime misure se presenti
-    // var _formModal: string;
+    //Si cercano le ultime misure se presenti
+    var formModal: string;
     
-    // this.getRemoteDataQuery('measuresQuery',{idclienti: String(_customer.idclienti)})
+    this.getRemoteDataQuery(
+        'measuresQuery',
+        {idclienti: String(_customer.idclienti)})
+      .subscribe(x => { console.log(x);});
 
-    // console.log('query' + this.resourceQuery);
+    console.log('query');
+    console.log(this.resourceQuery);
 
     // if (!this.resourceQuery) {      
-    //   _formModal = 'inserimento'; 
+    //   formModal = 'inserimento'; 
     // } 
     // else {
-    //   _formModal = 'aggiornamento'; 
+    //   formModal = 'aggiornamento'; 
     // }
       
-    //Dati per la configurazione iniziale del form dialog
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      formModal: '_formModal',
-      customer: _customer, 
-      base64: ''
-    };
-    dialogConfig.panelClass = 'custom-dialog-container';
+    // //Dati per la configurazione iniziale del form dialog
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.data = {
+    //   formModal: formModal,
+    //   customer: _customer,
+    // };
+    // dialogConfig.panelClass = 'custom-dialog-container';
 
-    //Apertura del form dialog
-    const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result:' + result);
-      console.log(result);
-    });    
+    // //Apertura del form dialog
+    // const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('Dialog result:' + result);
+    //   console.log(result);
+    // });    
     
   }
 
