@@ -1,55 +1,68 @@
-<div>
+<form novalidate [formGroup]="reactiveForm">
     <h2 mat-dialog-title>Modulo {{formModal}} misure</h2>
     <mat-dialog-content class="mat-typography">
-        <h3>Committente {{name}}</h3>
+        <h3 *ngIf="formModal=='aggiornamento'">Data ultima misura: <b>{{measure.data_misure | removeStringTime}}</b></h3>
+        <h3>Committente <b>{{name}}</b></h3>
         <div class="shirt-indicator-bar">
             <div class="left-si-bar">
                 <mat-form-field appearance="fill">
                     <mat-label>Misurometro</mat-label>
-                    <mat-select [formControl]="shirtIndicatorControl" required>
+
+                    <mat-select formControlName="shirtIndicatorControl" required>
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let shirtIndicator of shirtIndicators" [value]="shirtIndicator">
                             {{shirtIndicator.descrizione}}
                         </mat-option>
                     </mat-select>
+
                     <mat-icon matSuffix>list_alt</mat-icon>
-                    <mat-error *ngIf="shirtIndicatorControl.hasError('required')">Selezionare un misurometro</mat-error>
-                    <!-- <mat-hint>{{shirtIndicatorControl.value?.sound}}</mat-hint> -->
+                    <mat-error *ngIf="reactiveForm.controls.shirtIndicatorControl.hasError('required')">Selezionare un misurometro</mat-error>
+                    <!-- <mat-hint>{{reactiveForm.controls.shirtIndicatorControl.value?.sound}}</mat-hint> -->
                 </mat-form-field>
             </div>
             <div class="right-si-bar">
                 <mat-form-field appearance="fill">
                     <mat-label>Taglia Misurometro</mat-label>
-                    <mat-select [formControl]="shirtIndicatorControlSize" required>
+                    <mat-select formControlName="shirtIndicatorControlSize" required>
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let shirtIndicatorSize of shirtIndicatorSizes" [value]="shirtIndicatorSize">
                             {{shirtIndicatorSize.taglia}}
                         </mat-option>
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
-                    <mat-error *ngIf="shirtIndicatorControlSize.hasError('required')">Selezionare una taglia di misurometro</mat-error>
-                    <!-- <mat-hint>{{shirtIndicatorControl.value?.sound}}</mat-hint> -->
+                    <mat-error *ngIf="reactiveForm.controls.shirtIndicatorControlSize.hasError('required')">Selezionare una taglia di misurometro</mat-error>
+                    <!-- <mat-hint>{{reactiveForm.controls.shirtIndicatorControl.value?.sound}}</mat-hint> -->
                 </mat-form-field>
             </div>
         </div>
 
-        <div class="grid-container" *ngIf="shirtIndicatorControl.dirty && shirtIndicatorControlSize.dirty">
+        <!-- <div class="grid-container" *ngIf="reactiveForm.controls.shirtIndicatorControl.dirty && reactiveForm.controls.shirtIndicatorControlSize.dirty"> -->
+        <div class="grid-container">
             <!-- PRIMA COLONNA DI INPUT -->
             <div class="grid-item">
                 <!-- INPUT COLLO -->
                 <div class="control-measure">
-                    <div class="minus-button">
-                        <button mat-mini-fab color="primary" (click)="buttonDecrease('collo')"><mat-icon>remove</mat-icon></button>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('collo')"><mat-icon>remove</mat-icon></button>
+                        </div>
                     </div>
                     <div class="value-set">
-                        Collo<br> {{collo.toFixed(1)}}
+                        <p>Collo</p>
+                        <input type="text" formControlName="collo" class="value-display" readonly>
+                        <!-- Collo<br> {{collo.toFixed(1)}} -->
                     </div>
-                    <div class="plus-button">
-                        <button mat-mini-fab color="primary" (click)="buttonIncrease('collo')"><mat-icon>add</mat-icon></button>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('collo')"><mat-icon>add</mat-icon></button>
+                        </div>
                     </div>
                 </div>
+
+
                 <!-- INPUT SPALLA -->
                 <div class="control-measure">
+
                     <div class="minus-button">
                         <button mat-mini-fab color="primary" (click)="buttonDecrease('spalla')"><mat-icon>remove</mat-icon></button>
                     </div>
@@ -266,7 +279,7 @@
             </div>
         </div>
 
-        <mat-divider *ngIf="shirtIndicatorControl.dirty && shirtIndicatorControlSize.dirty"></mat-divider>
+        <mat-divider></mat-divider>
         <!-- inserimento input grafico -->
         <app-shirt-marks></app-shirt-marks>
 
@@ -274,10 +287,10 @@
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Annulla {{formModal}} della misura" matTooltipPosition="above" mat-dialog-close>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
+        <button mat-raised-button matTooltip="Annulla {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.value" [disabled]="reactiveForm.invalid">Conferma</button>
 
 
     </mat-dialog-actions>
 
-</div>
+</form>

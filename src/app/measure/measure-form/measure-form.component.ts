@@ -1,7 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { I18nInterface } from 'ngx-image-drawing';
+import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { Customer } from 'src/app/customers/data.model';
+import { QueryParameter } from 'src/app/backend-service/data.model';
+import { Measure } from 'src/app/measurers/measure.model';
 
 interface ShirtIndicator {
   idmisurometri: string,
@@ -14,13 +18,18 @@ interface ShirtIndicatorSize {
 }
 
 @Component({
-  selector: 'app-cu-form',
-  templateUrl: './cu-form.component.html',
-  styleUrls: ['./cu-form.component.css']
+  selector: 'app-measure-form',
+  templateUrl: './measure-form.component.html',
+  styleUrls: ['./measure-form.component.css']
 })
-export class CuFormComponent implements OnInit {
+export class MeasureFormComponent implements OnInit {
 
-  formModal: string = 'empty';
+  private resourceQuery: Array<any> = [];
+
+  private measure: Measure;
+  private formModal: string = 'empty';
+  private customer: Customer;
+  
   name: string = 'empty';
   dummy_data: string = 'X,Y'
 
@@ -48,50 +57,124 @@ export class CuFormComponent implements OnInit {
   bacino_7_bottone: number = 0.0;
   bacino_8_bottone: number = 0.0;
 
-// ##############################
-public locale: string = 'en';
-    public width = window.innerWidth - 60;
-    public height = window.innerHeight - 250;
+  // ##############################
+  public locale: string = 'en';
+      public width = window.innerWidth - 60;
+      public height = window.innerHeight - 250;
 
-    public i18n: I18nInterface = {
-        saveBtn: 'Salva le modifiche!',
-        sizes: {
-            extra: 'Extra'
-        }
-    };
-// ##############################  
+      public i18n: I18nInterface = {
+          saveBtn: 'Salva le modifiche!',
+          sizes: {
+              extra: 'Extra'
+          }
+      };
+  // ##############################  
 
+  //Struttura dati per contenere i dati dei recuperati tramite chiamata REST
+  shirtIndicators: ShirtIndicator[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) data) {
+  //Dati cablati non recuperati con chiamata REST
+  shirtIndicatorSizes: ShirtIndicatorSize[] = [
+    {taglia: '37'},
+    {taglia: '38'},
+    {taglia: '39'},
+    {taglia: '40'},
+    {taglia: '41'},
+    {taglia: '42'},
+    {taglia: '43'},
+    {taglia: '44'},                
+    {taglia: '45'},                
+    {taglia: '46'},                
+    {taglia: '47'},                
+  ];  
 
-    this.formModal = data.formModal;
-    this.name = data.nominativo;
+  reactiveForm: FormGroup;
+
+  constructor(@Inject(MAT_DIALOG_DATA) data,
+       public restBackendService: RESTBackendService) {
+         
+        //inizializzazione delle strutture dati
+        this.formModal = data.formModal;
+        this.name = data.customer.nominativo;
+        
+        this.customer = new Customer();
+        Object.assign(this.customer, data.customer)
+        this.measure = new Measure();
+
+        this.formModal = 'inserimento';
+
+        //costruzione del reactive form
+        this.reactiveForm = new FormGroup({
+          shirtIndicatorControl: new FormControl('', Validators.required),
+          shirtIndicatorControlSize: new FormControl('', Validators.required),
+          collo: new FormControl(''),
+
+        });        
    }
 
+
   ngOnInit() {
+
+    //Si recuperano i misuratori per popolare il combobox
+    this.getRemoteDataForShirtIndicators('measurers');
+
+    //Si cercano le ultime misure se presenti per popolare gli input  
+    this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})
+
+    // console.log('query' + this.resourceQuery);
+
+    // if (!this.resourceQuery) {      
+    //   this.formModal = 'inserimento'; 
+    // } 
+    // else {
+    //   this.formModal = 'aggiornamento'; 
+    // }
+
+    var value: number = 20.0;
+    this.reactiveForm.get('collo').setValue(value.toFixed(1));
+
   }
 
-  shirtIndicatorControl = new FormControl('', Validators.required);
-  shirtIndicators: ShirtIndicator[] = [
-    {idmisurometri: '1', descrizione: 'misuratore 1', fasonatori_idfasonatori: '1'},
-    {idmisurometri: '2', descrizione: 'misuratore 2', fasonatori_idfasonatori: '2'},
-    {idmisurometri: '3', descrizione: 'misuratore 3', fasonatori_idfasonatori: '3'}
-  ];  
+  private getRemoteDataForShirtIndicators(tagResourse: string):any {
+    //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+    this.restBackendService.getResource(tagResourse).subscribe(
+      (data) => {
+            this.shirtIndicators = data;          
+            },
+      (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      }
+    );
+  }
 
-  shirtIndicatorControlSize = new FormControl('', Validators.required);
-  shirtIndicatorSizes: ShirtIndicatorSize[] = [
-    {taglia: 'S'},
-    {taglia: 'M'},
-    {taglia: 'L'},
-    {taglia: 'XL'},
-    {taglia: 'XXL'},
-    {taglia: '3XL'},                
-  ];  
+  public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
+
+    this.resourceQuery = [];
+      // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+    this.restBackendService.getResourceQuery(tagResourse,
+      'iclienti' + '=' + queryParameter.idclienti).subscribe(
+      (data) => {
+
+            //ordinamento decrescente in base alla data          
+            this.resourceQuery = data;
+            this.measure = this.resourceQuery[this.resourceQuery.length-1];
+            this.formModal = 'aggiornamento';
+
+            },
+      (error) => {
+        console.error(error);
+        console.error('Message: ' + error.message);
+      }
+    );
+  }
+  
+  
 
   buttonIncrease(key: string){
     switch (key) {
       case 'collo':
-        this.collo = this.collo + 0.5; 
+        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) + 0.5).toFixed(1)  ) ; 
         break;
       case 'spalla':
         this.spalla = this.spalla + 0.5; 
@@ -155,7 +238,7 @@ public locale: string = 'en';
   buttonDecrease(key: string){
     switch (key) {
       case 'collo':
-        this.collo = this.collo - 0.5; 
+        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) - 0.5).toFixed(1)  ) ; 
         break;
       case 'spalla':
         this.spalla = this.spalla - 0.5; 

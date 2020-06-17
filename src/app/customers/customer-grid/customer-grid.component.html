@@ -84,7 +84,7 @@
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="middle-row-button">
-                    <button mat-raised-button matTooltip="Prendi misure per {{row.nominativo}}" matTooltipPosition="right" (click)="openTakeMeasureDialog('inserimento',row.nominativo)"><mat-icon>straighten</mat-icon></button>
+                    <button mat-raised-button matTooltip="Prendi misure per {{row.nominativo}}" matTooltipPosition="right" (click)="openTakeMeasureDialog(row)"><mat-icon>straighten</mat-icon></button>
                 </td>
             </ng-container>
 

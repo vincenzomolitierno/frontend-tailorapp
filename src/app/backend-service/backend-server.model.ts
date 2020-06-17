@@ -13,6 +13,9 @@ export class BackendServer {
     private apiResourceOrders: string = this.base + '/ordini';
     private apiResourceSubcontractors: string = this.base + '/fasonatori';
     private apiResourceMeasurers: string = this.base + '/misurometri';
+    
+    private apiResourceMeasures: string = this.base + '/misure';
+    private apiResourceMeasuresQuery: string = this.base + '/misurevalues';
 
     // CATALOGHI
     private apiResourceNeckmodel: string = this.base + '/modellocollo';
@@ -83,7 +86,13 @@ export class BackendServer {
 
             case 'backsidemodel':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBackside;   
-                            
+
+            case 'measures':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceMeasures;   
+
+            case 'measuresQuery':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceMeasuresQuery;   
+        
             default:
                 break;
         }

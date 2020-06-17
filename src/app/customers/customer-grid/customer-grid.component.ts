@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { CuFormComponent as CustomerFormComponent } from '../cu-form/cu-form.component';
-import { CuFormComponent as TakeMeasureFormComponent } from '../../measure/cu-form/cu-form.component';
+// import { CuFormComponent as TakeMeasureFormComponent } from '../../measure/cu-form/cu-form.component';
 import { OrderFormComponent } from 'src/app/orders/order-form/order-form.component';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { Customer } from '../data.model';
-import { isUndefined } from 'util';
-import { stringify } from 'querystring';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
+import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
+import { stringify } from 'querystring';
+import { QueryParameter } from 'src/app/backend-service/data.model';
 
 @Component({
   selector: 'app-customer-grid',
@@ -167,25 +168,54 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = true;
   }
 
-  private openTakeMeasureDialog(formModal: string, name: string){
+  /**
+   * Open the Measure form dialog to take the measure fore the _customer
+   *
+   * @private
+   * @param {Customer} _customer
+   * @memberof CustomerGridComponent
+   */
+  private openTakeMeasureDialog(_customer: Customer){
 
+    // //Si cercano le ultime misure se presenti
+    // var _formModal: string;
+    
+    // this.getRemoteDataQuery('measuresQuery',{idclienti: String(_customer.idclienti)})
+
+    // console.log('query' + this.resourceQuery);
+
+    // if (!this.resourceQuery) {      
+    //   _formModal = 'inserimento'; 
+    // } 
+    // else {
+    //   _formModal = 'aggiornamento'; 
+    // }
+      
+    //Dati per la configurazione iniziale del form dialog
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      idCustomer: "vincenzo", 
-      formModal: formModal, 
-      nominativo: name ,
+      formModal: '_formModal',
+      customer: _customer, 
       base64: ''
     };
-
     dialogConfig.panelClass = 'custom-dialog-container';
 
-    const dialogRef = this.dialog.open(TakeMeasureFormComponent, dialogConfig);
+    //Apertura del form dialog
+    const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      console.log('Dialog result:' + result);
+      console.log(result);
     });    
     
   }
 
+  /**
+   *
+   *
+   * @param {string} formModal
+   * @param {string} idOrdine
+   * @memberof CustomerGridComponent
+   */
   openOrderDialog(formModal: string, idOrdine: string){
 
     const dialogConfig = new MatDialogConfig();

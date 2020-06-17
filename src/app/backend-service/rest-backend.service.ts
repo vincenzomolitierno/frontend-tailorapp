@@ -67,6 +67,24 @@ public getResource(tagResource: string): Observable<any> {
 
 }
 
+public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any> {
+
+  // console.log('Using Token: ' + this.token);  
+
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.token,
+    })
+  };
+
+  return this._http.get<any>(
+    this.server.getApiResource(tagQuery) + '?' + tagParameter,
+    this.httpOptions
+    ).pipe(catchError(this.handleError));
+
+}
+
 
   public postResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
 
@@ -106,7 +124,9 @@ public getResource(tagResource: string): Observable<any> {
 
   }  
 
-// ************* UTILITY METHODS *************
+  //
+
+  // ####################### UTILITY METHODS #######################
   /**
    * Method to handling the issues from the backend service call
    * 

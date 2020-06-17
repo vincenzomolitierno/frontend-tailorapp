@@ -3,6 +3,12 @@ import { RESTBackendService } from './rest-backend.service';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ViewChild } from '@angular/core';
 
+import { QueryParameter } from './data.model';
+
+// interface QueryParameter {
+//   [key: string]: string;
+// }
+
 export class GridModel {
   
   // Stringhe per i messaggi di errore
@@ -11,6 +17,7 @@ export class GridModel {
 
   //Attributo contenente l'array dei dati ricevuti dal backend con la chiamata REST
   public resource: Array<any> = [];
+  public resourceQuery: Array<any> = [];
   //Attributo contenente i dati utilizzati per popolare la tabella
   public dataSource;
   public testo_ricerca: string = "";  
@@ -62,6 +69,24 @@ export class GridModel {
       }
     );
   }
+
+  public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
+
+    this.resourceQuery = [];
+
+      // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+    this.restBackendService.getResourceQuery(tagResourse,
+      'iclienti' + '=' + queryParameter.idclienti).subscribe(
+      (data) => {
+            console.log('misure esistenti');
+            this.resourceQuery = data;
+            },
+      (error) => {
+          this.errorHttpErrorResponse = error;
+          this.errorMessage = error.message;
+      }
+    );
+  }  
 
 
   /**

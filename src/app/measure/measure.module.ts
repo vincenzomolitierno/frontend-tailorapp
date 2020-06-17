@@ -4,15 +4,18 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { CuFormComponent as TakeMeasureFormComponent } from './cu-form/cu-form.component';
 
 import { ImageDrawingModule } from 'ngx-image-drawing';
 import { ShirtMarksComponent } from './shirt-marks/shirt-marks.component';
+import { MeasureFormComponent } from './measure-form/measure-form.component';
+
+import { RemoveStringTime } from '../utilities/pipe-tools';
 
 @NgModule({
   declarations: [    
-    TakeMeasureFormComponent,
-    ShirtMarksComponent  
+    ShirtMarksComponent,
+    MeasureFormComponent,
+    RemoveStringTime
 ],
   imports: [
     CommonModule,
@@ -21,13 +24,13 @@ import { ShirtMarksComponent } from './shirt-marks/shirt-marks.component';
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    ImageDrawingModule    
+    ImageDrawingModule, 
   ],  
   entryComponents: [
-    TakeMeasureFormComponent
+    MeasureFormComponent
   ],
   exports: [
-    TakeMeasureFormComponent
+    MeasureFormComponent
   ]
 })
 export class MeasureModule { }

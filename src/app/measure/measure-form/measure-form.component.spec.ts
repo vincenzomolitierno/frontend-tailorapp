@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CuFormComponent } from './cu-form.component';
+import { MeasureFormComponent } from './measure-form.component';
 
-describe('CuFormComponent', () => {
-  let component: CuFormComponent;
-  let fixture: ComponentFixture<CuFormComponent>;
+describe('MeasureFormComponent', () => {
+  let component: MeasureFormComponent;
+  let fixture: ComponentFixture<MeasureFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CuFormComponent ]
+      declarations: [ MeasureFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CuFormComponent);
+    fixture = TestBed.createComponent(MeasureFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

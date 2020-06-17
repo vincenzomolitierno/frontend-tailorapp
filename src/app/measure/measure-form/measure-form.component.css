@@ -9,6 +9,10 @@ mat-form-field {
     padding-top: 0;
 }
 
+mat-divider {
+    clear: left;
+}
+
 h2,
 h3 {
     text-transform: uppercase;
@@ -46,23 +50,38 @@ h3 {
     text-align: center;
 }
 
+
+/* css per i singoli controlli bottoni */
+
 .control-measure {
-    width: 100%;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
     height: fit-content;
-    display: inline-table;
     margin-bottom: 10px;
+    text-align: center;
 }
 
-.minus-button,
-.plus-button {
-    float: left;
-    width: auto;
+.value-display {
+    width: 5vw;
+    text-align: center;
+    border: 0;
 }
 
 .value-set {
-    float: left;
-    width: 50%;
-    text-align: center;
-    vertical-align: middle;
+    width: 100%;
+    /* background-color: lightgray; */
+}
+
+.container-button {
+    position: relative;
+    /* border: 1px solid lightgray; */
+}
+
+.center-button {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
