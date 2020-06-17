@@ -5,7 +5,7 @@ import { I18nInterface } from 'ngx-image-drawing';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Customer } from 'src/app/customers/data.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
-import { Measure } from 'src/app/measurers/measure.model';
+import { Measure } from 'src/app/measurers/data.model';
 
 interface ShirtIndicator {
   idmisurometri: string,
@@ -130,7 +130,13 @@ export class MeasureFormComponent implements OnInit {
     //   this.formModal = 'aggiornamento'; 
     // }
 
-    var value: number = 20.0;
+    var value: number;
+
+    if (this.formModal = 'aggiornamento') {
+      value = parseFloat(this.measure.collo);
+    } else {
+      value = 45.0;
+    }
     this.reactiveForm.get('collo').setValue(value.toFixed(1));
 
   }
