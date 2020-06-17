@@ -1,4 +1,4 @@
-<div class="form-frame">
+<div id="root">
     <h2 mat-dialog-title>VISTA ORDINE <span *ngIf="subcontractorView">per FASONISTA</span></h2>
     <!-- <p>Committente: {{orderNumber}}</p>
     <p>Misure: {{data_misura}} con {{misure_misurometro}} </p> -->
@@ -111,7 +111,32 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Stampa pdf" matTooltipPosition="above" mat-dialog-close><mat-icon>print</mat-icon></button>
+        <button mat-raised-button matTooltip="Stampa pdf" matTooltipPosition="above" mat-dialog-close (click)="test()"><mat-icon>print</mat-icon></button>
     </mat-dialog-actions>
 
 </div>
+
+<!-- Include html2pdf bundle. -->
+<script src="../dist/html2pdf.bundle.js"></script>
+
+<script>
+    function test() {
+        // Get the element.
+        var element = document.getElementById('root');
+
+        // Generate the PDF.
+        html2pdf().from(element).set({
+            margin: 1,
+            filename: 'test.pdf',
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                orientation: 'portrait',
+                unit: 'in',
+                format: 'letter',
+                compressPDF: true
+            }
+        }).save();
+    }
+</script>

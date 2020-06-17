@@ -8,6 +8,7 @@ import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { Customer } from '../data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
+import { OrderViewComponent } from 'src/app/orders/order-view/order-view.component';
 
 @Component({
   selector: 'app-customer-grid',
@@ -228,7 +229,21 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       console.log('Dialog result: ${result}');
     });    
     
-  }   
+  }  
+  
+  openViewOrder(subcontractorView: boolean){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      view: subcontractorView, 
+    };
+
+    const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result: ${result}');
+    });  
+  }  
 
   /**
    * Override the parent's method to manage customer details too
