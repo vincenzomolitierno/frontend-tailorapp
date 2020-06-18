@@ -1,5 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+
+import * as jsPDF from 'jspdf'
+import html2canvas from 'html2canvas';
 
 interface CamiciaElement {  
   idcamicie: number,
@@ -28,6 +31,8 @@ interface CamiciaElement {
   styleUrls: ['./order-view.component.css']
 })
 export class OrderViewComponent implements OnInit {
+
+  visibleProgressBar: boolean = false;
 
   subcontractorView: boolean = false;
 
@@ -109,12 +114,68 @@ export class OrderViewComponent implements OnInit {
     }          
   ];  
 
-  constructor(@Inject(MAT_DIALOG_DATA) data) {
+  constructor(@Inject(MAT_DIALOG_DATA) data,
+  private dialogRef:MatDialogRef<OrderViewComponent>) {
     this.subcontractorView = data.view;
    }
 
   ngOnInit() {
 
   }
+
+  public captureScreenToScreen()  
+  {  
+    var data = document.getElementById('htmlData');  
+    html2canvas(data).then(canvas => {  
+      // Few necessary setting options  
+      var imgWidth = 208;   
+      var pageHeight = 295;    
+      var imgHeight = canvas.height * imgWidth / canvas.width;  
+      var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      pdf.output('dataurlnewwindow'); // Live PDF   
+    });  
+  }  
+  
+  public captureScreen()  
+  {  
+    this.visibleProgressBar = true;
+
+    var data = document.getElementById('htmlData');  
+    
+    html2canvas(data).then(canvas => {  
+      // Few necessary setting options  
+
+      console.log(data.getAttribute('height'));   
+      console.log(data.getAttribute('width'));   
+      console.log(canvas.height);   
+      console.log(canvas.width);   
+      // var pageHeight = 295;    
+      // var imgHeight = data.getAttribute('height');  
+      // var heightLeft = imgHeight;  
+
+      var imgWidth = 100;   
+      // var pageHeight = 295;    
+      var imgHeight = canvas.height * imgWidth / canvas.width;  
+      // var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      pdf.save('MYPdf.pdf'); // Generated PDF   
+
+
+      console.log('fine');
+      this.dialogRef.close();
+
+    });  
+
+  } 
+
 
 }

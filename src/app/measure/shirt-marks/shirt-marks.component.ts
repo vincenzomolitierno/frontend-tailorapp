@@ -79,7 +79,7 @@ export class ShirtMarksComponent implements AfterViewInit {
     notificaAppuntiBase64(){
         this.AppuntiBase64 =  this.IDC.getImage();	
         this.sendBase64.emit(this.AppuntiBase64);
-        console.log('sendAppuntiBase64toParent');
+        console.log('sendAppuntiBase64toParent');        
     }
 
   }

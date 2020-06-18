@@ -1,4 +1,11 @@
-<div>
+<div class="container-spinner" [ngStyle]="{'display':visibleProgressBar ? 'block' : 'none' }">
+    <div class="full-view">
+        <h3>STAMPA IN CORSO</h3>
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+</div>
+
+<div id="htmlData" #htmlData [ngStyle]="{'display':visibleProgressBar ? 'none' : 'block' }">
     <h2 mat-dialog-title>VISTA ORDINE <span *ngIf="subcontractorView">per FASONISTA</span></h2>
     <!-- <p>Committente: {{orderNumber}}</p>
     <p>Misure: {{data_misura}} con {{misure_misurometro}} </p> -->
@@ -6,95 +13,106 @@
     <mat-dialog-content class="mat-typography">
 
         <div class="grid-container">
-
             <div class="grid-item columns-width-4" *ngIf="!subcontractorView">
                 <h3>Committente: {{nome_cliente}}</h3>
             </div>
-
             <div class="grid-item">
                 <p>Misurometro: {{misurometro}}</p>
             </div>
+        </div>
+
+        <div class="grid-container" style="grid-column: 1 / 3;">
             <div class="grid-item">
                 <p>Taglia: {{taglia}}</p>
             </div>
+        </div>
+
+
+        <div class="grid-container" style="grid-template-columns: 25% 25% 25% 25%;">
+
             <div class="grid-item">
-                <p></p>
+                <p>Collo: {{collo}}</p>
+                <p>Spalla: {{spalla}}</p>
+                <p>Bicipite: {{bicipite}}</p>
+                <p>Lun. Bicipite: {{lunghezza_bicipite}}</p>
+                <p>Vita Dietro: {{vita_dietro}}</p>
             </div>
+            <div class="grid-item">
+                <p>Polso: {{polso}}</p>
+                <p>Lun. Camicia: {{lunghezza_camicia}}</p>
+                <p>Avambraccio: {{avambraccio}}</p>
+                <p>Lun. Avambraccio: {{lunghezza_avambraccio}}</p>
+                <p>Bacino Dietro: {{bacino_dietro}}</p>
+            </div>
+            <div class="grid-item">
+                <p>TORACE AVANTI</p>
+                <div style="border: 0.5px solid black; padding: 8px;">
+                    <p>1° Bottone: {{torace_1_bottone}}</p>
+                    <p>2° Bottone: {{torace_1_bottone}}</p>
+                    <p>3° Bottone: {{torace_1_bottone}}</p>
+                </div>
+            </div>
+            <div class="grid-item">
+                <p style="color: white;">'</p>
+                <div style="border: 0.5px solid black; padding: 8px;">
+                    <p>4° Bottone: {{bacino_4_bottone}}</p>
+                    <p>5° Bottone: {{bacino_5_bottone}}</p>
+                    <p>6° Bottone: {{bacino_6_bottone}}</p>
+                    <p>7° Bottone: {{bacino_7_bottone}}</p>
+                    <p>8° Bottone: {{bacino_8_bottone}}</p>
 
-            <div class="grid-item columns-width-4">
-                <div class="grid-container" style="border: 0.5px solid black;">
-                    <div class="grid-item">
-                        <p>Collo: {{collo}}</p>
-                        <p>Spalla: {{spalla}}</p>
-                        <p>Bicipite: {{bicipite}}</p>
-                        <p>Lun. Bicipite: {{lunghezza_bicipite}}</p>
-                        <p>Vita Dietro: {{vita_dietro}}</p>
-                    </div>
-                    <div class="grid-item">
-                        <p>Polso: {{polso}}</p>
-                        <p>Lun. Camicia: {{lunghezza_camicia}}</p>
-                        <p>Avambraccio: {{avambraccio}}</p>
-                        <p>Lun. Avambraccio: {{lunghezza_avambraccio}}</p>
-                        <p>Bacino Dietro: {{bacino_dietro}}</p>
-                    </div>
-                    <div class="grid-item">
-                        <p>TORACE</p>
-                        <div style="border: 0.5px solid black; padding: 8px;">
-                            <p>1° Bottone: {{torace_1_bottone}}</p>
-                            <p>2° Bottone: {{torace_1_bottone}}</p>
-                            <p>3° Bottone: {{torace_1_bottone}}</p>
-                        </div>
-                    </div>
-                    <div class="grid-item">
-                        <p>BACINO</p>
-                        <div style="border: 0.5px solid black; padding: 8px;">
-                            <p>4° Bottone: {{bacino_4_bottone}}</p>
-                            <p>5° Bottone: {{bacino_5_bottone}}</p>
-                            <p>6° Bottone: {{bacino_6_bottone}}</p>
-                            <p>7° Bottone: {{bacino_7_bottone}}</p>
-                            <p>8° Bottone: {{bacino_8_bottone}}</p>
-
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <div class="grid-item columns-width-4" style="text-align: center;">
+        </div>
+
+        <div class="grid-container" style="grid-template-columns: 100%;">
+            <div class="grid-item" style="text-align: center;">
                 <img src="../../../assets/images/CamiciaCompleta.jpg" width="550px" alt="">
             </div>
-
-            <div class="grid-item columns-width-4" style="text-align: center;">
-                <p>ELENCO CAMICIE</p>
+            <div class="grid-item" style="text-align: left;">
+                <p style="font-weight:bold;">ELENCO CAMICIE</p>
 
                 <div *ngFor="let shirt of shirts; let i=index;">
-                    <p>({{i+1}}) - Colore:{{shirt.colore}} Quantità:{{shirt.quantita}} Modello collo: {{shirt.idmodello_collo}} Modello polso: {{shirt.idmodello_polso}} Avanti: {{shirt.avanti}} Dietro: {{shirt.dietro}} Tipo bottone: {{shirt.tipo_bottone}}
+                    <p style="border: 0.5px solid black; padding: 8px;">({{i+1}}) - Colore:{{shirt.colore}} Quantità:{{shirt.quantita}} Modello collo: {{shirt.idmodello_collo}} Modello polso: {{shirt.idmodello_polso}} Avanti: {{shirt.avanti}} Dietro: {{shirt.dietro}} Tipo bottone: {{shirt.tipo_bottone}}
                         Iniziali: {{shirt.iniziali}} Posizione: {{shirt.posizione_iniziali}} Stile iniziali: {{shirt.stile_carattere}} Note: {{shirt.note}} </p>
                 </div>
 
             </div>
+        </div>
 
+        <div class="grid-container" style="grid-template-columns: 100%; text-align: left;">
             <div class="grid-item">
                 <p>Fasonista: {{nominativo_fasonista}}</p>
             </div>
+
             <div class="grid-item">
-                <p>Data consegna: {{data_consegna}}</p>
-            </div>
-            <div class="grid-item columns-width-4">
                 <p>Note per il Fasonista</p>
                 <p style="border: 0.5px solid black; padding: 8px;">
                     ...
                 </p>
             </div>
+        </div>
+
+        <div class="grid-container" style="grid-template-columns: 50% 50%;">
+            <div class="grid-item">
+                <p>Data consegna: {{data_consegna}}</p>
+            </div>
+
             <div class="grid-item columns-width-4">
                 <p>Modalità consegna: {{modalita_consegna}}</p>
             </div>
+        </div>
 
-            <div class="grid-item columns-width-4" *ngIf="!subcontractorView">
-                <p>Note per il Cliente</p>
-                <p style="border: 0.5px solid black; padding: 8px;">
-                    ...
-                </p>
-            </div>
+
+        <div class="ggrid-container" *ngIf="!subcontractorView" style="grid-template-columns: 100%; text-align: left;">
+            <p>Note per il Cliente</p>
+            <p style="border: 0.5px solid black; padding: 8px;">
+                ...
+            </p>
+        </div>
+
+        <div class="grid-container" style="grid-template-columns: 50% 50%;">
             <div class="grid-item" *ngIf="!subcontractorView">
                 <p>Totale: {{totale_ordine}}</p>
                 <p>Acconto: {{acconto}}</p>
@@ -103,15 +121,16 @@
             <div class="grid-item" *ngIf="!subcontractorView">
                 <mat-checkbox [(ngModel)]="checkedOrUnchecked" disabled>Saldato</mat-checkbox>
             </div>
-
-
         </div>
+
+
+
+
 
 
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Stampa pdf" matTooltipPosition="above" mat-dialog-close (click)="test()"><mat-icon>print</mat-icon></button>
+        <button mat-raised-button matTooltip="Stampa pdf" matTooltipPosition="above" (click)="captureScreen()"><mat-icon>print</mat-icon></button>
     </mat-dialog-actions>
-
 </div>

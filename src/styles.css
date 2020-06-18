@@ -16,6 +16,9 @@ body {
     margin: 8px;
 }
 
+
+/* impostazione generale per tutte le mat-dialog */
+
 .custom-dialog-container {
     max-width: 80vw !important;
     width: 80vw !important;

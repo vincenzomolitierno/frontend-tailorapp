@@ -1,4 +1,14 @@
 @import url('../../../assets/style/form.style.css');
+.grid-container {
+    grid-template-columns: 50% 50%;
+}
+
+@media only screen and (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 50% 50%;
+    }
+}
+
 
 /* p {
     margin-bottom: 0px;
