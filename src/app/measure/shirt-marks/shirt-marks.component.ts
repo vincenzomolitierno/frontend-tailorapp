@@ -1,10 +1,10 @@
-import { Component, AfterViewInit, ViewChild, DoCheck, Output, EventEmitter, AfterContentInit, SimpleChange, Directive, HostListener } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, DoCheck, Output, EventEmitter, AfterContentInit, SimpleChange, Directive, HostListener, ElementRef } from '@angular/core';
 
 // import { saveAs } from 'file-saver';
 import { I18nInterface, ImageDrawingComponent } from 'ngx-image-drawing';
 
-// Si importa la direttiva
-import { HostDirective } from './myhost-directive';
+// // Si importa la direttiva
+// import { HostDirective } from './myhost-directive';
 
 @Component({
   selector: 'app-shirt-marks',
@@ -75,12 +75,13 @@ export class ShirtMarksComponent implements AfterViewInit {
     //     console.log('ngOnDestroy');        
     // }
 
-
-    notificaAppuntiBase64(){
+    public notificaAppuntiBase64(){
         this.AppuntiBase64 =  this.IDC.getImage();	
         this.sendBase64.emit(this.AppuntiBase64);
         console.log('sendAppuntiBase64toParent');        
     }
 
   }
+
+
 

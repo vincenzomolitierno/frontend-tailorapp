@@ -4,12 +4,19 @@
     </div>
     <div style="float: left; width: 100%;">
         <image-drawing [showToolbox]="false" borderCss="1px solid black" [showCancelButton]="false" [enableLoadAnotherImage]="false" [enableRemoveImage]="false" [src]="Appunti" outputMimeType="'image/jpeg'" [i18n]="i18n" [locale]="locale" [drawingSizes]="{  medium: 5 }"
-            [colors]="{  black: '#000'}" inviaBaseAppunti64 (mouseout)="notificaAppuntiBase64()">
+            [colors]="{  black: '#000'}" (touchend)="notificaAppuntiBase64()" (click)="notificaAppuntiBase64()">
         </image-drawing>
     </div>
+    <!-- <div style="height: 50px; background-color: green; float: left; display: block; width: 100%;" (click)="notificaAppuntiBase64()">
+        <p>prova</p>
+    </div> -->
 </div>
 
-<div *ngIf="false">
+
+
+
+
+<!-- <div *ngIf="false">
 
     <button (click)="CaricaBase($event)">Carica Camicia Base</button>
     <button (click)="catturadisegno()">Cattura da Componente</button>
@@ -18,4 +25,4 @@
     <h2 [textContent]="AppuntiBase64"></h2>
     <button (click)="CaricaModificata($event)">Carica Camicia da Locale Nel Componente</button>
 
-</div>
+</div> -->

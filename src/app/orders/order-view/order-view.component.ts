@@ -136,6 +136,9 @@ export class OrderViewComponent implements OnInit {
       const contentDataURL = canvas.toDataURL('image/png')  
       let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;  
+
+      pdf.addTe
+
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
       pdf.output('dataurlnewwindow'); // Live PDF   
     });  

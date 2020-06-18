@@ -7,7 +7,7 @@ export class HostDirective {
   constructor(){}
     
 
-  @HostListener('mouseout') onHover() {
+  @HostListener('mouseover') onOver() {
     window.alert('blur shirt');
   }
  

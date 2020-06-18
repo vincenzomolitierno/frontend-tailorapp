@@ -136,7 +136,9 @@ export class MeasureFormComponent implements OnInit  {
           torace_7_bottone: new FormControl(''),
           torace_8_bottone: new FormControl(''),
 
-          note_grafiche: new FormControl('')
+          note_grafiche: new FormControl(''),
+
+          formModal: new FormControl('')
 
         });                
    }
@@ -172,7 +174,7 @@ export class MeasureFormComponent implements OnInit  {
       'idclienti' + '=' + queryParameter.idclienti).subscribe(
       (data) => {
 
-            this.reactiveForm.get('idcliente').setValue(this.customer.idclienti);            
+            this.reactiveForm.get('idcliente').setValue(this.customer.idclienti);                          
             
             this.resourceQuery = data;
             if(this.resourceQuery.length > 0){
@@ -238,7 +240,9 @@ export class MeasureFormComponent implements OnInit  {
               else
                 this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1)); 
                                 
-              this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche); 
+              this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche);        
+              
+              this.reactiveForm.get('formModal').setValue(this.formModal); 
                 
               this.flagA = true;
               this.flagB = true;
@@ -267,6 +271,8 @@ export class MeasureFormComponent implements OnInit  {
               this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));  
               
               this.reactiveForm.get('note_grafiche').setValue('');
+
+              this.reactiveForm.get('formModal').setValue(this.formModal); 
 
             }        
 

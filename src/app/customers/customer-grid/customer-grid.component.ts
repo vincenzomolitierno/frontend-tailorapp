@@ -9,6 +9,7 @@ import { Customer } from '../data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
 import { OrderViewComponent } from 'src/app/orders/order-view/order-view.component';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-customer-grid',
@@ -187,9 +188,59 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log('Misura salvata:');
+      if(!(result==false) && !isUndefined(result) ){
 
-      console.log(result);
+        let dateTime = new Date();
+        console.log(dateTime);
+
+        var base64: string = result.note_grafiche;
+        base64.replace('data:image/png;base64,','');
+
+        var torace: string = result.torace_1_bottone + ";"
+                             + result.torace_2_bottone + ";" 
+                             + result.torace_3_bottone + ";" 
+                             + result.torace_4_bottone + ";" 
+                             + result.torace_5_bottone + ";" 
+                             + result.torace_6_bottone + ";" 
+                             + result.torace_7_bottone + ";" 
+                             + result.torace_8_bottone + ";" 
+
+        //chiamata 
+        if(result.formModal == 'inserimento')  {
+          console.log('inserimento');
+
+          this.postData('measures',        
+          {
+            "taglia_misurometro": result.taglia_misurometro,
+            "collo": result.collo,
+            "polso": result.polso,
+            "spalla": result.spalla,
+            "bicipite": result.bicipite,
+            "lung_bicipite": result.lunghezza_manica,
+            "vita_dietro": result.vita_dietro,
+            "lung_camicia": result.lunghezza_camicia,
+            "avambraccio": result.avambraccio,
+            "lung_avambraccio": result.lunghezza_avambraccio,
+            "bacino_dietro": result.bacino_dietro,
+            "bacino": '',
+            "torace": torace,
+            "misurometro": result.taglia_misurometro,
+            "note_grafiche": base64,
+            "clienti_idclienti": result.idcliente,
+            "data_misure": ''            
+          });
+
+
+        }
+        else if (result.formModal == 'aggiornamento'){
+          console.log('aggiornamento');
+
+    
+
+
+        } //fine PUT
+
+      }
 
     });    
     
