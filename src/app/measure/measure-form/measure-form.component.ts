@@ -177,10 +177,14 @@ export class MeasureFormComponent implements OnInit  {
             this.reactiveForm.get('idcliente').setValue(this.customer.idclienti);                          
             
             this.resourceQuery = data;
+            console.log(this.resourceQuery);
+
             if(this.resourceQuery.length > 0){
 
               console.log('misura esistente');        
+               
               this.measure = this.resourceQuery[this.resourceQuery.length-1];
+               
               this.formModal = 'aggiornamento';
   
               //si inizializzano i campi del form
@@ -240,6 +244,13 @@ export class MeasureFormComponent implements OnInit  {
               else
                 this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1)); 
                                 
+              
+              //si recupera il base64
+              // var idmisure = this.measure.idmisure;
+              // this.restBackendService.getResourceQuery(tagResourse,
+              //   'idmisure' + '=' + idmisure).subscribe(data =>{
+              //     this.reactiveForm.get('note_grafiche').setValue(data[0].note_grafiche);
+              //   });                
               this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche);        
               
               this.reactiveForm.get('formModal').setValue(this.formModal); 

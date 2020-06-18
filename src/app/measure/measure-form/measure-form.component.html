@@ -397,7 +397,7 @@
         <mat-divider></mat-divider>
         <!-- inserimento input grafico -->
         <div style="text-align: center;">
-            <app-shirt-marks (sendBase64)="catchAppuntiBase64($event)"></app-shirt-marks>
+            <app-shirt-marks (sendBase64)="catchAppuntiBase64($event)" [base64]='measure.note_grafiche'></app-shirt-marks>
         </div>
 
 

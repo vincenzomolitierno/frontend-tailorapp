@@ -93,6 +93,18 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       if(result){
 
         if(formModal=='inserimento'){
+
+          console.log({
+            "nominativo": result.nominativo,
+            "telefono": result.telefono,
+            "email": result.email,
+            "cf": result.cf,
+            "partita_iva": result.partita_iva,
+            "indirizzo": result.indirizzo,
+            "int_fattura": result.int_fattura,
+            "note": result.note,
+            "cartamodello": result.cartamodello
+          });
           
           this.postData('customers',        
           {
@@ -190,11 +202,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
       if(!(result==false) && !isUndefined(result) ){
 
-        let dateTime = new Date();
-        console.log(dateTime);
-
         var base64: string = result.note_grafiche;
-        base64.replace('data:image/png;base64,','');
+        base64 = base64.replace('data:image/png;base64,','');
+        console.log(base64);
 
         var torace: string = result.torace_1_bottone + ";"
                              + result.torace_2_bottone + ";" 
@@ -205,38 +215,54 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                              + result.torace_7_bottone + ";" 
                              + result.torace_8_bottone + ";" 
 
-        //chiamata 
+        //chiamata REST
+        this.postDataLess('measures',        
+        {
+          "taglia_misurometro": result.shirtIndicatorControlSize,
+          "collo": result.collo,
+          "polso": result.polso,
+          "spalla": result.spalla,
+          "bicipite": result.bicipite,
+          "lung_bicipite": result.lunghezza_manica,
+          "vita_dietro": result.vita_dietro,
+          "lung_camicia": result.lunghezza_camicia,
+          "avambraccio": result.avambraccio,
+          "lung_avambraccio": result.lunghezza_avambraccio,
+          "bacino_dietro": result.bacino_dietro,
+          "bacino": '',
+          "torace": torace,
+          "misurometro": result.shirtIndicatorControl,
+          "note_grafiche": base64,
+          "clienti_idclienti": result.idcliente,
+          "data_misure": ''            
+        });
+
         if(result.formModal == 'inserimento')  {
           console.log('inserimento');
 
-          this.postData('measures',        
-          {
-            "taglia_misurometro": result.taglia_misurometro,
-            "collo": result.collo,
-            "polso": result.polso,
-            "spalla": result.spalla,
-            "bicipite": result.bicipite,
-            "lung_bicipite": result.lunghezza_manica,
-            "vita_dietro": result.vita_dietro,
-            "lung_camicia": result.lunghezza_camicia,
-            "avambraccio": result.avambraccio,
-            "lung_avambraccio": result.lunghezza_avambraccio,
-            "bacino_dietro": result.bacino_dietro,
-            "bacino": '',
-            "torace": torace,
-            "misurometro": result.taglia_misurometro,
-            "note_grafiche": base64,
-            "clienti_idclienti": result.idcliente,
-            "data_misure": ''            
-          });
-
+          // console.log( {
+          //   "taglia_misurometro": result.shirtIndicatorControlSize,
+          //   "collo": result.collo,
+          //   "polso": result.polso,
+          //   "spalla": result.spalla,
+          //   "bicipite": result.bicipite,
+          //   "lung_bicipite": result.lunghezza_manica,
+          //   "vita_dietro": result.vita_dietro,
+          //   "lung_camicia": result.lunghezza_camicia,
+          //   "avambraccio": result.avambraccio,
+          //   "lung_avambraccio": result.lunghezza_avambraccio,
+          //   "bacino_dietro": result.bacino_dietro,
+          //   "bacino": '',
+          //   "torace": torace,
+          //   "misurometro": result.shirtIndicatorControl,
+          //   "note_grafiche": base64,
+          //   "clienti_idclienti": result.idcliente,
+          //   "data_misure": ''            
+          // });          
 
         }
         else if (result.formModal == 'aggiornamento'){
           console.log('aggiornamento');
-
-    
-
 
         } //fine PUT
 

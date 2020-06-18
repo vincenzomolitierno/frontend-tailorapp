@@ -113,6 +113,21 @@ export class GridModel {
 
   }
 
+  public postDataLess(tagResource: string, body: object):void {
+
+    this.errorMessage = '';
+
+    this.restBackendService.postResource(tagResource, body).subscribe(
+      (data) => {     
+        // this.getRemoteData(tagResource);        
+      },
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;        
+      });    
+
+  }
+
   /**
    * REST backend call to delete resource item of tagResource with id passed through body parameter
    *

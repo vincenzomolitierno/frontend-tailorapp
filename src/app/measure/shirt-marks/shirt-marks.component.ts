@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, DoCheck, Output, EventEmitter, AfterContentInit, SimpleChange, Directive, HostListener, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, DoCheck, Output, EventEmitter, AfterContentInit, SimpleChange, Directive, HostListener, ElementRef, Input } from '@angular/core';
 
 // import { saveAs } from 'file-saver';
 import { I18nInterface, ImageDrawingComponent } from 'ngx-image-drawing';
@@ -79,6 +79,16 @@ export class ShirtMarksComponent implements AfterViewInit {
         this.AppuntiBase64 =  this.IDC.getImage();	
         this.sendBase64.emit(this.AppuntiBase64);
         console.log('sendAppuntiBase64toParent');        
+    }
+
+    @Input()
+    set base64(base64: string) {
+        console.log('setting base64');
+        // console.log(base64);
+        // this.AppuntiBase64 = base64;
+        this.Appunti = 'data:image/png;base64,' + base64;        
+        // this.AppuntiBase64 = 'data:image/png;base64,' + base64;
+        // this.Appunti = 'data:image/png;base64,' + base64;
     }
 
   }
