@@ -4,7 +4,7 @@
     </div>
     <div style="float: left; width: 100%;">
         <image-drawing [showToolbox]="false" borderCss="1px solid black" [showCancelButton]="false" [enableLoadAnotherImage]="false" [enableRemoveImage]="false" [src]="Appunti" outputMimeType="'image/jpeg'" [i18n]="i18n" [locale]="locale" [drawingSizes]="{  medium: 5 }"
-            [colors]="{  black: '#000'}">
+            [colors]="{  black: '#000'}" inviaBaseAppunti64 (mouseout)="notificaAppuntiBase64()">
         </image-drawing>
     </div>
 </div>

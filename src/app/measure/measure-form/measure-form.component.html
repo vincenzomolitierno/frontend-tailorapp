@@ -3,9 +3,12 @@
     <mat-dialog-content class="mat-typography">
 
         <h3 *ngIf="formModal=='aggiornamento'">Data ultima misura: <b>{{measure.data_misure | removeStringTime}}</b></h3>
-
         <h3>Committente <b>{{customer.nominativo}}</b></h3>
-        <input type="text" formControlName="idcliente" class="value-display" readonly>
+
+        <!-- controllo necessario a contenere l'idcliente per inserirlo all'interno dell'oggetto reactiveForm
+        e gestirlo on tutti gli altri cmapi in modalità reactive form -->
+        <input type="text" formControlName="idcliente" class="value-display" readonly style="display: none;">
+
         <div class="shirt-indicator-bar">
             <div class="left-si-bar">
                 <mat-form-field appearance="fill">
@@ -383,12 +386,14 @@
 
         </div>
 
+        <!-- controllo necessario a contenere il base 64 della camicia per inserirlo all'interno dell'oggetto reactiveForm
+        e gestirlo on tutti gli altri cmapi in modalità reactive form -->
         <input type="text" formControlName="note_grafiche" style="display: none;">
 
         <mat-divider></mat-divider>
         <!-- inserimento input grafico -->
         <div style="text-align: center;">
-            <app-shirt-marks></app-shirt-marks>
+            <app-shirt-marks (sendBase64)="catchAppuntiBase64($event)"></app-shirt-marks>
         </div>
 
 

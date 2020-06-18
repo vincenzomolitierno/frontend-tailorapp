@@ -10,12 +10,14 @@ import { ShirtMarksComponent } from './shirt-marks/shirt-marks.component';
 import { MeasureFormComponent } from './measure-form/measure-form.component';
 
 import { RemoveStringTime } from '../utilities/pipe-tools';
+import { HostDirective } from './shirt-marks/myhost-directive';
 
 @NgModule({
   declarations: [    
     ShirtMarksComponent,
     MeasureFormComponent,
-    RemoveStringTime
+    RemoveStringTime,
+    HostDirective
 ],
   imports: [
     CommonModule,
@@ -24,7 +26,7 @@ import { RemoveStringTime } from '../utilities/pipe-tools';
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    ImageDrawingModule, 
+    ImageDrawingModule
   ],  
   entryComponents: [
     MeasureFormComponent

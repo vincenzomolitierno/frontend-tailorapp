@@ -412,4 +412,13 @@ export class MeasureFormComponent implements OnInit  {
 
   }
 
+
+  catchAppuntiBase64(appuntiBase64: string){
+
+    this.measure.note_grafiche = appuntiBase64;
+
+    this.reactiveForm.get('note_grafiche').setValue(appuntiBase64);
+    
+
+  }
 }
