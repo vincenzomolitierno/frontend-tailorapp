@@ -1,1 +1,10 @@
 @import url('../../../assets/style/grid.style.css');
+.grid-container {
+    padding: 5px;
+    margin-top: 15px;
+}
+
+.grid-item {
+    padding: 5px;
+    text-align: center;
+}

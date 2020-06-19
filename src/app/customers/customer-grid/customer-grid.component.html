@@ -118,50 +118,66 @@
 <!-- vista dei dettagli -->
 <div class="last-mesaure" [hidden]="!viewDetails">
     <mat-card>
-
-        <span style="margin-right: 15px;">Cliente: {{customerNameFocused}}</span>
-        <span style="margin-right: 25px;"> - n° telefono: {{customerTelefonoFocused}}</span>
         <button mat-raised-button (click)='viewDetails=false;'>
             <mat-icon>{{viewDetails ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+        <h3>Ultima misura del {{ measureCustomerDetailView.data_misure }}</h3>
+        <h3>
+            <span style="margin-right: 15px;">Cliente: {{customerNameFocused}}</span>
+            <span style="margin-right: 25px;"> - n° telefono: {{customerTelefonoFocused}}</span>
+        </h3>
 
         <div class="grid-container">
-            <div class="grid-item">
-                <dl>
-                    <dt>Collo: {{dummy_data}}</dt>
-                    <dt>Spalla: {{dummy_data}}</dt>
-                    <dt>Bicipite: {{dummy_data}}</dt>
-                    <dt>Lunghezza Bicipite: {{dummy_data}}</dt>
-                    <dt>Vita Dietro: {{dummy_data}}</dt>
-                </dl>
+            <div class="grid-item" style="grid-column: 1 / span 2; grid-row: 1;">
+                Misurometro: {{measureCustomerDetailView.misurometro}}
+            </div>
+            <div class="grid-item" style="grid-column: 3 / span 2; grid-row: 1;">
+                Taglia misurometro: {{measureCustomerDetailView.taglia_misurometro}}
             </div>
             <div class="grid-item">
                 <dl>
-                    <dt>Polso: {{dummy_data}}</dt>
-                    <dt>Lunghezza Camicia: {{dummy_data}}</dt>
-                    <dt>Avambraccio: {{dummy_data}}</dt>
-                    <dt>Lunghezza Avambraccio: {{dummy_data}}</dt>
-                    <dt>Bacino Dietro: {{dummy_data}}</dt>
+                    <dt>Collo: {{measureCustomerDetailView.collo}}</dt>
+                    <dt>Spalla: {{measureCustomerDetailView.spalla}}</dt>
+                    <dt>Lun. Manica: {{measureCustomerDetailView.lung_bicipite}}</dt>
+                    <dt>Bicipite: {{measureCustomerDetailView.bicipite}}</dt>
+                    <dt>Vita Dietro: {{measureCustomerDetailView.vita_dietro}}</dt>
                 </dl>
             </div>
             <div class="grid-item">
-                <p>Torace</p>
-                <dl style="border: solid 1px black;">
-                    <dt>1° Bottone: {{dummy_data}}</dt>
-                    <dt>2° Bottone: {{dummy_data}}</dt>
-                    <dt>3° Bottone: {{dummy_data}}</dt>
+                <dl>
+                    <dt>Polso: {{measureCustomerDetailView.polso}}</dt>
+                    <dt>Lun. Camicia: {{measureCustomerDetailView.lung_camicia}}</dt>
+                    <dt>Avambraccio: {{measureCustomerDetailView.avambraccio}}</dt>
+                    <dt>Lun. Avambraccio: {{measureCustomerDetailView.lung_avambraccio}}</dt>
+                    <dt>Bacino Dietro: {{measureCustomerDetailView.bacino_dietro}}</dt>
                 </dl>
             </div>
             <div class="grid-item">
-                <p>Bacino</p>
-                <dl style="border: solid 1px black;">
-                    <dt>4° Bottone: {{dummy_data}}</dt>
-                    <dt>5° Bottone: {{dummy_data}}</dt>
-                    <dt>6° Bottone: {{dummy_data}}</dt>
-                    <dt>7° Bottone: {{dummy_data}}</dt>
-                    <dt>8° Bottone: {{dummy_data}}</dt>
+                <p>TORACE AVANTI</p>
+                <dl style="border: solid 0.5px black;">
+                    <dt>1° Bottone: {{torace_1_bottone}}</dt>
+                    <dt>2° Bottone: {{torace_2_bottone}}</dt>
+                    <dt>3° Bottone: {{torace_3_bottone}}</dt>
                 </dl>
             </div>
+            <div class="grid-item">
+                <p style="color: white;">'</p>
+                <dl style="border: solid 0.5px black;">
+                    <dt>4° Bottone: {{torace_4_bottone}}</dt>
+                    <dt>5° Bottone: {{torace_5_bottone}}</dt>
+                    <dt>6° Bottone: {{torace_6_bottone}}</dt>
+                    <dt>7° Bottone: {{torace_7_bottone}}</dt>
+                    <dt>8° Bottone: {{torace_8_bottone}}</dt>
+                </dl>
+            </div>
+            <div class="grid-item" style="grid-column: 1 / span 4; grid-row: 3;">
+                <div id="base64" style="  border-left: 6px solid green; background-color: rgb(240, 240, 240); padding: 25px; clear: both;">
+
+                    <h3 style="clear: both;">Appunti ultima misura</h3>
+
+                </div>
+            </div>
+
         </div>
     </mat-card>
 </div>

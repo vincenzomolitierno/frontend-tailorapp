@@ -10,6 +10,8 @@ import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-du
 import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
 import { OrderViewComponent } from 'src/app/orders/order-view/order-view.component';
 import { isUndefined } from 'util';
+import { Measure } from 'src/app/measurers/data.model';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-customer-grid',
@@ -22,9 +24,21 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   private viewDetails: boolean = false;
   private customerNameFocused: string = '';
   private customerTelefonoFocused: string = '';
+
+  private torace_1_bottone: string = '';
+  private torace_2_bottone: string = '';
+  private torace_3_bottone: string = '';
+  private torace_4_bottone: string = '';
+  private torace_5_bottone: string = '';
+  private torace_6_bottone: string = '';
+  private torace_7_bottone: string = '';
+  private torace_8_bottone: string = '';
+
   private dummy_data: string = 'X,Y';
 
   private item_empty: Customer;
+
+  private measureCustomerDetailView: Measure;
 
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
@@ -44,6 +58,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     ) { 
       super(restBackendService); // si innesca il costruttore della classe padre
       this.resource = Array<Customer>();
+
+      this.measureCustomerDetailView = new Measure();
     }
 
   //Si inizializza il componente caricando i dati nella tabella
@@ -137,6 +153,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         }
 
+        this.viewDetails = false;
 
       }      
     }); 
@@ -167,18 +184,104 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           "idclienti": parseInt(_idItem)
         }
         )
+
+        this.viewDetails = false;
       }
       
     });     
 
   }
 
-  openDetails(customer: Customer){
-   
+  private openDetails(customer: Customer){
+
+    //Recuperare i dati dell'ultima misura del cliente selezionato se esistono e visualizzarli
+    this.restBackendService.getResourceQuery('measuresQuery',
+      'idclienti' + '=' + customer.idclienti).subscribe(
+      (data) => {
+
+        this.resourceQuery = data;
+
+        if(this.resourceQuery.length > 0){
+
+          console.log('misura esistente');        
+           
+          this.measureCustomerDetailView = this.resourceQuery[this.resourceQuery.length-1];
+
+          this.measureCustomerDetailView.data_misure = this.measureCustomerDetailView.data_misure.split(' ')[0];
+
+          // console.log(this.measureCustomerDetailView);       
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[0])))
+                  this.torace_1_bottone = this.measureCustomerDetailView.torace.split(';')[0];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[1])))
+                  this.torace_2_bottone = this.measureCustomerDetailView.torace.split(';')[1];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[2])))
+                  this.torace_3_bottone = this.measureCustomerDetailView.torace.split(';')[2];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[3])))
+                  this.torace_4_bottone = this.measureCustomerDetailView.torace.split(';')[3];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[4])))
+                  this.torace_5_bottone = this.measureCustomerDetailView.torace.split(';')[4];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[5])))
+                  this.torace_6_bottone = this.measureCustomerDetailView.torace.split(';')[5];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[6])))
+                  this.torace_7_bottone = this.measureCustomerDetailView.torace.split(';')[6];
+
+          if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[7])))
+                  this.torace_8_bottone = this.measureCustomerDetailView.torace.split(';')[7];          
+          
+          // //si inizializzano i campi del form
+          // this.measureCustomerDetailView.misurometro;              
+          // this.measureCustomerDetailView.taglia_misurometro;   
+
+          // this.measureCustomerDetailView.collo;   
+          // this.measureCustomerDetailView.spalla;   
+          // this.measureCustomerDetailView.lung_bicipite;   
+          // this.measureCustomerDetailView.bicipite;   
+          // this.measureCustomerDetailView.vita_dietro;   
+
+          // this.measureCustomerDetailView.polso;  
+          // this.measureCustomerDetailView.lung_camicia;  
+          // this.measureCustomerDetailView.avambraccio;  
+          // this.measureCustomerDetailView.lung_avambraccio;  
+          // this.measureCustomerDetailView.bacino_dietro;    
+          
+          this.dataURItoBlob(this.measureCustomerDetailView.note_grafiche).subscribe(blob => {
+            
+            var blobUrl = URL.createObjectURL(blob);
+            var img = document.createElement('img');
+            var divBase64 = document.getElementById('base64')
+            img.src = blobUrl;
+            divBase64.appendChild(img);
+            // document.body.appendChild(img);
+
+          });  
+        }    
+      });
+    
     this.customerNameFocused = customer.nominativo;
     this.customerTelefonoFocused = customer.telefono;
     this.viewDetails = true;
   }
+
+    /* Method to convert Base64Data Url as Image Blob */
+    dataURItoBlob(dataURI: string): Observable<Blob> {
+      return Observable.create((observer: Observer<Blob>) => {
+        const byteString: string = window.atob(dataURI);
+        const arrayBuffer: ArrayBuffer = new ArrayBuffer(byteString.length);
+        const int8Array: Uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+          int8Array[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([int8Array], { type: "image/jpeg" });
+        observer.next(blob);
+        observer.complete();
+      });
+    }      
 
   /**
    * Open the Measure form dialog to take the measure fore the _customer

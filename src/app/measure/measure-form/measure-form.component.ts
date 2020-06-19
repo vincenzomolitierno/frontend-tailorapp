@@ -36,41 +36,17 @@ export class MeasureFormComponent implements OnInit  {
 
   dummy_data: string = 'X,Y'
 
-  // attributi della misura
-  //colonna 1
-  // collo: number = 45.0;  //valore di default noto
-  // spalla: number = 0.0;
-  // bicipite: number = 0.0;
-  // lunghezza_bicipite: number = 0.0;
-  // vita_dietro: number = 0.0;  
-  // //colonna 2
-  // polso: number = 18.0 //valore di default noto
-  // lunghezza_camicia: number = 0.0;
-  // avambraccio: number = 0.0;
-  // lunghezza_avambraccio: number = 0.0;
-  // bacino_dietro: number = 0.0;
-  // //colonna 3
-  // torace_1_bottone: number = 0.0;
-  // torace_2_bottone: number = 0.0;
-  // torace_3_bottone: number = 0.0;
-  // //colonna 4
-  // torace_4_bottone: number = 0.0;
-  // torace_5_bottone: number = 0.0;
-  // torace_6_bottone: number = 0.0;
-  // torace_7_bottone: number = 0.0;
-  // torace_8_bottone: number = 0.0;
-
-  // ##############################
+  // ##############################  
   public locale: string = 'en';
-      public width = window.innerWidth - 60;
-      public height = window.innerHeight - 250;
+  public width = window.innerWidth - 60;
+  public height = window.innerHeight - 250;
 
-      public i18n: I18nInterface = {
-          saveBtn: 'Salva le modifiche!',
-          sizes: {
-              extra: 'Extra'
-          }
-      };
+  public i18n: I18nInterface = {
+      saveBtn: 'Salva le modifiche!',
+      sizes: {
+          extra: 'Extra'
+      }
+  };
   // ##############################  
 
   //Struttura dati per contenere i dati dei recuperati tramite chiamata REST
@@ -177,14 +153,14 @@ export class MeasureFormComponent implements OnInit  {
             this.reactiveForm.get('idcliente').setValue(this.customer.idclienti);                          
             
             this.resourceQuery = data;
+
+            console.log('remoteData');
             console.log(this.resourceQuery);
 
             if(this.resourceQuery.length > 0){
 
-              console.log('misura esistente');        
-               
-              this.measure = this.resourceQuery[this.resourceQuery.length-1];
-               
+              console.log('misura esistente');                       
+              this.measure = this.resourceQuery[this.resourceQuery.length-1];               
               this.formModal = 'aggiornamento';
   
               //si inizializzano i campi del form
@@ -243,16 +219,14 @@ export class MeasureFormComponent implements OnInit  {
                 this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));                
               else
                 this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1)); 
-                                
-              
+                                              
               //si recupera il base64
               // var idmisure = this.measure.idmisure;
               // this.restBackendService.getResourceQuery(tagResourse,
               //   'idmisure' + '=' + idmisure).subscribe(data =>{
               //     this.reactiveForm.get('note_grafiche').setValue(data[0].note_grafiche);
               //   });                
-              this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche);        
-              
+              this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche);                      
               this.reactiveForm.get('formModal').setValue(this.formModal); 
                 
               this.flagA = true;
@@ -282,9 +256,7 @@ export class MeasureFormComponent implements OnInit  {
               this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));  
               
               this.reactiveForm.get('note_grafiche').setValue('');
-
               this.reactiveForm.get('formModal').setValue(this.formModal); 
-
             }        
 
         },
@@ -341,7 +313,7 @@ export class MeasureFormComponent implements OnInit  {
       case 'torace_3_bottone':
         this.reactiveForm.get('torace_3_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_3_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
-        
+
       case 'torace_4_bottone':
         this.reactiveForm.get('torace_4_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_4_bottone').value) + 0.5).toFixed(1)  ); 
         break; 
@@ -431,6 +403,8 @@ export class MeasureFormComponent implements OnInit  {
 
 
   catchAppuntiBase64(appuntiBase64: string){
+
+    console.log('base64 + appunti intercettato dal parent');
 
     this.measure.note_grafiche = appuntiBase64;
 

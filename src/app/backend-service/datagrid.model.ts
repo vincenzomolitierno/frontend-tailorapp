@@ -4,11 +4,6 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ViewChild } from '@angular/core';
 
 import { QueryParameter } from './data.model';
-import { Observable } from 'rxjs';
-
-// interface QueryParameter {
-//   [key: string]: string;
-// }
 
 export class GridModel {
   

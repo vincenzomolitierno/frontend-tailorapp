@@ -7,6 +7,11 @@
             [colors]="{  black: '#000'}" (touchend)="notificaAppuntiBase64()" (click)="notificaAppuntiBase64()">
         </image-drawing>
     </div>
+    <div id="base64" style="  border-left: 6px solid green; background-color: rgb(240, 240, 240); padding: 25px; clear: both; margin-top: 10px;" [ngStyle]="{'display': viewOldBase64 ? 'block' : 'none'}">
+
+        <h3 style="clear: both;">Appunti ultima misura</h3>
+
+    </div>
     <!-- <div style="height: 50px; background-color: green; float: left; display: block; width: 100%;" (click)="notificaAppuntiBase64()">
         <p>prova</p>
     </div> -->
