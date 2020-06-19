@@ -27,12 +27,12 @@ export class MeasureFormComponent implements OnInit  {
 
   private resourceQuery: Array<any> = [];
 
-  private measure: Measure;
-  private formModal: string = 'inserimento';
-  private customer: Customer;
+  measure: Measure;
+  formModal: string = 'inserimento';
+  customer: Customer;
   
-  private flagA: boolean;
-  private flagB: boolean;
+  flagA: boolean;
+  flagB: boolean;
 
   dummy_data: string = 'X,Y'
 

@@ -21,24 +21,24 @@ import { Observable, Observer } from 'rxjs';
 export class CustomerGridComponent extends GridModel implements OnInit {
 
   // Dati coinvolti nel binding
-  private viewDetails: boolean = false;
-  private customerNameFocused: string = '';
-  private customerTelefonoFocused: string = '';
+  viewDetails: boolean = false;
+  customerNameFocused: string = '';
+  customerTelefonoFocused: string = '';
 
-  private torace_1_bottone: string = '';
-  private torace_2_bottone: string = '';
-  private torace_3_bottone: string = '';
-  private torace_4_bottone: string = '';
-  private torace_5_bottone: string = '';
-  private torace_6_bottone: string = '';
-  private torace_7_bottone: string = '';
-  private torace_8_bottone: string = '';
+  torace_1_bottone: string = '';
+  torace_2_bottone: string = '';
+  torace_3_bottone: string = '';
+  torace_4_bottone: string = '';
+  torace_5_bottone: string = '';
+  torace_6_bottone: string = '';
+  torace_7_bottone: string = '';
+  torace_8_bottone: string = '';
 
-  private dummy_data: string = 'X,Y';
+  dummy_data: string = 'X,Y';
 
-  private item_empty: Customer;
+  item_empty: Customer;
 
-  private measureCustomerDetailView: Measure;
+  measureCustomerDetailView: Measure;
 
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
