@@ -15,7 +15,7 @@ import { Observable, Observer } from 'rxjs';
 })
 export class ShirtMarksComponent {
 
-    private viewOldBase64: boolean = false;
+    viewOldBase64: boolean = false;
 
     public locale: string = 'en';
     // public width = window.innerWidth ;
