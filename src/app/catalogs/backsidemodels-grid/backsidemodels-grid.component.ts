@@ -11,16 +11,17 @@ import { BacksideModel } from '../data.model';
   styleUrls: ['../catalogs.style.css']
 })
 export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
- 
+
   nome_catalogo: string = 'dietro';
 
   // Colonne visualizzate in tabella
-  displayedColumns: string[] = [
-    // 'idmodello',
-    'descrizione', 
-    'update',
-    'delete'
-  ];
+  // displayedColumns: string[];
+  // displayedColumns: string[] = [
+  //   // 'idmodello',
+  //   'descrizione', 
+  //   'update',
+  //   'delete'
+  // ];
   
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio

@@ -6,6 +6,9 @@ import { ViewChild } from '@angular/core';
 import { QueryParameter } from './data.model';
 
 export class GridModel {
+
+  public viewCatalogControlButton: boolean;
+  public displayedCatalogColumns: string[];
   
   // Stringhe per i messaggi di errore
   errorMessage: string;
@@ -29,6 +32,25 @@ export class GridModel {
 
   constructor(_restBackendService: RESTBackendService){
     this.restBackendService = _restBackendService;
+    
+    this.viewCatalogControlButton = false;
+
+    if(this.viewCatalogControlButton) {
+      this.displayedCatalogColumns = [
+        // 'idmodello',
+        'descrizione', 
+        'update',
+        'delete'
+      ];
+  } else {
+      this.displayedCatalogColumns = [
+        // 'idmodello',
+        'descrizione', 
+        // 'update',
+        // 'delete'
+      ];
+  }
+
   }
 
   public applyFilter(event: Event) {

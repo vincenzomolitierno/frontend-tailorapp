@@ -33,7 +33,7 @@
             </ng-container>
 
             <!-- Update Column -->
-            <ng-container matColumnDef="update">
+            <ng-container matColumnDef="update" *ngIf="viewCatalogControlButton">
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="middle-row-button">
@@ -42,7 +42,7 @@
             </ng-container>
 
             <!-- Delete Column -->
-            <ng-container matColumnDef="delete">
+            <ng-container matColumnDef="delete" *ngIf="viewCatalogControlButton">
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="last-row-button">
@@ -51,8 +51,8 @@
             </ng-container>
 
             <!-- inserimento dell'intestazione e corpo della tabella -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="riga"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedCatalogColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedCatalogColumns;" class="riga"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons class="paginator-sticky"></mat-paginator>
     </div>

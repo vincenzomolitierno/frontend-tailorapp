@@ -14,13 +14,13 @@ export class ForwardsidemodelsGridComponent extends GridModel implements OnInit 
   
   nome_catalogo: string = 'avanti';
 
-  // Colonne visualizzate in tabella
-  displayedColumns: string[] = [
-    // 'idcamicie',
-    'descrizione', 
-    'update',
-    'delete'
-  ];
+  // // Colonne visualizzate in tabella
+  // displayedColumns: string[] = [
+  //   // 'idcamicie',
+  //   'descrizione', 
+  //   'update',
+  //   'delete'
+  // ];
   
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio

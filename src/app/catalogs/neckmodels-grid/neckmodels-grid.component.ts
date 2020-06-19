@@ -15,12 +15,12 @@ export class NeckmodelsGridComponent extends GridModel implements OnInit {
   nome_catalogo: string = 'collo';
 
   // Colonne visualizzate in tabella
-  displayedColumns: string[] = [
-    // 'idcamicie',
-    'descrizione', 
-    'update',
-    'delete'
-  ];
+  // displayedColumns: string[] = [
+  //   // 'idcamicie',
+  //   'descrizione', 
+  //   'update',
+  //   'delete'
+  // ];
   
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio

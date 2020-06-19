@@ -15,12 +15,12 @@ export class WristmodelsGridComponent extends GridModel implements OnInit {
   nome_catalogo: string = 'polso';
 
   // Colonne visualizzate in tabella
-  displayedColumns: string[] = [
-    // 'idcamicie',
-    'descrizione', 
-    'update',
-    'delete'
-  ];
+  // displayedColumns: string[] = [
+  //   // 'idcamicie',
+  //   'descrizione', 
+  //   'update',
+  //   'delete'
+  // ];
 
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio
