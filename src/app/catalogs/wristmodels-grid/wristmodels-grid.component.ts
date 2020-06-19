@@ -4,6 +4,7 @@ import { RESTBackendService } from 'src/app/backend-service/rest-backend.service
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import {  WirstModel } from '../data.model';
 import { WristmodelFormComponent } from '../wristmodel-form/wristmodel-form.component';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-wristmodels-grid',
@@ -13,14 +14,6 @@ import { WristmodelFormComponent } from '../wristmodel-form/wristmodel-form.comp
 export class WristmodelsGridComponent extends GridModel implements OnInit {
 
   nome_catalogo: string = 'polso';
-
-  // Colonne visualizzate in tabella
-  // displayedColumns: string[] = [
-  //   // 'idcamicie',
-  //   'descrizione', 
-  //   'update',
-  //   'delete'
-  // ];
 
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio
@@ -50,8 +43,18 @@ export class WristmodelsGridComponent extends GridModel implements OnInit {
       const dialogRef = this.dialog.open(WristmodelFormComponent, dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog result: ${result}');
-      });    
+
+        console.log(result);
+
+        if(!result && !isUndefined(result)){
+
+            this.postData('neckmodel',        
+            {
+              "modello": result
+            });
+          }
+
+      });   
       
     }   
 

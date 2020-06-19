@@ -4,6 +4,7 @@ import { RESTBackendService } from 'src/app/backend-service/rest-backend.service
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { NeckModel } from '../data.model';
 import { NeckmodelFormComponent } from '../neckmodel-form/neckmodel-form.component';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-neckmodels-grid',
@@ -13,14 +14,6 @@ import { NeckmodelFormComponent } from '../neckmodel-form/neckmodel-form.compone
 export class NeckmodelsGridComponent extends GridModel implements OnInit {
 
   nome_catalogo: string = 'collo';
-
-  // Colonne visualizzate in tabella
-  // displayedColumns: string[] = [
-  //   // 'idcamicie',
-  //   'descrizione', 
-  //   'update',
-  //   'delete'
-  // ];
   
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio
@@ -50,7 +43,17 @@ export class NeckmodelsGridComponent extends GridModel implements OnInit {
       const dialogRef = this.dialog.open(NeckmodelFormComponent, dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog result: ${result}');
+
+        console.log(result);
+
+        if(!result && !isUndefined(result)){
+
+            this.postData('neckmodel',        
+            {
+              "modello": result
+            });
+          }
+
       });    
       
     } 

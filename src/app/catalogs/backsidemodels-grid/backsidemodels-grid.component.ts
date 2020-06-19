@@ -4,6 +4,7 @@ import { BacksidemodelFormComponent } from '../backsidemodel-form/backsidemodel-
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { BacksideModel } from '../data.model';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-backsidemodels-grid',
@@ -14,15 +15,6 @@ export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
 
   nome_catalogo: string = 'dietro';
 
-  // Colonne visualizzate in tabella
-  // displayedColumns: string[];
-  // displayedColumns: string[] = [
-  //   // 'idmodello',
-  //   'descrizione', 
-  //   'update',
-  //   'delete'
-  // ];
-  
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog
@@ -41,19 +33,29 @@ export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
   }
 
   //Metodo che permette di aprire la finestra di dialogo in modalità di inserimento o modifica della risorsa
-  openResourceDialog(formModal: string, idModello: string){
+  openResourceDialog(formModal: string, idCatolog: string){
 
       const dialogConfig = new MatDialogConfig();
 
       dialogConfig.data = {
-        idordini: idModello, 
+        idordini: idCatolog, 
         formModal: formModal, 
       };
   
       const dialogRef = this.dialog.open(BacksidemodelFormComponent, dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog result: ${result}');
+
+        console.log(result);
+
+        if(!result && !isUndefined(result)){
+
+            this.postData('neckmodel',        
+            {
+              "modello": result
+            });
+          }
+
       });    
       
     } 

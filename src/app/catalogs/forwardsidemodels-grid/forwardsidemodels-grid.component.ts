@@ -4,6 +4,7 @@ import { RESTBackendService } from 'src/app/backend-service/rest-backend.service
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { ForwardModel } from '../data.model';
 import { ForwardsidemodelFormComponent } from '../forwardsidemodel-form/forwardsidemodel-form.component';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-forwardsidemodels-grid',
@@ -14,14 +15,6 @@ export class ForwardsidemodelsGridComponent extends GridModel implements OnInit 
   
   nome_catalogo: string = 'avanti';
 
-  // // Colonne visualizzate in tabella
-  // displayedColumns: string[] = [
-  //   // 'idcamicie',
-  //   'descrizione', 
-  //   'update',
-  //   'delete'
-  // ];
-  
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog
@@ -50,8 +43,18 @@ export class ForwardsidemodelsGridComponent extends GridModel implements OnInit 
       const dialogRef = this.dialog.open(ForwardsidemodelFormComponent, dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog result: ${result}');
-      });    
+
+        console.log(result);
+
+        if(!result && !isUndefined(result)){
+
+            this.postData('forwardsidemodel',        
+            {
+              "modello": result
+            });
+          }
+
+      });     
       
     } 
   

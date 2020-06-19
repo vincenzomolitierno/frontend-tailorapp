@@ -37,8 +37,6 @@ export class NeckmodelFormComponent implements OnInit {
 
               this.options = data.map(a => a.modello);
               console.log(this.options);
-
-              // options: string[] = ['One', 'Two', 'Three'];
               
               //inizializzazione
               this.filteredOptions = this.myControl.valueChanges
