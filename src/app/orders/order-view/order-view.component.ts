@@ -123,9 +123,87 @@ export class OrderViewComponent implements OnInit {
 
   }
 
+  // public captureScreenToScreen()  
+  // {  
+  //   var data = document.getElementById('htmlData');  
+  //   html2canvas(data).then(canvas => {  
+  //     // Few necessary setting options  
+  //     var imgWidth = 208;   
+  //     var pageHeight = 295;    
+  //     var imgHeight = canvas.height * imgWidth / canvas.width;  
+  //     var heightLeft = imgHeight;  
+  
+  //     const contentDataURL = canvas.toDataURL('image/png')  
+  //     let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;  
+
+  //     pdf.addTe
+
+  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+  //     pdf.output('dataurlnewwindow'); // Live PDF   
+  //   });  
+  // }  
+  
+  // public captureScreen()  
+  // {  
+  //   this.visibleProgressBar = true;
+
+  //   var data = document.getElementById('htmlData');  
+    
+  //   html2canvas(data).then(canvas => {  
+  //     // Few necessary setting options  
+
+  //     console.log(data.getAttribute('height'));   
+  //     console.log(data.getAttribute('width'));   
+  //     console.log(canvas.height);   
+  //     console.log(canvas.width);   
+  //     // var pageHeight = 295;    
+  //     // var imgHeight = data.getAttribute('height');  
+  //     // var heightLeft = imgHeight;  
+
+  //     var imgWidth = 100;   
+  //     // var pageHeight = 295;    
+  //     var imgHeight = canvas.height * imgWidth / canvas.width;  
+  //     // var heightLeft = imgHeight;  
+  
+  //     const contentDataURL = canvas.toDataURL('image/png')  
+  //     let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;  
+  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+  //     pdf.save('MYPdf.pdf'); // Generated PDF   
+
+
+  //     console.log('fine');
+  //     this.dialogRef.close();
+
+  //   });  
+
+  // } 
+
+
   public captureScreenToScreen()  
   {  
-    var data = document.getElementById('htmlData');  
+    var data = document.getElementById('htmlData');
+	data.setAttribute("style", "width: 500px; height: 1700px;");                  //modificate per problema troncatura
+    html2canvas(data,{ scrollY: (window.pageYOffset * -1) }).then(canvas => {   //modificate per problema troncatura
+      // Few necessary setting options  
+      var imgWidth = 208;   
+      var pageHeight = 295;    
+      var imgHeight = 2*canvas.height * imgWidth / canvas.width;  
+      var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  ;
+	  //window.open(contentDataURL , "_blank");
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0,0); // position,imgWidth, imgHeight)  //modificate per problema troncatura
+      pdf.output('dataurlnewwindow'); // Live PDF   
+    });  
+  }  
+
+  public captureScreen()  
+  {  
+    var data = document.getElementById('htmlData');  						//se funziona va modificato come sopra
     html2canvas(data).then(canvas => {  
       // Few necessary setting options  
       var imgWidth = 208;   
@@ -136,49 +214,9 @@ export class OrderViewComponent implements OnInit {
       const contentDataURL = canvas.toDataURL('image/png')  
       let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;  
-
-      pdf.addTe
-
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-      pdf.output('dataurlnewwindow'); // Live PDF   
-    });  
-  }  
-  
-  public captureScreen()  
-  {  
-    this.visibleProgressBar = true;
-
-    var data = document.getElementById('htmlData');  
-    
-    html2canvas(data).then(canvas => {  
-      // Few necessary setting options  
-
-      console.log(data.getAttribute('height'));   
-      console.log(data.getAttribute('width'));   
-      console.log(canvas.height);   
-      console.log(canvas.width);   
-      // var pageHeight = 295;    
-      // var imgHeight = data.getAttribute('height');  
-      // var heightLeft = imgHeight;  
-
-      var imgWidth = 100;   
-      // var pageHeight = 295;    
-      var imgHeight = canvas.height * imgWidth / canvas.width;  
-      // var heightLeft = imgHeight;  
-  
-      const contentDataURL = canvas.toDataURL('image/png')  
-      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;  
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
       pdf.save('MYPdf.pdf'); // Generated PDF   
-
-
-      console.log('fine');
-      this.dialogRef.close();
-
     });  
-
-  } 
-
+  }   
 
 }

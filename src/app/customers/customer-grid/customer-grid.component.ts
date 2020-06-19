@@ -81,6 +81,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    */
   public openResourceDialog(formModal: string, _customer: Customer){
 
+    this.viewDetails = false;
+
     const dialogConfig = new MatDialogConfig();
 
     var customer: Customer;
@@ -169,6 +171,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    */
   public openDeleteDialog(_idItem: string, _nominativo: string){
 
+    this.viewDetails = false;
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       idItem: _idItem, 
@@ -203,7 +207,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         if(this.resourceQuery.length > 0){
 
-          console.log('misura esistente');        
+          console.log('Ci sono n° ' + this.resourceQuery.length + ' misure per il cliente selezionato');          
            
           this.measureCustomerDetailView = this.resourceQuery[this.resourceQuery.length-1];
 
@@ -255,17 +259,29 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             var blobUrl = URL.createObjectURL(blob);
             var img = document.createElement('img');
             var divBase64 = document.getElementById('base64')
+            
+            while (divBase64.hasChildNodes()) {
+              divBase64.removeChild(divBase64.lastChild);
+            }
+
             img.src = blobUrl;
             divBase64.appendChild(img);
             // document.body.appendChild(img);
 
           });  
-        }    
+
+          //se c'è almeno una misura si visualizza il pannello 
+          this.customerNameFocused = customer.nominativo;
+          this.customerTelefonoFocused = customer.telefono;
+          this.viewDetails = true;
+
+        } else {
+          this.viewDetails = false;
+          window.alert('Il cliente non ha misure in archivio!!')
+        }   
+
       });
-    
-    this.customerNameFocused = customer.nominativo;
-    this.customerTelefonoFocused = customer.telefono;
-    this.viewDetails = true;
+
   }
 
     /* Method to convert Base64Data Url as Image Blob */
@@ -291,6 +307,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    * @memberof CustomerGridComponent
    */
   private openTakeMeasureDialog(_customer: Customer){
+
+    this.viewDetails = false;
     
     //Dati per la configurazione iniziale del form dialog
     const dialogConfig = new MatDialogConfig();
@@ -307,7 +325,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         var base64: string = result.note_grafiche;
         base64 = base64.replace('data:image/png;base64,','');
-        console.log(base64);
+        // console.log(base64);
 
         var torace: string = result.torace_1_bottone + ";"
                              + result.torace_2_bottone + ";" 
@@ -384,6 +402,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    */
   openOrderDialog(formModal: string, idOrdine: string){
 
+    this.viewDetails = false;
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       idordini: idOrdine, 
@@ -399,6 +419,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   }  
   
   openViewOrder(subcontractorView: boolean){
+
+    this.viewDetails = false;
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {

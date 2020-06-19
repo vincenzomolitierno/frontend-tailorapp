@@ -22,7 +22,8 @@ import {
   MatTabsModule,
   MatButtonToggleModule,
   MatProgressBarModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatAutocompleteModule
 } from '@angular/material';
 
 const modules = [
@@ -47,7 +48,8 @@ const modules = [
   MatTabsModule,
   MatButtonToggleModule,
   MatProgressBarModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatAutocompleteModule
 ];
 
 @NgModule({

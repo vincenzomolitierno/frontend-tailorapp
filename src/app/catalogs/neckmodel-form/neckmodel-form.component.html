@@ -1,18 +1,29 @@
-<div class="form-frame">
-    <h2 mat-dialog-title>Modulo {{formModal}} {{nome_catalogo}}</h2>
-    <mat-dialog-content class="mat-typography">
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Descrizione</mat-label>
-                <input matInput placeholder="inserire descrizione del modello di {{nome_catalogo}}" [(ngModel)]="descrizione">
-                <mat-icon matSuffix>keyboard</mat-icon>
-                <!-- <mat-hint>Hint</mat-hint> -->
-            </mat-form-field>
-        </p>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" mat-dialog-close>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
-    </mat-dialog-actions>
+<form #form>
+    <div class="form-frame">
+        <h2 mat-dialog-title>Modulo {{formModal}} {{nome_catalogo}}</h2>
+        <mat-dialog-content class="mat-typography">
+            <p>
+                <!-- <mat-form-field appearance="fill">
+                    <mat-label>Descrizione</mat-label>
+                    <input matInput placeholder="inserire descrizione del modello di {{nome_catalogo}}" name="descrizione">
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                    <mat-hint>Hint</mat-hint>
+                </mat-form-field> -->
+            </p>
 
-</div>
+            <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Descrizione" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" style="text-transform: uppercase;">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
+            <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="true" [disabled]="form.pristine">Conferma</button>
+        </mat-dialog-actions>
+    </div>
+</form>

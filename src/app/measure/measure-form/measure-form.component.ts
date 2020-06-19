@@ -285,7 +285,7 @@ export class MeasureFormComponent implements OnInit  {
         this.reactiveForm.get('bicipite').setValue(  (parseFloat(this.reactiveForm.get('bicipite').value) + 0.5).toFixed(1)  );  
         break;          
       case 'vita_dietro':
-        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) + 0.5).toFixed(1)  ); 
+        this.reactiveForm.get('vita_dietro').setValue(  (parseFloat(this.reactiveForm.get('vita_dietro').value) + 0.5).toFixed(1)  ); 
         break;   
                
       case 'polso':
@@ -351,7 +351,7 @@ export class MeasureFormComponent implements OnInit  {
         this.reactiveForm.get('bicipite').setValue(  (parseFloat(this.reactiveForm.get('bicipite').value) - 0.5).toFixed(1)  );  
         break;          
       case 'vita_dietro':
-        this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) - 0.5).toFixed(1)  ); 
+        this.reactiveForm.get('vita_dietro').setValue(  (parseFloat(this.reactiveForm.get('vita_dietro').value) - 0.5).toFixed(1)  ); 
         break;   
                
       case 'polso':
@@ -406,7 +406,8 @@ export class MeasureFormComponent implements OnInit  {
 
     console.log('base64 + appunti intercettato dal parent');
 
-    this.measure.note_grafiche = appuntiBase64;
+    // this.measure.note_grafiche = appuntiBase64;
+    // console.log(appuntiBase64);
 
     this.reactiveForm.get('note_grafiche').setValue(appuntiBase64);
     
