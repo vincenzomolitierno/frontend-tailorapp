@@ -19,8 +19,8 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
       // 'idmisurometri',
       'descrizione',
       'idfasonatori',
-      'update',
-      'delete'
+      // 'update',
+      // 'delete'
     ];
 
     constructor(

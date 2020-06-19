@@ -1,34 +1,35 @@
-<div class="form-frame">
-    <h2 mat-dialog-title>Modulo {{formModal}} {{tag_form}}</h2>
-    <mat-dialog-content class="mat-typography">
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Nominativo</mat-label>
-                <input matInput placeholder="inserire nominativo del {{tag_form}}" [(ngModel)]="nominativo">
-                <mat-icon matSuffix>keyboard</mat-icon>
-                <!-- <mat-hint>Hint</mat-hint> -->
-            </mat-form-field>
-        </p>
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Telefono</mat-label>
-                <input matInput placeholder="inserire telefono del {{tag_form}}" [(ngModel)]="telefono">
-                <mat-icon matSuffix>keyboard</mat-icon>
-                <!-- <mat-hint>Hint</mat-hint> -->
-            </mat-form-field>
-        </p>
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>EMail</mat-label>
-                <input matInput placeholder="inserire email {{nome_catalogo}}" [(ngModel)]="email">
-                <mat-icon matSuffix>keyboard</mat-icon>
-                <!-- <mat-hint>Hint</mat-hint> -->
-            </mat-form-field>
-        </p>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" mat-dialog-close>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
-    </mat-dialog-actions>
-
-</div>
+<form #form="ngForm">
+    <div>
+        <h2 mat-dialog-title>Modulo {{formModal}} {{tag_form}}</h2>
+        <mat-dialog-content class="mat-typography">
+            <p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Nominativo</mat-label>
+                    <input matInput placeholder="inserire nominativo del {{tag_form}}" name="nominativo" [(ngModel)]="nominativo" required>
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                    <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Telefono</mat-label>
+                    <input matInput placeholder="inserire telefono del {{tag_form}}" name="telefono" [(ngModel)]="telefono" required>
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                    <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field appearance="fill">
+                    <mat-label>EMail</mat-label>
+                    <input matInput placeholder="inserire email {{nome_catalogo}}" name="email" [(ngModel)]="email">
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                    <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+            </p>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
+            <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="subcontractor" [disabled]="form.invalid||form.pristine">Conferma</button>
+        </mat-dialog-actions>
+    </div>
+</form>

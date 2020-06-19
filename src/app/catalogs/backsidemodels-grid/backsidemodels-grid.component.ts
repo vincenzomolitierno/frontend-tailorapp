@@ -44,16 +44,14 @@ export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
   
       const dialogRef = this.dialog.open(BacksidemodelFormComponent, dialogConfig);
   
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe(result => {      
 
-        console.log(result);
-
-        if(!result && !isUndefined(result)){
-
-            this.postData('neckmodel',        
+        if(result){
+            this.postData('backsidemodel',        
             {
               "modello": result
             });
+
           }
 
       });    

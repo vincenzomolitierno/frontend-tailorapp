@@ -21,7 +21,7 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
       'telefono',
       'email',
       'update',
-      'delete'
+      // 'delete'
     ];
 
   constructor(
@@ -52,7 +52,7 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(SubcontractorFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      console.log(result);
     });    
     
   }

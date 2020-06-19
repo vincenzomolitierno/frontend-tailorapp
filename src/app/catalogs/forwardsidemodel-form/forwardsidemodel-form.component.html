@@ -1,20 +1,21 @@
-<form #form>
+<form novalidate [formGroup]="reactiveForm">
     <div class="form-frame">
         <h2 mat-dialog-title>Modulo {{formModal}} {{nome_catalogo}}</h2>
         <mat-dialog-content class="mat-typography">
             <mat-form-field class="example-full-width">
-                <input type="text" placeholder="Descrizione" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" style="text-transform: uppercase;">
+                <input type="text" placeholder="Descrizione" aria-label="Number" matInput name="modello" id="modello" formControlName="modello" [matAutocomplete]="auto" style="text-transform: uppercase;" required>
                 <mat-autocomplete #auto="matAutocomplete">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option}}
                     </mat-option>
                 </mat-autocomplete>
+                <mat-error *ngIf="reactiveForm.controls.modello.hasError('required')">Inserire la descrizione del modello</mat-error>
             </mat-form-field>
 
         </mat-dialog-content>
         <mat-dialog-actions align="end">
             <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
-            <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="myControl.value" [disabled]="form.pristine">Conferma</button>
+            <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.controls.modello.value" [disabled]="reactiveForm.invalid">Conferma</button>
         </mat-dialog-actions>
     </div>
 </form>

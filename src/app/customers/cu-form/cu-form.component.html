@@ -75,10 +75,8 @@
             </div>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
-            <button mat-raised-button matTooltip="Annulla {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="false" mat-dialog-close cdkFocusInitial>Annulla</button>
+            <button mat-raised-button matTooltip="Annulla {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
             <button mat-raised-button matTooltip="Conferma {{formModal}} del cliente" matTooltipPosition="above" [mat-dialog-close]="customer" [disabled]="form.invalid||form.pristine">Conferma</button>
         </mat-dialog-actions>
-
     </div>
-
 </form>

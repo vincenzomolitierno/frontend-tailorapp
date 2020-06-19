@@ -51,6 +51,8 @@ export class RESTBackendService {
  */
 public getResource(tagResource: string): Observable<any> {
 
+  console.log(this.server.getApiResource(tagResource));
+
   // console.log('Using Token: ' + this.token);  
 
   this.httpOptions = {
@@ -90,6 +92,8 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
   public postResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
 
+    console.log(this.server.getApiResource(tagResource));
+
     return this._http.post<HttpErrorResponse>(
       this.server.getApiResource(tagResource),
       body, 
@@ -100,6 +104,8 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
 
   public delResource(tagResource: string, _body: object): Observable<HttpErrorResponse> {
+
+    console.log(this.server.getApiResource(tagResource));
 
     const localHttpOptions = { 
       headers: new HttpHeaders({ 
@@ -117,6 +123,8 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
   }  
 
   public putResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
+
+    console.log(this.server.getApiResource(tagResource));
 
     return this._http.put<HttpErrorResponse>(
       this.server.getApiResource(tagResource),

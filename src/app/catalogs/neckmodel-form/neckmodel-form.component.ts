@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
@@ -16,7 +16,7 @@ export class NeckmodelFormComponent implements OnInit {
   descrizione: string = '';
   formModal: string = '';
 
-  myControl = new FormControl();
+  reactiveForm: FormGroup;
   //vettore delle descrizioni esistenti da caricare
   options: string[];
   
@@ -26,12 +26,14 @@ export class NeckmodelFormComponent implements OnInit {
       public restBackendService: RESTBackendService) 
       {
       this.formModal = data.formModal;
-
+      
+      this.reactiveForm = new FormGroup({
+        modello: new FormControl('', Validators.required),
+      });
+        
       //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
       this.restBackendService.getResource('neckmodel').subscribe(
-        (data) => {
-
-          
+        (data) => {          
               this.options = data;    
               console.log(data)
 
@@ -39,7 +41,7 @@ export class NeckmodelFormComponent implements OnInit {
               console.log(this.options);
               
               //inizializzazione
-              this.filteredOptions = this.myControl.valueChanges
+              this.filteredOptions = this.reactiveForm.controls.modello.valueChanges
               .pipe(
                 startWith(''),
                 map(value => this._filter(value))

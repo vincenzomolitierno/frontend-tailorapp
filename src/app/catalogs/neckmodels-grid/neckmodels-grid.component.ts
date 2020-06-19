@@ -43,12 +43,9 @@ export class NeckmodelsGridComponent extends GridModel implements OnInit {
       const dialogRef = this.dialog.open(NeckmodelFormComponent, dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
-
         console.log(result);
-
-        if(!result && !isUndefined(result)){
-
-            this.postData('neckmodel',        
+        if(result){
+           this.postData('neckmodel',        
             {
               "modello": result
             });

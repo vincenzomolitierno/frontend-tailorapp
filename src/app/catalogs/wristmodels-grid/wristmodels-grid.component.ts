@@ -43,11 +43,7 @@ export class WristmodelsGridComponent extends GridModel implements OnInit {
       const dialogRef = this.dialog.open(WristmodelFormComponent, dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
-
-        console.log(result);
-
-        if(!result && !isUndefined(result)){
-
+        if(result){
             this.postData('neckmodel',        
             {
               "modello": result
