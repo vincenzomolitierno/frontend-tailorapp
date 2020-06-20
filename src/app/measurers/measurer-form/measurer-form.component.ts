@@ -35,14 +35,14 @@ export class MeasurerFormComponent implements OnInit {
 
    
 
+    //SI popola il combobox con l'elenco dei fasonatori
     this.restBackendService.getResource('subcontractors').subscribe(
       (data) => {
         console.log(data);
             
-            var result = data.map(a => a.nome);
+            var result = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
             this.subcontractors = result;   
-            console.log(data);   
-            console.log(result);    
+
             },
       (error) => {
           console.error(error);

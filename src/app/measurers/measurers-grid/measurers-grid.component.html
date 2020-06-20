@@ -32,16 +32,22 @@
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.idmisurometri}} </td>
             </ng-container> -->
 
-            <!-- Telephone Number Column -->
+            <!-- Description Column -->
             <ng-container matColumnDef="descrizione">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrizione </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.descrizione}} </td>
             </ng-container>
 
-            <!-- Mail Column -->
-            <ng-container matColumnDef="idfasonatori">
+            <!-- idfasonatore Column -->
+            <!-- <ng-container matColumnDef="idfasonatori">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Fasonatore </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.idfasonatori}} </td>
+            </ng-container> -->
+
+            <!-- nome fasonatore Column -->
+            <ng-container matColumnDef="nome_fasonatore">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fasonatore </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.nome_fasonatore}} </td>
             </ng-container>
 
             <!-- Update Column -->

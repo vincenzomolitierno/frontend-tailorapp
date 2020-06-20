@@ -18,7 +18,8 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
     displayedColumns: string[] = [
       // 'idmisurometri',
       'descrizione',
-      'idfasonatori',
+      // 'idfasonatori',
+      'nome_fasonatore',
       // 'update',
       // 'delete'
     ];
@@ -36,7 +37,7 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
   
       //si invoca il metodo ereditato per caricare i dati dal backend, passando come
       //parametro in ingresso il tag che identifica la risorsa da recuperare
-      this.getRemoteData('measurers');     
+      this.getRemoteData('measurers');           
   
     }
 
@@ -55,5 +56,55 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
     });    
     
   } 
+
+  // override
+  public getRemoteData(tagResourse: string):any {
+
+    this.getSubcontractors(); //risorsa fasonatori in recorSetFasonatori
+
+    //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+    this.restBackendService.getResource(tagResourse).subscribe(
+      (data) => {
+            this.resource = data; //risorsa misurometri
+            // #######################################
+            // manipolazione del recordset recuperato
+            var recorSetMisurometri: Array<any> = [];
+            recorSetMisurometri = data;
+
+            for(let i = 0; i < recorSetMisurometri.length; i++) {
+
+              var idFasonatore: number = recorSetMisurometri[i].idfasonatori;
+              var nomeFasonatore = this.recorSetFasonatori.find(x => x.idfasonatori === idFasonatore).nome + 
+              ' - ( tel: ' + this.recorSetFasonatori.find(x => x.idfasonatori === idFasonatore).telefono + ' )';
+              recorSetMisurometri[i].nome_fasonatore = nomeFasonatore;
+
+            }
+            
+            // #######################################
+            this.resource = recorSetMisurometri;
+            this.dataSource = new MatTableDataSource(this.resource);  
+            this.dataSource.paginator = this.paginatorTable;    
+            this.dataSource.sort = this.sortTable;            
+            },
+      (error) => {
+          this.errorHttpErrorResponse = error;
+          this.errorMessage = error.message;
+      }
+    );
+  }
+
+  private recorSetFasonatori: Array<any> = [];
+  getSubcontractors() {
+    this.restBackendService.getResource('subcontractors').subscribe(
+      (data) => {
+            console.log(data);
+            this.recorSetFasonatori = data;              
+            },
+      (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      }
+    );
+  }
   
 }
