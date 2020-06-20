@@ -5,7 +5,7 @@ import { OrderViewComponent } from '../order-view/order-view.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Order } from '../data.model';
-import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
+import { OrderConfirmComponent } from '../order-confirm/order-confirm.component';
 
 @Component({
   selector: 'app-orders-undelivered-grid',
@@ -22,13 +22,15 @@ export class OrdersUndeliveredGridComponent extends GridModel implements OnInit 
    displayedColumns: string[] = [
      'idordini', 
      'data_ordine', 
-     'clienti_idclienti', 
+    //  'clienti_idclienti', 
+     'nome_cliente',
      'data_consegna',
      'mod_consegna',
      'totale',   
      'consegnato',
      'saldato',  
-     'view', 'confirm',
+     'menu_button', //aggiunti
+    //  'view', 'confirm',
     ];
    
     constructor(
@@ -50,19 +52,39 @@ export class OrdersUndeliveredGridComponent extends GridModel implements OnInit 
   }
 
   //OVERRIDE
-  // private restBackendService: RESTBackendService;
-  
   public getRemoteData(tagResourse: string):any {
+
+    this.getCustomers();
+
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResource(tagResourse).subscribe(
       (data) => {
 
             //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
             this.resource = data;
-            console.log(this.resource);
-            console.log(this.resource.filter(ordine => ordine.consegnato === 'NO'));
-            this.dataSource = new MatTableDataSource(this.resource.filter(ordine => ordine.consegnato === 'NO'));   
-                        
+            this.resource = this.resource.filter(ordine => ordine.consegnato === 'NO');
+            // ###################################################
+            var recorSet: Array<any> = [];
+            recorSet = data;
+
+            console.log(recorSet);
+
+            for(let i = 0; i < recorSet.length; i++) {
+              
+              recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
+              recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
+
+              var idClienti: number = recorSet[i].idCliente;
+              var nomeCliente = this.recorSetCustomer.find(x => x.idClienti === idClienti).nominativo + 
+              ' ( ' + this.recorSetCustomer.find(x => x.idClienti === idClienti).telefono + ' )';
+              recorSet[i].nome_cliente = nomeCliente;
+              console.log(nomeCliente);
+
+            }            
+
+            // ###################################################
+            this.resource = recorSet;
+            this.dataSource = new MatTableDataSource(this.resource.filter(ordine => ordine.consegnato === 'NO'));                           
             this.dataSource.paginator = this.paginatorTable;    
             this.dataSource.sort = this.sortTable;            
 
@@ -113,28 +135,22 @@ export class OrdersUndeliveredGridComponent extends GridModel implements OnInit 
     });  
   }
 
-  confirm(){
+  confirmDeliveryOrder(idOrdine: string){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action: 'Contrassegnare ordine come consegnato?', 
+      message: 'Contrassegnare l\'ordine come consegnato?',
+      idOrdine: idOrdine
     };
 
-    const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+    const dialogRef = this.dialog.open(OrderConfirmComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result:' + result);
 
-      switch (result) {
-        case true: //dialog OK
-          
-          break;
-      
-      case false: //dialog NOT OK
-          break;
-
-      default: //dialog escape
-          break;
+      if(result){
+        // si invia la chiamata REST
+        console.log(result);
+        // /OrdiniValues/?idordini=102&operazione=C&negato=false
       }
 
     });    

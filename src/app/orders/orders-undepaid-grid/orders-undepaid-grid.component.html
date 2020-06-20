@@ -35,9 +35,13 @@
             </ng-container>
 
             <!-- Cliente Column -->
-            <ng-container matColumnDef="clienti_idclienti">
+            <!-- <ng-container matColumnDef="clienti_idclienti">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.clienti_idclienti}} </td>
+            </ng-container> -->
+            <ng-container matColumnDef="nome_cliente">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente (telefono) </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.nome_cliente}} </td>
             </ng-container>
 
             <!-- Data Consegna Column -->
@@ -71,22 +75,43 @@
             </ng-container>
 
             <!-- View Order Column -->
-            <ng-container matColumnDef="view">
+            <!-- <ng-container matColumnDef="view">
                 <th mat-header-cell *matHeaderCellDef>
 
                 </th>
                 <td mat-cell *matCellDef="let row" class="middle-row-button">
                     <button mat-raised-button matTooltip="Visualizza ordine" matTooltipPosition="right" (click)="openViewOrder()"><mat-icon>pageview</mat-icon></button>
                 </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Confirm Order Column -->
-            <ng-container matColumnDef="confirm">
+            <!-- <ng-container matColumnDef="confirm">
                 <th mat-header-cell *matHeaderCellDef>
 
                 </th>
                 <td mat-cell *matCellDef="let row" class="last-row-button">
                     <button mat-raised-button matTooltip="Conferma consegna ordine" matTooltipPosition="left" (click)="confirm()"><mat-icon>euro_symbol</mat-icon></button>
+                </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="menu_button">
+                <th mat-header-cell *matHeaderCellDef>
+
+                </th>
+                <td mat-cell *matCellDef="let row" class="last-row-button">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu functions" matTooltip="Azioni applicabili" matTooltipPosition="left">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openViewOrder()">
+                          <mat-icon>pageview</mat-icon>
+                          <span>Visualizza</span>
+                        </button>
+                        <button mat-menu-item (click)="confirmPaymentOrder(row.idordini)">
+                          <mat-icon>euro_symbol</mat-icon>
+                          <span>Saldato</span>
+                        </button>
+                    </mat-menu>
                 </td>
             </ng-container>
 

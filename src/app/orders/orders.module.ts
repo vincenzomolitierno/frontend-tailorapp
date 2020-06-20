@@ -10,6 +10,7 @@ import { ShirtsModule } from '../shirts/shirts.module';
 import { OrderViewComponent } from './order-view/order-view.component';
 import { OrdersUndeliveredGridComponent } from './orders-undelivered-grid/orders-undelivered-grid.component';
 import { OrdersUndepaidGridComponent } from './orders-undepaid-grid/orders-undepaid-grid.component';
+import { OrderConfirmComponent } from './order-confirm/order-confirm.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { OrdersUndepaidGridComponent } from './orders-undepaid-grid/orders-undep
     OrderGridComponent, 
     OrderViewComponent, 
     OrdersUndeliveredGridComponent, 
-    OrdersUndepaidGridComponent
+    OrdersUndepaidGridComponent, 
+    OrderConfirmComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { OrdersUndepaidGridComponent } from './orders-undepaid-grid/orders-undep
   ],
   entryComponents: [
     OrderFormComponent,
-    OrderViewComponent  
+    OrderViewComponent,
+    OrderConfirmComponent  
   ],
 })
 export class OrdersModule { }

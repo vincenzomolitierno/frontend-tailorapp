@@ -181,6 +181,21 @@ export class GridModel {
 
   }  
 
+  
+  public recorSetCustomer: Array<any> = [];
+  getCustomers() {
+    this.restBackendService.getResource('customers').subscribe(
+      (data) => {
+            console.log(data);
+            this.recorSetCustomer = data;              
+            },
+      (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      }
+    );
+  }
+
 
 
 }
