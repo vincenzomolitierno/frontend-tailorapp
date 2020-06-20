@@ -111,7 +111,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      // console.log('Dialog result: ${result}');
     });    
     
   }  
@@ -132,7 +132,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      // console.log('Dialog result: ${result}');
     });  
   }
 
@@ -148,8 +148,25 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result) {
+      if(result){
+        // si invia la chiamata REST
+        console.log(result);
+        // /OrdiniValues/?idordini=102&operazione=C&negato=false
 
+        this.restBackendService.putResource('ordersvalues',
+            {
+              // idordini=102&operazione=C&negato=false
+            }).subscribe(
+            (data) => {
+                  console.log(data);
+                              
+                  },
+            (error) => {
+                console.error(error);
+                console.error('Message: ' + error.message);
+            }
+          );
+        //###################
       }
 
     });    
