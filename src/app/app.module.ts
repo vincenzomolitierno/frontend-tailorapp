@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginModule } from './login/login.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { RESTBackendService } from './backend-service/rest-backend.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
     LoginModule,
     DashboardModule
     ],
-  providers: [],
+  providers: [
+    RESTBackendService
+  ],
   bootstrap: [
     AppComponent
   ],

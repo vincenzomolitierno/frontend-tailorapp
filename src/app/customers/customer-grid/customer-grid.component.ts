@@ -8,10 +8,15 @@ import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { Customer } from '../data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
-import { OrderViewComponent } from 'src/app/orders/order-view/order-view.component';
+// import { OrderViewComponent } from 'src/app/orders/order-view/order-view.component';
 import { isUndefined } from 'util';
 import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
+import { ScriptService } from './script.service';
+import { Base64Utility } from 'src/app/measure/data.model';
+
+declare let pdfMake: any ;
+
 
 @Component({
   selector: 'app-customer-grid',
@@ -54,12 +59,15 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
     constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
-      public dialog: MatDialog
+      public dialog: MatDialog,
+      private scriptService: ScriptService
     ) { 
       super(restBackendService); // si innesca il costruttore della classe padre
       this.resource = Array<Customer>();
 
       this.measureCustomerDetailView = new Measure();
+
+      this.scriptService.load('pdfMake', 'vfsFonts');
     }
 
   //Si inizializza il componente caricando i dati nella tabella
@@ -422,16 +430,22 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
     this.viewDetails = false;
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      view: subcontractorView, 
-    };
+    console.log(subcontractorView);
 
-    const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
+    this.generatePdf();
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
-    });  
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.data = {
+    //   view: subcontractorView, 
+    // };
+
+    // const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('Dialog result: ${result}');
+    // });  
+
+
   }  
 
   /**
@@ -446,5 +460,178 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = false;
 
   } 
+
+  private generatePdf(){
+
+    var obj: Object;
+   
+
+    var refSize:number = 14;
+
+     const documentDefinition = {
+       
+        content: [
+          {
+            text: 'STAMPA ORDINE',
+            style: 'header'
+          } ,
+          {
+            columns: [
+              {
+                text: 'Committente: ' + 'nome e cognome',
+                style: 'subheader'
+              },
+              {
+                text: 'Misurometro:' + 'misurmetro scelto',
+                style: 'subheader'
+              }
+            ]
+          },  
+          {
+            columns: [
+              {
+                text: 'Collo:'        + 'dummy' + '\n' +
+                      'Spalla:'       + 'dummy' + '\n' +
+                      'Lun. Manica:'  + 'dummy' + '\n' +
+                      'Bicipite:'     + 'dummy' + '\n' +
+                      'Vita Dietro:'  + 'dummy' + '\n' ,
+                style: 'name'
+              },
+              {
+                text: 'Polso: '           + 'dummy' + '\n' +
+                      'Lun. Camicia:'     + 'dummy' + '\n' +
+                      'Avambraccio:'      + 'dummy' + '\n' +
+                      'Lun. Avambraccio:' + 'dummy' + '\n' +
+                      'Bacino Dietro:'    + 'dummy' + '\n',
+                style: 'name'
+              },
+              {
+                text: 'TORACE AVANTI' + '\n' +
+                      '1° Bottone'     + 'dummy' + '\n' +
+                      '2° Bottone'     + 'dummy' + '\n' +
+                      '3° Bottone'     + 'dummy' + '\n',
+                style: 'name'
+              },
+              {
+                text: '4° Bottone'     + 'dummy' + '\n' +
+                      '5° Bottone'     + 'dummy' + '\n' +
+                      '6° Bottone'     + 'dummy' + '\n' +
+                      '7° Bottone'     + 'dummy' + '\n' +
+                      '8° Bottone'     + 'dummy' + '\n',
+                style: 'name'
+              }                                        
+            ]
+          },
+          '\n',
+          {
+            image: Base64Utility.base64ShirtEmpty,
+            width: 250,
+            alignment: 'center'
+          },
+          '\n',
+          {
+            text: 'ELENCO CAMICE',
+            style: 'subheader',
+            alignment: 'left',
+            margin: [0, 10, 0, 0]
+          },
+          // {
+          //   style: 'tableExample',
+          //   table: {
+          //     heights: 40,
+          //     body: [
+          //       ['row 1'],
+          //       ['row 2'],
+          //       ['row 3']
+          //     ]
+          //   }
+          // },
+          {
+            style: 'name',
+            table: {
+              heights: 50,
+              widths: ['*', 150],
+              body: [
+                ['dettaglio camicia 1', ' '],
+                ['dettaglio camicia 2', ' '],
+                ['dettaglio camicia 3', ' ']
+              ]
+            }
+          },                                       
+          {
+            text: 'Fasonista ' + 'nome fasonista',
+            style: 'subheader',
+            alignment: 'left',
+          },
+          'Note del fasonista',
+          {
+            style: 'name',
+            table: {
+              widths: ['*'],
+              body: [
+                [' '],
+              ]
+            }
+          },
+          'Note del cliente',
+          {
+            style: 'name',
+            table: {
+              widths: ['*'],
+              body: [
+                [' '],
+              ]
+            }
+          }         
+          
+        ],       
+        info: {
+          title: 'STAMPA ORDINE',
+          author: 'idealprogetti.com',
+          subject: 'Riepilogo Lavorazioni',
+          keywords: 'RESUME, ONLINE RESUME',          
+        },
+        
+        styles: {
+          header: {
+            fontSize: refSize,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 10, 0, 10],
+          },
+          subheader: {
+            fontSize: refSize-2,
+            bold: true,
+            alignment: 'left',
+            margin: [0, 10, 0, 10],
+          },
+          name: {
+            fontSize: refSize-4,
+            alignment: 'left',
+          },
+          jobTitle: {
+            fontSize: 14,
+            bold: true,
+            italics: true
+          },
+          sign: {
+            margin: [0, 50, 0, 10],
+            alignment: 'right',
+            italics: true
+          },
+          tableExample: {
+            margin: [0, 10, 0, 10]
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 11,
+            color: 'black'
+          }          
+        }   // fine style 
+      
+      };
+
+     pdfMake.createPdf(documentDefinition).download();
+    }
 
 }

@@ -35,8 +35,8 @@
                 <div class="grid-item">
                     <p>Collo: {{collo}}</p>
                     <p>Spalla: {{spalla}}</p>
-                    <p>Bicipite: {{bicipite}}</p>
-                    <p>Lun. Bicipite: {{lunghezza_bicipite}}</p>
+                    <p>Lun. Manica: {{bicipite}}</p>
+                    <p>Bicipite: {{lunghezza_bicipite}}</p>
                     <p>Vita Dietro: {{vita_dietro}}</p>
                 </div>
                 <div class="grid-item">
@@ -133,7 +133,7 @@
         </mat-dialog-content>
 
         <mat-dialog-actions align="end">
-            <button mat-raised-button matTooltip="Stampa pdf" matTooltipPosition="above" (click)="captureScreenToScreen()"><mat-icon>print</mat-icon></button>
+            <button mat-raised-button matTooltip="Stampa pdf" matTooltipPosition="above" (click)="generatePdf()"><mat-icon>print</mat-icon></button>
         </mat-dialog-actions>
     </div>
 
