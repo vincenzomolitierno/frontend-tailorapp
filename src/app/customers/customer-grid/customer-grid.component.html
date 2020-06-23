@@ -25,6 +25,13 @@
     <!-- table -->
     <div class="mat-elevation-z2 table-container" style="clear: left;">
         <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Idcliente Column -->
+            <ng-container matColumnDef="idclienti">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="display: none;"> Id Cliente </th>
+                <td mat-cell *matCellDef="let element" class="name-cell" (click)="openDetails(element)" style="display: none;"> {{element.idclienti}} </td>
+            </ng-container>
+
             <!-- Nominativo Column -->
             <ng-container matColumnDef="nominativo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Nominativo </th>
@@ -93,7 +100,7 @@
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="middle-row-button">
-                    <button mat-raised-button matTooltip="Visualizza ordini di {{row.nominativo}}" matTooltipPosition="left" (click)="openViewOrder(false)"><mat-icon>pageview</mat-icon></button>
+                    <button mat-raised-button matTooltip="Visualizza ordini di {{row.nominativo}}" matTooltipPosition="left" (click)="openViewOrderByCustomerId(row.idclienti)"><mat-icon>pageview</mat-icon></button>
                 </td>
             </ng-container>
 
@@ -102,7 +109,7 @@
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="last-row-button">
-                    <button mat-raised-button matTooltip="Nuovo ordine per {{row.nominativo}}" matTooltipPosition="left" (click)="openOrderDialog('nuovo',row.idordini)"><mat-icon>create_new_folder</mat-icon></button>
+                    <button mat-raised-button matTooltip="Nuovo ordine per {{row.nominativo}}" matTooltipPosition="left" (click)="openOrderDialog('inserimento',row)"><mat-icon>create_new_folder</mat-icon></button>
                 </td>
             </ng-container>
 

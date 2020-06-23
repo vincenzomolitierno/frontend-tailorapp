@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { CuFormComponent as CustomerFormComponent } from '../cu-form/cu-form.component';
 // import { CuFormComponent as TakeMeasureFormComponent } from '../../measure/cu-form/cu-form.component';
 import { OrderFormComponent } from 'src/app/orders/order-form/order-form.component';
@@ -48,6 +48,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
     'nominativo', 
+    
+    'idclienti',
+
     'telefono', 
     'cartamodello', 
     'note', 
@@ -60,7 +63,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
       public dialog: MatDialog,
-      private scriptService: ScriptService
+      private scriptService: ScriptService,
+      private _snackBar: MatSnackBar
     ) { 
       super(restBackendService); // si innesca il costruttore della classe padre
       this.resource = Array<Customer>();
@@ -408,45 +412,56 @@ export class CustomerGridComponent extends GridModel implements OnInit {
    * @param {string} idOrdine
    * @memberof CustomerGridComponent
    */
-  openOrderDialog(formModal: string, idOrdine: string){
+  openOrderDialog(formModal: string, customer: Customer){
 
     this.viewDetails = false;
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      idordini: idOrdine, 
-      formModal: formModal, 
-    };
+    this.restBackendService.getResourceQuery('measuresQuery',
+    'idclienti' + '=' + customer.idclienti).subscribe(
+        (data) => {
+          var array: Array<Measure> = data;
+          if ( array.length > 0 ) {
 
-    const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
+              // c'è almento una misura
+              const dialogConfig = new MatDialogConfig();
+              dialogConfig.data = {
+                customer: customer, 
+                measure: data[0],
+                formModal: formModal, 
+              };
+          
+              const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
+          
+              dialogRef.afterClosed().subscribe(result => {
+                console.log('Dialog result: ${result}');
+              }); 
+                          
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
-    });    
+          } else {
+
+              const dialogConfig = new MatDialogConfig();
+              dialogConfig.data = {
+                messaggio: 'Il cliente non ha alcuna misura in archivio. \rCreazione dell\'ordine annullata!!', 
+                titolo: 'NOTA BENE', 
+              };
+          
+              const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+              dialogRef.afterClosed().subscribe(result => {
+                console.log(result);
+              });             
+
+          }
+
+        },
+        (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      });
+
+       
     
   }  
   
-  openViewOrder(subcontractorView: boolean){
-
-    this.viewDetails = false;
-
-    console.log(subcontractorView);
-
-    this.generatePdf();
-
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    //   view: subcontractorView, 
-    // };
-
-    // const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('Dialog result: ${result}');
-    // });  
-
-
-  }  
 
   /**
    * Override the parent's method to manage customer details too
@@ -461,9 +476,49 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
   } 
 
+  openViewOrder(subcontractorView: boolean){
+
+    this.viewDetails = false;
+    console.log(subcontractorView);
+    this.generatePdf();
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.data = {
+    //   view: subcontractorView, 
+    // };
+
+    // const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('Dialog result: ${result}');
+    // });  
+
+  }   
+
+
+  public openViewOrderByCustomerId(idCliente: string){
+
+    this.generatePdf();
+
+    // console.log(idCliente);
+    // this.restBackendService.getResourceQuery('ordersValues',
+    //   'idclienti' + '=' + idCliente).subscribe( 
+    //   (data) => {
+    //     console.log(data);
+        
+    //     },
+    //   (error) => {
+    //       this.errorHttpErrorResponse = error;
+    //       this.errorMessage = error.message;
+    // });
+
+  }
+
   private generatePdf(){
 
     var obj: Object;
+    obj = [['dettaglio camicia 1', ' '],
+          ['dettaglio camicia 2', ' '],
+    ['dettaglio camicia 3', ' ']];
    
 
     var refSize:number = 14;
@@ -490,34 +545,34 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           {
             columns: [
               {
-                text: 'Collo:'        + 'dummy' + '\n' +
-                      'Spalla:'       + 'dummy' + '\n' +
-                      'Lun. Manica:'  + 'dummy' + '\n' +
-                      'Bicipite:'     + 'dummy' + '\n' +
-                      'Vita Dietro:'  + 'dummy' + '\n' ,
+                text: 'Collo: '        + 'dummy' + '\n' +
+                      'Spalla: '       + 'dummy' + '\n' +
+                      'Lun. Manica: '  + 'dummy' + '\n' +
+                      'Bicipite: '     + 'dummy' + '\n' +
+                      'Vita Dietro: '  + 'dummy' + '\n' ,
                 style: 'name'
               },
               {
                 text: 'Polso: '           + 'dummy' + '\n' +
-                      'Lun. Camicia:'     + 'dummy' + '\n' +
-                      'Avambraccio:'      + 'dummy' + '\n' +
-                      'Lun. Avambraccio:' + 'dummy' + '\n' +
-                      'Bacino Dietro:'    + 'dummy' + '\n',
+                      'Lun. Camicia: '     + 'dummy' + '\n' +
+                      'Avambraccio: '      + 'dummy' + '\n' +
+                      'Lun. Avambraccio: ' + 'dummy' + '\n' +
+                      'Bacino Dietro: '    + 'dummy' + '\n',
                 style: 'name'
               },
               {
                 text: 'TORACE AVANTI' + '\n' +
-                      '1° Bottone'     + 'dummy' + '\n' +
-                      '2° Bottone'     + 'dummy' + '\n' +
-                      '3° Bottone'     + 'dummy' + '\n',
+                      '1° Bottone: '     + 'dummy' + '\n' +
+                      '2° Bottone: '     + 'dummy' + '\n' +
+                      '3° Bottone: '     + 'dummy' + '\n',
                 style: 'name'
               },
               {
-                text: '4° Bottone'     + 'dummy' + '\n' +
-                      '5° Bottone'     + 'dummy' + '\n' +
-                      '6° Bottone'     + 'dummy' + '\n' +
-                      '7° Bottone'     + 'dummy' + '\n' +
-                      '8° Bottone'     + 'dummy' + '\n',
+                text: '4° Bottone: '     + 'dummy' + '\n' +
+                      '5° Bottone: '     + 'dummy' + '\n' +
+                      '6° Bottone: '     + 'dummy' + '\n' +
+                      '7° Bottone: '     + 'dummy' + '\n' +
+                      '8° Bottone: '     + 'dummy' + '\n',
                 style: 'name'
               }                                        
             ]
@@ -530,32 +585,17 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           },
           '\n',
           {
-            text: 'ELENCO CAMICE',
+            text: 'ELENCO CAMICIE',
             style: 'subheader',
             alignment: 'left',
             margin: [0, 10, 0, 0]
           },
-          // {
-          //   style: 'tableExample',
-          //   table: {
-          //     heights: 40,
-          //     body: [
-          //       ['row 1'],
-          //       ['row 2'],
-          //       ['row 3']
-          //     ]
-          //   }
-          // },
           {
             style: 'name',
             table: {
               heights: 50,
               widths: ['*', 150],
-              body: [
-                ['dettaglio camicia 1', ' '],
-                ['dettaglio camicia 2', ' '],
-                ['dettaglio camicia 3', ' ']
-              ]
+              body: obj
             }
           },                                       
           {
@@ -572,8 +612,22 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                 [' '],
               ]
             }
-          },
-          'Note del cliente',
+          },          
+          {
+            columns: [
+              {
+                text: 'Data consegna: ' + 'gg/mm/aaaa',
+                style: 'subheader',
+                alignment: 'left'
+              },
+              {
+                text: 'Modalità consegna:' + 'modalità consegna',
+                style: 'subheader',
+                alignment: 'left'
+              }
+            ]
+          },  
+          'Note per il cliente',
           {
             style: 'name',
             table: {
@@ -582,8 +636,21 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                 [' '],
               ]
             }
-          }         
-          
+          },
+          {
+            columns: [
+              {
+                text: 'Totale: ' + '##,## €' + '\n'
+                    + 'Acconto: ' + '##,## €' + '\n'
+                    + 'Saldo: ' + '##,## €' + '\n',
+                style: 'subheader'
+              },
+              {
+                text: 'Saldato' + 'SI/NO',
+                style: 'subheader'
+              }
+            ]
+          }          
         ],       
         info: {
           title: 'STAMPA ORDINE',
@@ -602,12 +669,12 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           subheader: {
             fontSize: refSize-2,
             bold: true,
-            alignment: 'left',
+            alignment: 'center',
             margin: [0, 10, 0, 10],
           },
           name: {
             fontSize: refSize-4,
-            alignment: 'left',
+            alignment: 'center',
           },
           jobTitle: {
             fontSize: 14,
@@ -632,6 +699,14 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       };
 
      pdfMake.createPdf(documentDefinition).download();
+    }
+
+    openSnackBar() {
+      this._snackBar.open('Misure assenti, inserire una misura per il cliente', 'End now', {
+        duration: 5000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
 
 }

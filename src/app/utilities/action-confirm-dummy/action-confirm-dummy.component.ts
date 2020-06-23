@@ -8,13 +8,16 @@ import { DateAdapter, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 export class ActionConfirmDummyComponent implements OnInit {
 
-  titol: string = "empty";
+  titolo: string = "empty";
+  messaggio: string = "empty";
 
   constructor(
     public dialogRef: MatDialogRef<ActionConfirmDummyComponent>,
     @Inject(MAT_DIALOG_DATA) data
     ) {
-    this.titol = data.message;    
+    this.titolo = data.titolo;    
+    this.messaggio = data.messaggio;    
+
    }
 
   ngOnInit() {

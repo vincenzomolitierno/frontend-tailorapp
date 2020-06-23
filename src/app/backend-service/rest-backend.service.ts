@@ -69,6 +69,18 @@ public getResource(tagResource: string): Observable<any> {
 
 }
 
+public getAwaitResource(tagResource: string){
+  let p = new Promise((res, rej)=> {
+    this._http.get( 
+      this.server.getApiResource(tagResource),
+      this.httpOptions
+        ).subscribe(
+        success => res(success), 
+        error => rej(error))
+  })
+  return p
+}
+
 public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any> {
 
   // console.log('Using Token: ' + this.token);  

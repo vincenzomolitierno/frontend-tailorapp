@@ -33,8 +33,6 @@ export class MeasurerFormComponent implements OnInit {
 
   ngOnInit() {
 
-   
-
     //SI popola il combobox con l'elenco dei fasonatori
     this.restBackendService.getResource('subcontractors').subscribe(
       (data) => {

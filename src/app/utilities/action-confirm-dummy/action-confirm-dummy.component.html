@@ -1,14 +1,7 @@
-<div class="form-frame">
-    <h2 mat-dialog-title>{{titol}}</h2>
-    <mat-dialog-content class="mat-typography">
-
-        <!-- informazioni generali -->
-
-
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Annulla azione" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma azione" matTooltipPosition="above" [mat-dialog-close]="true">Conferma</button>
-    </mat-dialog-actions>
-
+<div class="confirm-dialog">
+    <h1 mat-dialog-title>{{titolo}}</h1>
+    <div mat-dialog-content>{{messaggio}}</div>
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+    </div>
 </div>
