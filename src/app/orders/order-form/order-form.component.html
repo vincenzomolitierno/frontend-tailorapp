@@ -40,7 +40,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Totale</mat-label>
                 <input matInput placeholder="importo ordine" formControlName="totale">
-                <mat-icon matSuffix>keyboard</mat-icon>
+                <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">
@@ -50,8 +50,8 @@
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Acconto</mat-label>
-                <input type="number" matInput placeholder="acconto versato" formControlName="acconto" pattern="[0-9._%+-]+\.[0-9]{2}$" step=".01">
-                <mat-icon matSuffix>keyboard</mat-icon>
+                <input type="number" matInput placeholder="acconto versato" formControlName="acconto">
+                <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">
@@ -62,6 +62,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Saldo</mat-label>
                 <input matInput placeholder="saldo ordine" value="{{totale-acconto}}" [readonly]="true" formControlName="saldo">
+                <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">

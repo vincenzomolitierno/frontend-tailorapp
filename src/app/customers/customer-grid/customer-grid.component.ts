@@ -456,10 +456,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
         (error) => {
           console.error(error);
           console.error('Message: ' + error.message);
-      });
-
-       
-    
+      });        
   }  
   
 
@@ -497,19 +494,38 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
   public openViewOrderByCustomerId(idCliente: string){
 
-    this.generatePdf();
+    this.viewDetails = false;
+  
+      this.restBackendService.getResourceQuery('measuresQuery',
+      'idclienti' + '=' + idCliente).subscribe(
+          (data) => {
+            var array: Array<Measure> = data;
+            if ( array.length > 0 ) {
+  
+                // c'è almento una misura
+                this.generatePdf();
 
-    // console.log(idCliente);
-    // this.restBackendService.getResourceQuery('ordersValues',
-    //   'idclienti' + '=' + idCliente).subscribe( 
-    //   (data) => {
-    //     console.log(data);
-        
-    //     },
-    //   (error) => {
-    //       this.errorHttpErrorResponse = error;
-    //       this.errorMessage = error.message;
-    // });
+            } else {
+  
+                const dialogConfig = new MatDialogConfig();
+                dialogConfig.data = {
+                  messaggio: 'Il cliente non ha alcuna misura in archivio. \rStampa dell\'ordine annullata!!', 
+                  titolo: 'NOTA BENE', 
+                };
+            
+                const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+                dialogRef.afterClosed().subscribe(result => {
+                  console.log(result);
+                });             
+  
+            }
+  
+          },
+          (error) => {
+            console.error(error);
+            console.error('Message: ' + error.message);
+        });        
+
 
   }
 
@@ -708,5 +724,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
         verticalPosition: 'top',
       });
     }
+
+    
 
 }

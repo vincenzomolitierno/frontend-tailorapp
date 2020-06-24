@@ -87,17 +87,14 @@ export class OrderFormComponent implements OnInit {
                                   this.data_misura.split(' ')[0].split('/')[2];
       
       
-    // if ( this.formModal=='inserimento' ){
+    if ( this.formModal=='inserimento' ){
 
-    //   this.loadFormForNewOrder();   
-      
       
 
-    // } else if ( this.formModal=='aggiornamento' ) {
+    } else if ( this.formModal=='aggiornamento' ) {
 
-    //   this.loadFormForUpdateOrder();
 
-    // }
+    }
   }
 
 
