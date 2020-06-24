@@ -79,7 +79,7 @@
                     </div>
                 </div>
 
-                <!-- INPUT LUNGHEZZA MANICA -->
+                <!-- INPUT lung_bicipite -->
                 <div class="control-measure">
                     <div class="container-button">
                         <div class="center-button">
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="value-set">
-                        <p>Bicipite</p>
+                        <p>Bicipite Totale x Braccio</p>
                         <input type="text" formControlName="bicipite" class="value-display" readonly>
                     </div>
                     <div class="container-button">
@@ -115,20 +115,20 @@
                     </div>
                 </div>
 
-                <!-- INPUT VITA DIETRO -->
+                <!-- INPUT avambraccio -->
                 <div class="control-measure">
                     <div class="container-button">
                         <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonDecrease('vita_dietro')"><mat-icon>remove</mat-icon></button>
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('avambraccio')"><mat-icon>remove</mat-icon></button>
                         </div>
                     </div>
                     <div class="value-set">
-                        <p>Vita dietro</p>
-                        <input type="text" formControlName="vita_dietro" class="value-display" readonly>
+                        <p>Avambraccio Totale x Braccio</p>
+                        <input type="text" formControlName="avambraccio" class="value-display" readonly>
                     </div>
                     <div class="container-button">
                         <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonIncrease('vita_dietro')"><mat-icon>add</mat-icon></button>
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('avambraccio')"><mat-icon>add</mat-icon></button>
                         </div>
                     </div>
                 </div>
@@ -136,25 +136,7 @@
 
             <!-- SECONDA COLONNA DI INPUT -->
             <div class="grid-item">
-                <!-- INPUT POLSO -->
-                <div class="control-measure">
-                    <div class="container-button">
-                        <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonDecrease('polso')"><mat-icon>remove</mat-icon></button>
-                        </div>
-                    </div>
-                    <div class="value-set">
-                        <p>Polso</p>
-                        <input type="text" formControlName="polso" class="value-display" readonly>
-                    </div>
-                    <div class="container-button">
-                        <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonIncrease('polso')"><mat-icon>add</mat-icon></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- INPUT lunghezza_camicia -->
+                <!-- INPUT lung_camicia -->
                 <div class="control-measure">
                     <div class="container-button">
                         <div class="center-button">
@@ -172,38 +154,38 @@
                     </div>
                 </div>
 
-                <!-- INPUT avambraccio -->
+                <!-- INPUT centro_schiena -->
                 <div class="control-measure">
                     <div class="container-button">
                         <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonDecrease('avambraccio')"><mat-icon>remove</mat-icon></button>
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('centro_schiena')"><mat-icon>remove</mat-icon></button>
                         </div>
                     </div>
                     <div class="value-set">
-                        <p>Avambraccio</p>
-                        <input type="text" formControlName="avambraccio" class="value-display" readonly>
+                        <p>Centro Schiena</p>
+                        <input type="text" formControlName="centro_schiena" class="value-display" readonly>
                     </div>
                     <div class="container-button">
                         <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonIncrease('avambraccio')"><mat-icon>add</mat-icon></button>
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('centro_schiena')"><mat-icon>add</mat-icon></button>
                         </div>
                     </div>
                 </div>
 
-                <!-- INPUT lunghezza_avambraccio -->
+                <!-- INPUT vita_dietro -->
                 <div class="control-measure">
                     <div class="container-button">
                         <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonDecrease('lunghezza_avambraccio')"><mat-icon>remove</mat-icon></button>
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('vita_dietro')"><mat-icon>remove</mat-icon></button>
                         </div>
                     </div>
                     <div class="value-set">
-                        <p>Lun Avambraccio</p>
-                        <input type="text" formControlName="lunghezza_avambraccio" class="value-display" readonly>
+                        <p>Vita Dietro</p>
+                        <input type="text" formControlName="vita_dietro" class="value-display" readonly>
                     </div>
                     <div class="container-button">
                         <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonIncrease('lunghezza_avambraccio')"><mat-icon>add</mat-icon></button>
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('vita_dietro')"><mat-icon>add</mat-icon></button>
                         </div>
                     </div>
                 </div>
@@ -216,12 +198,30 @@
                         </div>
                     </div>
                     <div class="value-set">
-                        <p>Bacino dietro</p>
+                        <p>Bacino Dietro</p>
                         <input type="text" formControlName="bacino_dietro" class="value-display" readonly>
                     </div>
                     <div class="container-button">
                         <div class="center-button">
                             <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino_dietro')"><mat-icon>add</mat-icon></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INPUT Polso -->
+                <div class="control-measure">
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('polso')"><mat-icon>remove</mat-icon></button>
+                        </div>
+                    </div>
+                    <div class="value-set">
+                        <p>Polso</p>
+                        <input type="text" formControlName="polso" class="value-display" readonly>
+                    </div>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('polso')"><mat-icon>add</mat-icon></button>
                         </div>
                     </div>
                 </div>

@@ -81,18 +81,19 @@ export class ShirtsGridComponent implements OnInit {
   
   getRemoteData() {
     
-    const SHIRTS_DATA: CamiciaElement[] = [
-      {
-        idcamicie: 1,
-        colore: 'rossa',
-        quantita: 3
-      },
-      {
-        idcamicie: 2,
-        colore: 'gialla',
-        quantita: 2
-      }          
-    ];
+    const SHIRTS_DATA: CamiciaElement[] = [];
+    // const SHIRTS_DATA: CamiciaElement[] = [
+    //   {
+    //     idcamicie: 1,
+    //     colore: 'rossa',
+    //     quantita: 3
+    //   },
+    //   {
+    //     idcamicie: 2,
+    //     colore: 'gialla',
+    //     quantita: 2
+    //   }          
+    // ];
 
     this.dataSourceShirt = new MatTableDataSource(SHIRTS_DATA);  
   }    

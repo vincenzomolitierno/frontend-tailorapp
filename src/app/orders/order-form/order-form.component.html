@@ -1,8 +1,8 @@
 <form novalidate [formGroup]="reactiveForm">
 
     <h2 mat-dialog-title>Modulo {{formModal}} ORDINE</h2>
-    <p>Committente: {{nominativo}}</p>
-    <p>Ultime misure prese in data: {{data_misura}} </p>
+    <p style="text-transform: uppercase;">Committente: <b>{{nominativo}}</b></p>
+    <p style="text-transform: uppercase;">Ultime misure prese in data: <b>{{data_misura}}</b> </p>
     <mat-dialog-content class="mat-typography">
 
         <!-- informazioni generali -->
@@ -61,7 +61,7 @@
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Saldo</mat-label>
-                <input matInput placeholder="saldo ordine" value="{{totale-acconto}}" [readonly]="true" formControlName="saldo">
+                <input matInput placeholder="saldo ordine" [readonly]="true" formControlName="saldo">
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>

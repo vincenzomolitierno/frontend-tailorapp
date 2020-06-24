@@ -13,10 +13,6 @@ import { isUndefined } from 'util';
 import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
-import { Base64Utility } from 'src/app/measure/data.model';
-
-declare let pdfMake: any ;
-
 
 @Component({
   selector: 'app-customer-grid',
@@ -39,9 +35,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   torace_7_bottone: string = '';
   torace_8_bottone: string = '';
 
-  dummy_data: string = 'X,Y';
+  // dummy_data: string = 'X,Y';
 
-  item_empty: Customer;
+  item_empty: Customer; // per aprire il dialog per la creazione di un cliente
 
   measureCustomerDetailView: Measure;
 
@@ -57,8 +53,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     'update', 
     'delete', 
     'measure', 
-    'view_orders', 
-    'new_order'];
+    'new_order'
+    // 'view_orders'
+  ];
 
     constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
@@ -360,7 +357,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           "vita_dietro": result.vita_dietro,
           "lung_camicia": result.lunghezza_camicia,
           "avambraccio": result.avambraccio,
-          "lung_avambraccio": result.lunghezza_avambraccio,
+          "lung_avambraccio": result.centro_schiena,
           "bacino_dietro": result.bacino_dietro,
           "bacino": '',
           "torace": torace,
@@ -433,9 +430,12 @@ export class CustomerGridComponent extends GridModel implements OnInit {
               const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
           
               dialogRef.afterClosed().subscribe(result => {
-                console.log('Dialog result: ${result}');
-              }); 
-                          
+                // azioni dopo la chiusura della dialog
+                if (result) {
+                  console.log(result);
+                }
+
+              });                           
 
           } else {
 
@@ -472,250 +472,6 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = false;
 
   } 
-
-  openViewOrder(subcontractorView: boolean){
-
-    this.viewDetails = false;
-    console.log(subcontractorView);
-    this.generatePdf();
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    //   view: subcontractorView, 
-    // };
-
-    // const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('Dialog result: ${result}');
-    // });  
-
-  }   
-
-
-  public openViewOrderByCustomerId(idCliente: string){
-
-    this.viewDetails = false;
-  
-      this.restBackendService.getResourceQuery('measuresQuery',
-      'idclienti' + '=' + idCliente).subscribe(
-          (data) => {
-            var array: Array<Measure> = data;
-            if ( array.length > 0 ) {
-  
-                // c'è almento una misura
-                this.generatePdf();
-
-            } else {
-  
-                const dialogConfig = new MatDialogConfig();
-                dialogConfig.data = {
-                  messaggio: 'Il cliente non ha alcuna misura in archivio. \rStampa dell\'ordine annullata!!', 
-                  titolo: 'NOTA BENE', 
-                };
-            
-                const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
-                dialogRef.afterClosed().subscribe(result => {
-                  console.log(result);
-                });             
-  
-            }
-  
-          },
-          (error) => {
-            console.error(error);
-            console.error('Message: ' + error.message);
-        });        
-
-
-  }
-
-  private generatePdf(){
-
-    var obj: Object;
-    obj = [['dettaglio camicia 1', ' '],
-          ['dettaglio camicia 2', ' '],
-    ['dettaglio camicia 3', ' ']];
-   
-
-    var refSize:number = 14;
-
-     const documentDefinition = {
-       
-        content: [
-          {
-            text: 'STAMPA ORDINE',
-            style: 'header'
-          } ,
-          {
-            columns: [
-              {
-                text: 'Committente: ' + 'nome e cognome',
-                style: 'subheader'
-              },
-              {
-                text: 'Misurometro:' + 'misurmetro scelto',
-                style: 'subheader'
-              }
-            ]
-          },  
-          {
-            columns: [
-              {
-                text: 'Collo: '        + 'dummy' + '\n' +
-                      'Spalla: '       + 'dummy' + '\n' +
-                      'Lun. Manica: '  + 'dummy' + '\n' +
-                      'Bicipite: '     + 'dummy' + '\n' +
-                      'Vita Dietro: '  + 'dummy' + '\n' ,
-                style: 'name'
-              },
-              {
-                text: 'Polso: '           + 'dummy' + '\n' +
-                      'Lun. Camicia: '     + 'dummy' + '\n' +
-                      'Avambraccio: '      + 'dummy' + '\n' +
-                      'Lun. Avambraccio: ' + 'dummy' + '\n' +
-                      'Bacino Dietro: '    + 'dummy' + '\n',
-                style: 'name'
-              },
-              {
-                text: 'TORACE AVANTI' + '\n' +
-                      '1° Bottone: '     + 'dummy' + '\n' +
-                      '2° Bottone: '     + 'dummy' + '\n' +
-                      '3° Bottone: '     + 'dummy' + '\n',
-                style: 'name'
-              },
-              {
-                text: '4° Bottone: '     + 'dummy' + '\n' +
-                      '5° Bottone: '     + 'dummy' + '\n' +
-                      '6° Bottone: '     + 'dummy' + '\n' +
-                      '7° Bottone: '     + 'dummy' + '\n' +
-                      '8° Bottone: '     + 'dummy' + '\n',
-                style: 'name'
-              }                                        
-            ]
-          },
-          '\n',
-          {
-            image: Base64Utility.base64ShirtEmpty,
-            width: 250,
-            alignment: 'center'
-          },
-          '\n',
-          {
-            text: 'ELENCO CAMICIE',
-            style: 'subheader',
-            alignment: 'left',
-            margin: [0, 10, 0, 0]
-          },
-          {
-            style: 'name',
-            table: {
-              heights: 50,
-              widths: ['*', 150],
-              body: obj
-            }
-          },                                       
-          {
-            text: 'Fasonista ' + 'nome fasonista',
-            style: 'subheader',
-            alignment: 'left',
-          },
-          'Note del fasonista',
-          {
-            style: 'name',
-            table: {
-              widths: ['*'],
-              body: [
-                [' '],
-              ]
-            }
-          },          
-          {
-            columns: [
-              {
-                text: 'Data consegna: ' + 'gg/mm/aaaa',
-                style: 'subheader',
-                alignment: 'left'
-              },
-              {
-                text: 'Modalità consegna:' + 'modalità consegna',
-                style: 'subheader',
-                alignment: 'left'
-              }
-            ]
-          },  
-          'Note per il cliente',
-          {
-            style: 'name',
-            table: {
-              widths: ['*'],
-              body: [
-                [' '],
-              ]
-            }
-          },
-          {
-            columns: [
-              {
-                text: 'Totale: ' + '##,## €' + '\n'
-                    + 'Acconto: ' + '##,## €' + '\n'
-                    + 'Saldo: ' + '##,## €' + '\n',
-                style: 'subheader'
-              },
-              {
-                text: 'Saldato' + 'SI/NO',
-                style: 'subheader'
-              }
-            ]
-          }          
-        ],       
-        info: {
-          title: 'STAMPA ORDINE',
-          author: 'idealprogetti.com',
-          subject: 'Riepilogo Lavorazioni',
-          keywords: 'RESUME, ONLINE RESUME',          
-        },
-        
-        styles: {
-          header: {
-            fontSize: refSize,
-            bold: true,
-            alignment: 'center',
-            margin: [0, 10, 0, 10],
-          },
-          subheader: {
-            fontSize: refSize-2,
-            bold: true,
-            alignment: 'center',
-            margin: [0, 10, 0, 10],
-          },
-          name: {
-            fontSize: refSize-4,
-            alignment: 'center',
-          },
-          jobTitle: {
-            fontSize: 14,
-            bold: true,
-            italics: true
-          },
-          sign: {
-            margin: [0, 50, 0, 10],
-            alignment: 'right',
-            italics: true
-          },
-          tableExample: {
-            margin: [0, 10, 0, 10]
-          },
-          tableHeader: {
-            bold: true,
-            fontSize: 11,
-            color: 'black'
-          }          
-        }   // fine style 
-      
-      };
-
-     pdfMake.createPdf(documentDefinition).download();
-    }
 
     openSnackBar() {
       this._snackBar.open('Misure assenti, inserire una misura per il cliente', 'End now', {
