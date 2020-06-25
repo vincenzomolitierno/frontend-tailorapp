@@ -5,6 +5,7 @@ import { RESTBackendService } from 'src/app/backend-service/rest-backend.service
 import { Order } from '../data.model';
 import { Measure } from 'src/app/measurers/data.model';
 import { Customer } from 'src/app/customers/data.model';
+import { ActionConfirm } from 'src/app/utilities/action-confirm';
 
 interface Subcontractor {
   idfasonatori: number,
@@ -49,12 +50,12 @@ export class OrderFormComponent implements OnInit {
       this.reactiveForm = new FormGroup({
         
         idordine: new FormControl(''),
+
         subcontractorControl: new FormControl('', Validators.required),
         
         totale: new FormControl(''),
         saldo: new FormControl(''),
         acconto: new FormControl(''),
-
 
         modalitaConsegna: new FormControl(''),
 
@@ -74,23 +75,25 @@ export class OrderFormComponent implements OnInit {
   ngOnInit() {
     this._adapter.setLocale('it');
 
+    this.loadSubcontractor();
 
-      this.loadSubcontractor();
+    this.nominativo = this.dataCustomer.nominativo;
+    this.data_misura = this.lastMeasure.data_misure;
+    console.log(this.nominativo);
+    console.log(this.data_misura);
 
-      this.nominativo = this.dataCustomer.nominativo;
-      this.data_misura = this.lastMeasure.data_misure;
-      console.log(this.nominativo);
-      console.log(this.data_misura);
-
-      this.data_misura = this.data_misura.split(' ')[0].split('/')[1] + '/' +
-                                  this.data_misura.split(' ')[0].split('/')[0] + '/' +             
-                                  this.data_misura.split(' ')[0].split('/')[2];
+    this.data_misura = this.data_misura.split(' ')[0].split('/')[1] + '/' +
+                                this.data_misura.split(' ')[0].split('/')[0] + '/' +             
+                                this.data_misura.split(' ')[0].split('/')[2];
       
       
     if ( this.formModal=='inserimento' ){
 
-      
+      this.reactiveForm.get('dataOrdine').setValue(this.getCurrentDateFormatted());  
 
+      // this.reactiveForm.get('acconto').setValue('0,00');  
+      // this.reactiveForm.get('saldo').setValue('0,00');  
+    
     } else if ( this.formModal=='aggiornamento' ) {
 
 
@@ -102,9 +105,14 @@ export class OrderFormComponent implements OnInit {
     //SI popola il combobox con l'elenco dei fasonatori
     this.restBackendService.getResource('subcontractors').subscribe(
       (data) => {
-        
-            console.log(data);
-            var result = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
+
+            var descrizione = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
+            for (let index = 0; index < data.length; index++) {
+              data[index].descrizione = descrizione[index];              
+            }
+            var result = data;
+            console.log(result);
+
             this.subcontractors = result;   
 
             },
@@ -130,13 +138,70 @@ export class OrderFormComponent implements OnInit {
   ]; 
 
 
-  openSnackBar() {
-    this._snackBar.open('Cannonball!!', 'End now', {
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'End now', {
       duration: 1500,
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });
   }
+
+  saveIdSubcontractor() {
+
+  }
+
+  getCurrentDateFormatted(): string {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; 
+    const yyyy = today.getFullYear();
+
+    var giorno, mese, oggi: string;
+
+    if( dd < 10 ) {
+      giorno = `0${dd}`;
+    } else {
+      giorno = dd;
+    }
+
+    if( mm < 10 ) {
+      mese = `0${mm}`;
+    } else {
+      mese = mm;
+    }
+    
+    oggi = giorno + '/' + mese + '/' + yyyy;
+    return oggi;
+  }
+
+
+
+  calcoloTotale() {
+    
+    var totale: number = parseFloat(this.reactiveForm.get('totale').value.replace('.',','));
+    console.log(totale);
+    var acconto: number = parseFloat(this.reactiveForm.get('acconto').value.replace(',','.'));
+    console.log(acconto);
+    if( !(isNaN(totale) || isNaN(acconto)) ) {
+
+      switch (totale > acconto) {
+        case false:
+          this.reactiveForm.get('totale').setValue('');
+          this.reactiveForm.get('acconto').setValue('');
+          this.reactiveForm.get('saldo').setValue('');
+
+          ActionConfirm.openActionConfirmDialog('ATTENZIONE','Inserimento annullato, saldo inferiore all\'acconto. I campi sono azzarati');
+
+          break;      
+        default:
+          this.reactiveForm.get('saldo').setValue( (totale - acconto).toFixed(2).replace('.',',') );  
+          break;
+      }
+
+      
+    }
+      
+  }  
 
   
 }

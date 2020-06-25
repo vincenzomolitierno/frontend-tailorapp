@@ -29,7 +29,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     'mod_consegna',
     'totale',   
     'consegnato',
-    'saldato',  
+    // 'saldato',  
     'menu_button', //aggiunti
    //  'view', 'confirm',
    ];
@@ -53,9 +53,8 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
   }
 
   //OVERRIDE 
+  public recorSetCustomer: Array<any> = [];
   public getRemoteData(tagResourse: string):any {
-
-    this.getCustomers();
 
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResource(tagResourse).subscribe(
@@ -67,28 +66,39 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
             // ###################################################
             var recorSet: Array<any> = [];
             recorSet = data;
-
-            console.log(recorSet);
-
-            for(let i = 0; i < recorSet.length; i++) {
-              
-              recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
-              recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
-
-              var idClienti: number = recorSet[i].idCliente;
-              var nomeCliente = this.recorSetCustomer.find(x => x.idClienti === idClienti).nominativo + 
-              ' ( ' + this.recorSetCustomer.find(x => x.idClienti === idClienti).telefono + ' )';
-              recorSet[i].nome_cliente = nomeCliente;
-              console.log(nomeCliente);
-
-            }            
-
-            // ###################################################
-            this.resource = recorSet;
-            this.dataSource = new MatTableDataSource(this.resource.filter(ordine => ordine.consegnato === 'NO'));                           
-            this.dataSource.paginator = this.paginatorTable;    
-            this.dataSource.sort = this.sortTable;            
-
+            
+            this.restBackendService.getResource('customers').subscribe(
+              (data) => {
+                    console.log(data);
+                    this.recorSetCustomer = data;   
+                    
+                    for(let i = 0; i < recorSet.length; i++) {
+            
+                      recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
+                      recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
+        
+                      var idClienti: number = recorSet[i].idCliente;
+                      var nomeCliente = this.recorSetCustomer.find(x => x.idClienti === idClienti).nominativo + 
+                      ' ( ' + this.recorSetCustomer.find(x => x.idClienti === idClienti).telefono + ' )';
+                      recorSet[i].nome_cliente = nomeCliente;
+                      console.log(nomeCliente);
+        
+                    }            
+        
+                    // ###################################################
+                    this.resource = recorSet;
+                    this.dataSource = new MatTableDataSource(this.resource.filter(ordine => ordine.consegnato === 'NO'));                           
+                    this.dataSource.paginator = this.paginatorTable;    
+                    this.dataSource.sort = this.sortTable;   
+                    
+                    
+                    },
+              (error) => {
+                  console.error(error);
+                  console.error('Message: ' + error.message);
+              }
+            );
+            
            },
       (error) => {
 

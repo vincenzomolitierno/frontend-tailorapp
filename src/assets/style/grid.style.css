@@ -116,6 +116,14 @@ dt {
     background-color: lightgray;
 }
 
+.name-cell {
+    padding-right: 10px;
+}
+
+.mat-header-cell {
+    padding-left: 20px;
+}
+
 .name-cell:hover {
     cursor: context-menu;
 }

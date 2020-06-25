@@ -70,7 +70,7 @@
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="middle-row-button">
-                    <button mat-raised-button matTooltip="Elimina {{row.nominativo}}" matTooltipPosition="right" (click)="openDeleteDialog(row.idclienti,row.nominativo)"><mat-icon>person_remove</mat-icon></button>
+                    <button mat-raised-button matTooltip="Elimina {{row.nominativo}}" matTooltipPosition="right" (click)="openDeleteDialog(row)"><mat-icon>person_remove</mat-icon></button>
 
                     <!-- prova pulsanti -->
                     <!-- <mat-menu #appMenu="matMenu">
@@ -105,13 +105,13 @@
             </ng-container>
 
             <!-- View_orders Column -->
-            <ng-container matColumnDef="view_orders">
+            <!-- <ng-container matColumnDef="view_orders">
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="last-row-button">
                     <button mat-raised-button matTooltip="Visualizza ordini di {{row.nominativo}}" matTooltipPosition="left" (click)="openViewOrderByCustomerId(row)"><mat-icon>pageview</mat-icon></button>
                 </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- inserimento dell'intestazione e corpo della tabella -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

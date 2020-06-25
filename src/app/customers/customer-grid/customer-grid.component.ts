@@ -13,6 +13,7 @@ import { isUndefined } from 'util';
 import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
+import { Order } from 'src/app/orders/data.model';
 
 @Component({
   selector: 'app-customer-grid',
@@ -57,19 +58,19 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     // 'view_orders'
   ];
 
-    constructor(
-      restBackendService: RESTBackendService, // si inietta il servizio
-      public dialog: MatDialog,
-      private scriptService: ScriptService,
-      private _snackBar: MatSnackBar
-    ) { 
-      super(restBackendService); // si innesca il costruttore della classe padre
-      this.resource = Array<Customer>();
+  constructor(
+    restBackendService: RESTBackendService, // si inietta il servizio
+    public dialog: MatDialog,
+    private scriptService: ScriptService,
+    private _snackBar: MatSnackBar
+  ) { 
+    super(restBackendService); // si innesca il costruttore della classe padre
+    this.resource = Array<Customer>();
 
-      this.measureCustomerDetailView = new Measure();
+    this.measureCustomerDetailView = new Measure();
 
-      this.scriptService.load('pdfMake', 'vfsFonts');
-    }
+    this.scriptService.load('pdfMake', 'vfsFonts');
+  }
 
   //Si inizializza il componente caricando i dati nella tabella
   ngOnInit() {
@@ -171,21 +172,15 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     
   }   
   
-  /**
-   * Open Dialog Form to confirm the delete of the item with _idItem primary key
-   *
-   * @param {string} _idItem
-   * @param {string} _nominativo
-   * @memberof CustomerGridComponent
-   */
-  public openDeleteDialog(_idItem: string, _nominativo: string){
+
+  public openDeleteDialog(customer: Customer){
 
     this.viewDetails = false;
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      idItem: _idItem, 
-      message: 'Eliminare ' + _nominativo +' dall\'archivio dei clienti?',
+      titolo: 'ATTENZIONE!', 
+      messaggio: 'Eliminare il cliente ' + customer.nominativo + ' (' + customer.telefono + ') dall\'archivio dei clienti?',
     };
 
     const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
@@ -193,10 +188,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.delData('customers',        
-        {
-          "idclienti": parseInt(_idItem)
-        }
-        )
+          {
+            "idclienti": customer.idclienti
+          }
+        );
 
         this.viewDetails = false;
       }
@@ -432,7 +427,35 @@ export class CustomerGridComponent extends GridModel implements OnInit {
               dialogRef.afterClosed().subscribe(result => {
                 // azioni dopo la chiusura della dialog
                 if (result) {
+                  //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE
                   console.log(result);
+                  var d = new Date("2015-03-25");
+
+                  var newOrderInfo: Order = data;
+
+                  this.restBackendService.postResource('orders',
+                  {
+                    "note": newOrderInfo.note,
+                    "acconto": newOrderInfo.acconto.toFixed(2),
+                    "saldo": newOrderInfo.saldo.toFixed(2),
+                    "totale": newOrderInfo.totale.toFixed(2),
+                    "data_consegna": newOrderInfo.data_consegna,
+                    "consegnato": newOrderInfo.consegnato,
+                    "saldato": newOrderInfo.saldato,
+                    "note_x_fasonista": newOrderInfo.note_x_fasonista,
+                    "mod_consegna": newOrderInfo.mod_consegna,
+                    "data_ordine": newOrderInfo.data_ordine,
+                    "clienti_idclienti": newOrderInfo.clienti_idclienti.toString,
+                    "fasonatori_idfasonatori": newOrderInfo.fasonatori_idfasonatori.toString,
+                    "id_misure_ordinate": newOrderInfo.id_misure_ordinate.toString
+                  }).subscribe(
+                    (data) =>{},
+                    (error) =>{
+                      console.error(error);
+                      console.error('Message: ' + error.message);                      
+                    }
+                  )
+
                 }
 
               });                           
@@ -443,8 +466,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
               dialogConfig.data = {
                 messaggio: 'Il cliente non ha alcuna misura in archivio. \rCreazione dell\'ordine annullata!!', 
                 titolo: 'NOTA BENE', 
-              };
-          
+              };          
               const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
               dialogRef.afterClosed().subscribe(result => {
                 console.log(result);

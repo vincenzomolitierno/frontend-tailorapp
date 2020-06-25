@@ -14,6 +14,7 @@
             </mat-form-field>
         </div>
         <div class="right-side">
+
             <mat-form-field appearance="fill">
                 <mat-label>Data Ordine</mat-label>
                 <input matInput placeholder="data dell'ordine" formControlName="dataOrdine" [readonly]="true">
@@ -22,10 +23,10 @@
         </div>
         <mat-form-field appearance="fill">
             <mat-label>Fasonista</mat-label>
-            <mat-select formControlName="subcontractorControl" required>
+            <mat-select formControlName="subcontractorControl" required onchange="saveIdSubcontractor()">
                 <mat-option>--</mat-option>
-                <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor">
-                    {{subcontractor}}
+                <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor.idfasonatori">
+                    {{subcontractor.descrizione}}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="reactiveForm.controls.subcontractorControl.hasError('required')">Selezionare un fasonatore</mat-error>
@@ -39,23 +40,25 @@
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Totale</mat-label>
-                <input matInput placeholder="importo ordine" formControlName="totale">
+                <input matInput placeholder="importo ordine" formControlName="totale" pattern="\d+(,\d{2})?" required (blur)="calcoloTotale()">
+                <mat-error *ngIf="reactiveForm.controls.totale.hasError('pattern')">inserire un importo nel corretto #...#,##</mat-error>
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">
-            <mat-checkbox>Consegnato</mat-checkbox>
+            <mat-checkbox formControlName="consegnato">Consegnato</mat-checkbox>
         </div>
 
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Acconto</mat-label>
-                <input type="number" matInput placeholder="acconto versato" formControlName="acconto">
+                <input matInput placeholder="acconto versato" formControlName="acconto" pattern="\d+(,\d{2})?" required (blur)="calcoloTotale()">
+                <mat-error *ngIf="reactiveForm.controls.acconto.hasError('pattern')">inserire un importo nel corretto #...#,##</mat-error>
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">
-            <mat-checkbox>Saldato</mat-checkbox>
+            <mat-checkbox formControlName="saldato">Saldato</mat-checkbox>
         </div>
 
         <div class="left-side">
@@ -85,8 +88,8 @@
         </div>
         <div class="right-side">
             <mat-form-field appearance="fill">
-                <mat-label>Seleziona la data</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dataOrdine">
+                <mat-label>Data di Consegna</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dataOrdine" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>

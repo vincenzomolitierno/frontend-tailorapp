@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
 import { OrderFormComponent } from '../order-form/order-form.component';
 import { OrderViewComponent } from '../order-view/order-view.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
@@ -34,7 +34,8 @@ export class OrderGridComponent extends GridModel implements OnInit {
      'totale',   
      'consegnato',
      'saldato',  
-     'update', 'delete', 'view_orders', 'view_orders_subcontractor',
+    //  'update', 'delete', 'view_orders', 'view_orders_subcontractor',
+     'menu_button'
     ];
    
     constructor(
@@ -55,18 +56,65 @@ export class OrderGridComponent extends GridModel implements OnInit {
   }
 
 
-  openResourceDialog(formModal: string, idOrdine: string){
+  openResourceDialog(formModal: string, order: Order) {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      idordini: idOrdine, 
+      order: order, 
       formModal: formModal, 
     };
 
     const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      console.log(result);
+
+      if (result) {
+        //CHIAMATA REST PER L'AGGIORNAMENTO DELL'ORDINE
+        console.log(result);
+        var d = new Date("2015-03-25");
+
+        var newOrderInfo: Order = result;
+
+          // idordine: "", 
+          // acconto: "",
+          // consegnato: ""
+          // dataConsegna: ""
+          // dataOrdine: Tue Jun 16 2020 00:00:00 GMT+0200 (Ora legale dell’Europa centrale) {}
+          // formModal: ""
+          // idordine: ""
+          // modalitaConsegna: {descrizione: "Corriere Semplice"}
+          // noteCliente: ""
+          // noteFasonista: ""
+          // saldato: ""
+          // saldo: ""
+          // subcontractorControl: "Nonnino - ( tel: 5454212 )"
+          // totale: 
+
+        this.restBackendService.putResource('orders',
+        {
+          "idordini": 101,
+          "note": "note",
+          "acconto": "20,11",
+          "saldo": "100,50",
+          "totale": "120,66",
+          "data_consegna": "06/28/2020 09:19:27",
+          "consegnato": "NO",
+          "saldato": "NO",
+          "note_x_fasonista": "note_x_fasonista",
+          "mod_consegna": "MANO",
+          "data_ordine": "05/28/2020 09:19:27",
+          "clienti_idclienti": 101,
+          "fasonatori_idfasonatori": 101,
+          "id_misure_ordinate": 101
+        }).subscribe(
+          (data) =>{},
+          (error) =>{}
+        )
+
+
+      }
+
     });    
     
   }  
@@ -324,6 +372,87 @@ export class OrderGridComponent extends GridModel implements OnInit {
      pdfMake.createPdf(documentDefinition).download();
     }
 
+
+ //OVERRIDE 
+ public recorSetCustomer: Array<any> = [];
+ public getRemoteData(tagResourse: string):any {
+
+   //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+   this.restBackendService.getResource(tagResourse).subscribe(
+     (data) => {
+
+           //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
+           this.resource = data;
+           // ###################################################
+           var recorSet: Array<any> = [];
+           recorSet = data;
+           
+           this.restBackendService.getResource('customers').subscribe(
+             (data) => {
+                   console.log(data);
+                   this.recorSetCustomer = data;   
+                   
+                   for(let i = 0; i < recorSet.length; i++) {
+           
+                     recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
+                     recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
+       
+                     var idClienti: number = recorSet[i].idCliente;
+                     var nomeCliente = this.recorSetCustomer.find(x => x.idClienti === idClienti).nominativo + 
+                     ' ( ' + this.recorSetCustomer.find(x => x.idClienti === idClienti).telefono + ' )';
+                     recorSet[i].nome_cliente = nomeCliente;
+                     console.log(nomeCliente);
+       
+                   }            
+       
+                   // ###################################################
+                   this.resource = recorSet;
+                   this.dataSource = new MatTableDataSource(this.resource);                           
+                   this.dataSource.paginator = this.paginatorTable;    
+                   this.dataSource.sort = this.sortTable;                      
+                   
+                   },
+             (error) => {
+                 console.error(error);
+                 console.error('Message: ' + error.message);
+             }
+           );
+           
+          },
+     (error) => {
+
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;
+
+     }
+   );
+ 
+  } 
+  
+  
+  public openDeleteDialog(order: Order){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      titolo: 'ATTENZIONE!', 
+      messaggio: 'Eliminare l\'ordine n° ' + order.idordini + ' dall\'archivio degli ordini?',
+    };
+
+    const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.delData('orders',        
+          {
+            "idordini": order.idordini
+          }
+        );
+
+      }
+      
+    });     
+
+  }
  
 
 }

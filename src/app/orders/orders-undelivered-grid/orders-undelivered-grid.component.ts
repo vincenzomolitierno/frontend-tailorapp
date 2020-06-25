@@ -27,7 +27,7 @@ export class OrdersUndeliveredGridComponent extends GridModel implements OnInit 
      'data_consegna',
      'mod_consegna',
      'totale',   
-     'consegnato',
+    //  'consegnato',
      'saldato',  
      'menu_button', //aggiunti
     //  'view', 'confirm',

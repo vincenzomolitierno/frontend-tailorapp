@@ -13,7 +13,7 @@
             <div class="left-si-bar">
                 <mat-form-field appearance="fill">
                     <mat-label>Misurometro</mat-label>
-                    <mat-select formControlName="shirtIndicatorControl" required (selectionChange)="flagA=true;">
+                    <mat-select formControlName="shirtIndicatorControl" required (selectionChange)="shirtIndicatorChanged()">
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let shirtIndicator of shirtIndicators" [value]="shirtIndicator.descrizione">
                             {{shirtIndicator.descrizione}}
