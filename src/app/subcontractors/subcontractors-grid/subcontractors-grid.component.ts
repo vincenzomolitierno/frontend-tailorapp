@@ -4,6 +4,7 @@ import { SubcontractorFormComponent } from '../subcontractor-form/subcontractor-
 import { Subcontractor } from '../subcontractor.model';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 
 @Component({
   selector: 'app-subcontractors-grid',
@@ -21,7 +22,7 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
       'telefono',
       'email',
       'update',
-      // 'delete'
+      'delete'
     ];
 
   constructor(
@@ -41,11 +42,11 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
   
     }
 
-  openResourceDialog(formModal: string, idCatolog: string){
+  openResourceDialog(formModal: string, subcontractor: Subcontractor){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      idordini: idCatolog, 
+      subcontractor: subcontractor, 
       formModal: formModal, 
     };
 
@@ -53,8 +54,65 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+
+      if(result) {
+
+        var subcontractor = new Subcontractor();
+        subcontractor = result;
+
+        if(formModal=='inserimento'){
+
+          
+        
+          this.postData('subcontractors',        
+          {
+            "nome": subcontractor.nome,
+            "telefono": subcontractor.telefono,
+            "email": subcontractor.email
+        });
+
+        } else if(formModal=='aggiornamento'){
+
+          this.putData('subcontractors',        
+          {
+            "idfasonatori": subcontractor.idfasonatori,
+            "nome": subcontractor.nome,
+            "telefono": subcontractor.telefono,
+            "email": subcontractor.email
+        });      
+
+        }
+
+      }
+
     });    
     
+  }
+
+  public openDeleteDialog(subcontractor: Subcontractor){
+
+    console.log(subcontractor);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      titolo: 'ATTENZIONE!', 
+      messaggio: 'Eliminare il fasonista ' + subcontractor.nome + ' ( ' + subcontractor.telefono  + ' ) dall\'archivio dei fasonisti?',
+    };
+
+    const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.delData('subcontractors',        
+          {
+            "idfasonatori": subcontractor.idfasonatori
+          }
+        );
+
+      }
+      
+    });     
+
   }
 
 }

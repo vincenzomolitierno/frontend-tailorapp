@@ -1,7 +1,7 @@
 export class Subcontractor {
 
     idfasonatori: number;
-    nominativo: string;
+    nome: string;
     telefono: string;
     email: string;
 

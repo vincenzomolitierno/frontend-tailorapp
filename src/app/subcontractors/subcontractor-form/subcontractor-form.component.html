@@ -5,7 +5,7 @@
             <p>
                 <mat-form-field appearance="fill">
                     <mat-label>Nominativo</mat-label>
-                    <input matInput placeholder="inserire nominativo del {{tag_form}}" name="nominativo" [(ngModel)]="nominativo" required>
+                    <input matInput placeholder="inserire nominativo del {{tag_form}}" name="nome" [(ngModel)]="subcontractor.nome" required>
                     <mat-icon matSuffix>keyboard</mat-icon>
                     <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
@@ -13,7 +13,7 @@
             <p>
                 <mat-form-field appearance="fill">
                     <mat-label>Telefono</mat-label>
-                    <input matInput placeholder="inserire telefono del {{tag_form}}" name="telefono" [(ngModel)]="telefono" required>
+                    <input matInput placeholder="inserire telefono del {{tag_form}}" name="telefono" [(ngModel)]="subcontractor.telefono" required>
                     <mat-icon matSuffix>keyboard</mat-icon>
                     <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
@@ -21,7 +21,7 @@
             <p>
                 <mat-form-field appearance="fill">
                     <mat-label>EMail</mat-label>
-                    <input matInput placeholder="inserire email {{nome_catalogo}}" name="email" [(ngModel)]="email">
+                    <input matInput placeholder="inserire email {{nome_catalogo}}" name="email" [(ngModel)]="subcontractor.email">
                     <mat-icon matSuffix>keyboard</mat-icon>
                     <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>

@@ -105,6 +105,7 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
   public postResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
 
     console.log(this.server.getApiResource(tagResource));
+    console.log(body);
 
     return this._http.post<HttpErrorResponse>(
       this.server.getApiResource(tagResource),

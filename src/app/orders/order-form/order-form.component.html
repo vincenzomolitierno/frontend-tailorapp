@@ -40,27 +40,19 @@
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Totale</mat-label>
-                <input matInput placeholder="importo ordine" formControlName="totale" pattern="\d+(,\d{2})?" required (blur)="calcoloTotale()">
+                <input matInput placeholder="importo ordine" formControlName="totale" pattern="\d+(,\d{2})?" required (blur)="calcoloTotale()" onfocus="this.select();" [readonly]="!editable">
                 <mat-error *ngIf="reactiveForm.controls.totale.hasError('pattern')">inserire un importo nel corretto #...#,##</mat-error>
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">
-            <mat-checkbox formControlName="consegnato">Consegnato</mat-checkbox>
-        </div>
-
-        <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Acconto</mat-label>
-                <input matInput placeholder="acconto versato" formControlName="acconto" pattern="\d+(,\d{2})?" required (blur)="calcoloTotale()">
+                <input matInput placeholder="acconto versato" formControlName="acconto" pattern="\d+(,\d{2})?" required (blur)="calcoloTotale()" onfocus="this.select();" [readonly]="!editable">
                 <mat-error *ngIf="reactiveForm.controls.acconto.hasError('pattern')">inserire un importo nel corretto #...#,##</mat-error>
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
-        <div class="right-side">
-            <mat-checkbox formControlName="saldato">Saldato</mat-checkbox>
-        </div>
-
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Saldo</mat-label>
@@ -69,14 +61,14 @@
             </mat-form-field>
         </div>
         <div class="right-side">
-
+            <mat-checkbox formControlName="saldato" (change)="setOrdineSaldato($event)">Saldato</mat-checkbox>
         </div>
 
         <!-- note e consegna -->
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Modalità di Consegna</mat-label>
-                <mat-select formControlName="modalitaConsegna" required>
+                <mat-select formControlName="modalitaConsegna" required readonly>
                     <mat-option>--</mat-option>
                     <mat-option *ngFor="let deliveryMode of deliveryModes" [value]="deliveryMode">
                         {{deliveryMode.descrizione}}
@@ -89,10 +81,17 @@
         <div class="right-side">
             <mat-form-field appearance="fill">
                 <mat-label>Data di Consegna</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dataOrdine" required>
+                <input matInput [matDatepicker]="picker" formControlName="dataConsegna" required (dateChange)="controllaDataConsegna($event)" readonly>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+        </div>
+
+        <div class="left-side">
+            <p>&nbsp;</p>
+        </div>
+        <div class="right-side">
+            <mat-checkbox formControlName="consegnato" (change)="setOrdineConsegnato($event)">Consegnato</mat-checkbox>
         </div>
 
         <mat-form-field appearance="fill">

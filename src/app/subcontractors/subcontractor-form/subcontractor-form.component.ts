@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { Subcontractor } from '../data.model';
 
 @Component({
   selector: 'app-subcontractor-form',
@@ -11,6 +12,8 @@ export class SubcontractorFormComponent implements OnInit {
   tag_form: string = 'fasonista';
   formModal: string = '';
 
+  subcontractor: Subcontractor;
+
   nominativo: string = '';
   telefono: string = '';
   email: string = '';
@@ -18,6 +21,12 @@ export class SubcontractorFormComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) data) {
     this.formModal = data.formModal;
+
+    if ( this.formModal=='inserimento' )
+      this.subcontractor = new Subcontractor();
+    else
+      this.subcontractor = data.subcontractor;
+
    }
 
   ngOnInit() {
