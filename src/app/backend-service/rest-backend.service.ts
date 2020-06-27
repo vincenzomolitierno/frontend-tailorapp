@@ -51,7 +51,7 @@ export class RESTBackendService {
  */
 public getResource(tagResource: string): Observable<any> {
 
-  console.log(this.server.getApiResource(tagResource));
+  // console.log(this.server.getApiResource(tagResource));
 
   // console.log('Using Token: ' + this.token);  
 
@@ -92,7 +92,7 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
     })
   };
 
-  console.log(this.server.getApiResource(tagQuery) + '?' + tagParameter);
+  // console.log(this.server.getApiResource(tagQuery) + '?' + tagParameter);
 
   return this._http.get<any>(
     this.server.getApiResource(tagQuery) + '?' + tagParameter,
@@ -104,8 +104,8 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
   public postResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
 
-    console.log(this.server.getApiResource(tagResource));
-    console.log(body);
+    // console.log(this.server.getApiResource(tagResource));
+    // console.log(body);
 
     return this._http.post<HttpErrorResponse>(
       this.server.getApiResource(tagResource),
@@ -118,7 +118,7 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
   public delResource(tagResource: string, _body: object): Observable<HttpErrorResponse> {
 
-    console.log(this.server.getApiResource(tagResource));
+    // console.log(this.server.getApiResource(tagResource));
 
     const localHttpOptions = { 
       headers: new HttpHeaders({ 
@@ -127,7 +127,7 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
       }),
        body: _body };  
 
-       console.log(localHttpOptions);
+       // console.log(localHttpOptions);
 
     return this._http.delete<HttpErrorResponse>(
       this.server.getApiResource(tagResource),
@@ -137,7 +137,7 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
   public putResource(tagResource: string, body: object): Observable<HttpErrorResponse> {
 
-    console.log(this.server.getApiResource(tagResource));
+    // console.log(this.server.getApiResource(tagResource));
 
     return this._http.put<HttpErrorResponse>(
       this.server.getApiResource(tagResource),

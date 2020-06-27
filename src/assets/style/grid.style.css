@@ -121,7 +121,8 @@ dt {
 }
 
 .mat-header-cell {
-    padding-left: 20px;
+    /* padding-left: 20px; */
+    text-align: left;
 }
 
 .name-cell:hover {

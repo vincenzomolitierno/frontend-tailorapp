@@ -14,6 +14,7 @@ import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
 import { Order } from 'src/app/orders/data.model';
+import { isEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-grid',
@@ -217,7 +218,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
           this.measureCustomerDetailView.data_misure = this.measureCustomerDetailView.data_misure.split(' ')[0];
 
-          // console.log(this.measureCustomerDetailView);       
+          console.log(this.measureCustomerDetailView);       
           if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[0])))
                   this.torace_1_bottone = this.measureCustomerDetailView.torace.split(';')[0];
 
@@ -329,7 +330,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         var base64: string = result.note_grafiche;
         base64 = base64.replace('data:image/png;base64,','');
-        // console.log(base64);
+        console.log(base64);
 
         var torace: string = result.torace_1_bottone + ";"
                              + result.torace_2_bottone + ";" 
@@ -418,6 +419,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
               const dialogConfig = new MatDialogConfig();
               dialogConfig.data = {
                 customer: customer, 
+                order: '',
                 measure: data[0],
                 formModal: formModal, 
               };
@@ -429,25 +431,69 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                 if (result) {
                   //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE
                   console.log(result);
-                  var d = new Date("2015-03-25");
 
-                  var newOrderInfo: Order = data;
+                  var data_consegna = new Date(result.data_consegna);
+                  // INIZIO formattazione della data di consegna
+                  var giorno: number = data_consegna.getDate() ;
+                  var strGiorno: string;
+                  if ( giorno < 10 ) 
+                    strGiorno = '0' + giorno.toFixed(0);
+                  else
+                    strGiorno = giorno.toFixed(0);    
 
-                  this.restBackendService.postResource('orders',
+                  var mese: number = data_consegna.getMonth() + 1 ;
+                  var strMese: string;
+                  if ( mese < 10 ) 
+                    strMese = '0' + mese.toFixed(0);
+                  else
+                    strMese = mese.toFixed(0);                
+
+                  var strDataConsegna = strGiorno + '/' +
+                                        strMese + '/' +
+                                        data_consegna.getFullYear().toFixed(0);
+                  // FINE formattazione della data di consegna
+
+                  if( result.saldato )
+                    var saldato = 'SI';
+                  else
+                    var saldato = 'NO';
+
+                  if( result.consegnato )
+                    var consegnato = 'SI';
+                  else
+                    var consegnato = 'NO';    
+                    
+                  console.log({
+                    "note": result.note,
+                    "acconto": result.acconto,
+                    "saldo": result.saldo,
+                    "totale": result.totale,
+                    "data_consegna": strDataConsegna,
+                    "consegnato": consegnato,
+                    "saldato": saldato,
+                    "note_x_fasonista": result.note_x_fasonista,
+                    "mod_consegna": result.mod_consegna,
+                    "data_ordine": result.data_ordine,
+                    "clienti_idclienti": result.clienti_idclienti,
+                    "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
+                    "id_misure_ordinate": result.id_misure_ordinate
+                  });
+              
+                  this.restBackendService.postResource('orders',                  
                   {
-                    "note": newOrderInfo.note,
-                    "acconto": newOrderInfo.acconto.toFixed(2),
-                    "saldo": newOrderInfo.saldo.toFixed(2),
-                    "totale": newOrderInfo.totale.toFixed(2),
-                    "data_consegna": newOrderInfo.data_consegna,
-                    "consegnato": newOrderInfo.consegnato,
-                    "saldato": newOrderInfo.saldato,
-                    "note_x_fasonista": newOrderInfo.note_x_fasonista,
-                    "mod_consegna": newOrderInfo.mod_consegna,
-                    "data_ordine": newOrderInfo.data_ordine,
-                    "clienti_idclienti": newOrderInfo.clienti_idclienti.toString,
-                    "fasonatori_idfasonatori": newOrderInfo.fasonatori_idfasonatori.toString,
-                    "id_misure_ordinate": newOrderInfo.id_misure_ordinate.toString
+                    "note": result.note,
+                    "acconto": result.acconto,
+                    "saldo": result.saldo,
+                    "totale": result.totale,
+                    "data_consegna": strDataConsegna,
+                    "consegnato": consegnato,
+                    "saldato": saldato,
+                    "note_x_fasonista": result.note_x_fasonista,
+                    "mod_consegna": result.mod_consegna,
+                    "data_ordine": result.data_ordine,
+                    "clienti_idclienti": result.clienti_idclienti,
+                    "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
+                    "id_misure_ordinate": result.id_misure_ordinate
                   }).subscribe(
                     (data) =>{},
                     (error) =>{
@@ -455,7 +501,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                       console.error('Message: ' + error.message);                      
                     }
                   )
-
+               
                 }
 
               });                           

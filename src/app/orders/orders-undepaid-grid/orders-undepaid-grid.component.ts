@@ -121,7 +121,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('Dialog result: ${result}');
+      console.log('Dialog result: ${result}');
     });    
     
   }  
@@ -142,7 +142,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('Dialog result: ${result}');
+      console.log('Dialog result: ${result}');
     });  
   }
 

@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
         
         if (currentUser) {
             // logged in so return true
-            console.log('logged in');
+            // console.log('logged in');
             // console.log('Current User: ');   
             // console.log(currentUser);  
             this.authenticationService.setToken(currentUser.token); 
@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
         // not logged in so redirect to login page with the return url
         // this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
         this.router.navigate(['/login']);
-        console.log('not logged in');
+        // console.log('not logged in');
         return false;
     }
 }

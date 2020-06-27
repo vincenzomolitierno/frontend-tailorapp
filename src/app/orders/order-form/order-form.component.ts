@@ -25,19 +25,19 @@ interface DeliveryMode {
 })
 export class OrderFormComponent implements OnInit {
 
-  formModal: string = "empty";
-  idCliente: number;  
-  nominativo; string = 'nome cognome';
-  data_misura = "gg/mm/yyyy";
-  misure_misurometro = "#,# - ##,#"
+  formModal: string = 'empty';
+  nominativo: string = 'nome cognome';
+  data_misura = 'gg/mm/yyyy';
+  misure_misurometro = '#,# - ##,#'
+  data_consegna = '01/01/2020';
 
   editable: boolean = true; // per disabilitare l'inserimento nei campi totale ed acconto
   disableDeliveryControls: boolean = false; // per disabilitare l'inserimento nei campi modalità di consegna e data consegna
 
   public reactiveForm: FormGroup; // oggetto per gestire il form con l'approccio reactive
   public dataCustomer: Customer;
+  public dataOrder: Order;
   public lastMeasure: Measure; ;
-  public dataOrder;
   public subcontractors: Subcontractor[];
 
   constructor( @Inject(MAT_DIALOG_DATA) data,
@@ -45,63 +45,103 @@ export class OrderFormComponent implements OnInit {
     public restBackendService: RESTBackendService,
     private _snackBar: MatSnackBar ) 
     {
-      this.formModal = data.formModal; // inserimento / aggiornamento
-      this.lastMeasure = data.measure;
+      this.formModal = data.formModal; // inserimento / aggiornamento      
       this.dataCustomer = data.customer;
+      this.dataOrder = data.order;
+      this.lastMeasure = data.measure;
 
       //costruzione del reactive form
       this.reactiveForm = new FormGroup({
         
-        idordine: new FormControl(''),
+        idordini: new FormControl(''),
 
-        subcontractorControl: new FormControl('', Validators.required),
+        clienti_idclienti: new FormControl(''),
+        id_misure_ordinate: new FormControl(''),
+
+        fasonatori_idfasonatori: new FormControl('', Validators.required),
         
         totale: new FormControl('',Validators.required),
         saldo: new FormControl(''),
         acconto: new FormControl('',Validators.required),
 
-        modalitaConsegna: new FormControl('',Validators.required),
+        mod_consegna: new FormControl('',Validators.required),
 
         consegnato: new FormControl(''),
         saldato: new FormControl(''),
 
-        dataOrdine: new FormControl(''),
-        dataConsegna: new FormControl('',Validators.required),
-        noteCliente: new FormControl(''),
-        noteFasonista: new FormControl(''),
-
-        formModal: new FormControl('')        
+        data_ordine: new FormControl(''),
+        
+        note: new FormControl(''),
+        note_x_fasonista: new FormControl(''),
+   
       });       
 
     }
 
   ngOnInit() {
+
     this._adapter.setLocale('it');
 
     this.loadSubcontractor();
 
-    this.nominativo = this.dataCustomer.nominativo;
-    this.data_misura = this.lastMeasure.data_misure;
-    console.log(this.nominativo);
-    console.log(this.data_misura);
+    this.nominativo = this.dataCustomer.nominativo + ' ( ' + this.dataCustomer.telefono + ' )' ;
 
+    this.data_misura = this.lastMeasure.data_misure;
     this.data_misura = this.data_misura.split(' ')[0].split('/')[1] + '/' +
                                 this.data_misura.split(' ')[0].split('/')[0] + '/' +             
                                 this.data_misura.split(' ')[0].split('/')[2];
-      
-      
+
+    this.reactiveForm.get('clienti_idclienti').setValue(this.dataCustomer.idclienti);          
+    this.reactiveForm.get('id_misure_ordinate').setValue(this.lastMeasure.idmisure); 
+
     if ( this.formModal=='inserimento' ){
+    
+      this.reactiveForm.get('data_ordine').setValue(this.getCurrentDateFormatted());  
 
-      this.reactiveForm.get('dataOrdine').setValue(this.getCurrentDateFormatted());  
-
-      // this.reactiveForm.get('acconto').setValue('0,00');  
-      // this.reactiveForm.get('saldo').setValue('0,00');  
+      this.reactiveForm.get('totale').setValue(Number(0).toFixed(2).replace('.',','));
+      this.reactiveForm.get('acconto').setValue(Number(0).toFixed(2).replace('.',','));
+      this.reactiveForm.get('saldo').setValue(Number(0).toFixed(2).replace('.',','));  
+      
+      this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));
     
     } else if ( this.formModal=='aggiornamento' ) {
 
+      this.reactiveForm.get('idordini').setValue(this.dataOrder.idordini);
+
+      this.reactiveForm.get('fasonatori_idfasonatori').setValue(this.dataOrder.fasonatori_idfasonatori);
+
+      this.reactiveForm.get('totale').setValue(this.dataOrder.totale);
+      this.reactiveForm.get('acconto').setValue(this.dataOrder.acconto);
+      this.reactiveForm.get('saldo').setValue(this.dataOrder.saldo);
+
+      this.reactiveForm.get('mod_consegna').setValue(this.dataOrder.mod_consegna);
+      // console.log(this.dataOrder.mod_consegna);
+
+      if ( this.dataOrder.consegnato == 'SI') 
+        this.reactiveForm.get('consegnato').setValue(true);
+      else
+        this.reactiveForm.get('consegnato').setValue(false);
+
+      if ( this.dataOrder.saldato == 'SI') 
+        this.reactiveForm.get('saldato').setValue(true);
+      else
+        this.reactiveForm.get('saldato').setValue(false);        
+      
+
+      this.reactiveForm.get('data_ordine').setValue(this.dataOrder.data_ordine);
+
+      // SI INIZIALIZZA LA DATA DI CONSEGNA
+      var dataConsegna: string[] = this.dataOrder.data_consegna.split('/');
+      this.reactiveForm.addControl('data_consegna',new FormControl(
+        new Date(parseInt(dataConsegna[2]),parseInt(dataConsegna[1])-1,parseInt(dataConsegna[0])),
+        Validators.required));
+
+      this.reactiveForm.get('note').setValue(this.dataOrder.note);
+      this.reactiveForm.get('note_x_fasonista').setValue(this.dataOrder.note_x_fasonista);
 
     }
-  }
+
+  } // ngOnInit fine
 
 
   private loadSubcontractor(){
@@ -114,7 +154,7 @@ export class OrderFormComponent implements OnInit {
               data[index].descrizione = descrizione[index];              
             }
             var result = data;
-            console.log(result);
+            // console.log(result);
 
             this.subcontractors = result;   
 
@@ -180,8 +220,6 @@ export class OrderFormComponent implements OnInit {
 
 
   calcoloTotale() {
-
-    
     
     var totale: number = parseFloat(this.reactiveForm.get('totale').value.replace('.',','));
     if( !isNaN(totale) )
@@ -193,8 +231,10 @@ export class OrderFormComponent implements OnInit {
     var acconto: number = parseFloat(this.reactiveForm.get('acconto').value.replace(',','.'));
     if( !isNaN(acconto) )
       this.reactiveForm.get('acconto').setValue(acconto.toFixed(2).toString().replace('.',','));
-    else
-      this.reactiveForm.get('acconto').setValue(Number(0).toFixed(2).toString().replace('.',','));      
+    else{
+      this.reactiveForm.get('acconto').setValue(Number(0).toFixed(2).toString().replace('.',','));            
+      this.reactiveForm.get('saldo').setValue( (totale).toFixed(2).replace('.',',') ); 
+    }
 
 
     if( !(isNaN(totale) || isNaN(acconto)) ) {
@@ -248,7 +288,7 @@ export class OrderFormComponent implements OnInit {
   }
 
   setOrdineConsegnato( event: any ) {
-    console.log(event.checked);
+    // console.log(event.checked);
     this.disableDeliveryControls = event.checked;
   }
 
@@ -260,11 +300,11 @@ export class OrderFormComponent implements OnInit {
     var scelto = new Date(selectedDay.getFullYear(), selectedDay.getMonth(), selectedDay.getDate());
     var oggi = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    if( scelto >= oggi )
-      console.log('ok');
-    else {
+    if( scelto >= oggi ){
+
+    } else {
       this.openSnackBar('Data consegna non valida. Inserire una data a partire da oggi');
-      this.reactiveForm.get('dataConsegna').setValue('');
+      this.reactiveForm.get('data_consegna').setValue('');
     }
 
   }

@@ -26,6 +26,10 @@ export class BackendServer {
     private apiResourceForwardside: string = this.base + '/avanti';
     private apiResourceBackside: string = this.base + '/indietro';
 
+    //CAMICIE
+    private apiResourceShirts: string = this.base + '/camicie';
+
+
     constructor() {
         //si recuperano host e porta del backend dal file di configurazione
         this.getSetting();
@@ -98,6 +102,9 @@ export class BackendServer {
 
             case 'measuresQuery':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceMeasuresQuery;   
+
+            case 'shirts':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceShirts;                   
         
             default:
                 break;

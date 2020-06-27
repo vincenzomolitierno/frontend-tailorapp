@@ -89,7 +89,7 @@ export class ShirtMarksComponent {
 
         this.AppuntiBase64 =  this.IDC.getImage();	
         this.Appunti = this.AppuntiBase64;
-        // console.log(this.AppuntiBase64);
+        console.log(this.AppuntiBase64);
         console.log('invio degli appunti + base64 al parent');      
         this.sendBase64.emit(this.AppuntiBase64);
           
@@ -104,7 +104,7 @@ export class ShirtMarksComponent {
             this.AppuntiBase64 = 'data:image/png;base64,' + base64;
             this.Appunti = this.AppuntiBase64;
 
-            // console.log(base64);
+            console.log(base64);
             // this.Appunti = "../../assets/images/CamiciaCompleta.jpg";
             // this.dataURItoBlob(base64).subscribe(blob => {
             //     console.log('trasformazione fatta');

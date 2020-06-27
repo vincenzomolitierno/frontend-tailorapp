@@ -5,31 +5,47 @@
     <p style="text-transform: uppercase;">Ultime misure prese in data: <b>{{data_misura}}</b> </p>
     <mat-dialog-content class="mat-typography">
 
+        <div class="left-side" style="display: none;">
+            <mat-form-field appearance="fill">
+                <mat-label>Id Cliente</mat-label>
+                <input matInput placeholder="clienti_idclienti" formControlName="clienti_idclienti" [readonly]="true">
+                <mat-icon matSuffix>keyboard</mat-icon>
+            </mat-form-field>
+        </div>
+
+        <div class="left-side" style="display: none;">
+            <mat-form-field appearance="fill">
+                <mat-label>id_misure_ordinate</mat-label>
+                <input matInput placeholder="id_misure_ordinate" formControlName="id_misure_ordinate" [readonly]="true">
+                <mat-icon matSuffix>keyboard</mat-icon>
+            </mat-form-field>
+        </div>
+
         <!-- informazioni generali -->
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Numero Ordine</mat-label>
-                <input matInput placeholder="numero dell'ordine" formControlName="idordine" [readonly]="true">
+                <input matInput placeholder="numero dell'ordine" formControlName="idordini" [readonly]="true">
                 <mat-icon matSuffix>keyboard</mat-icon>
             </mat-form-field>
         </div>
-        <div class="right-side">
 
+        <div class="right-side">
             <mat-form-field appearance="fill">
                 <mat-label>Data Ordine</mat-label>
-                <input matInput placeholder="data dell'ordine" formControlName="dataOrdine" [readonly]="true">
+                <input matInput placeholder="data dell'ordine" formControlName="data_ordine" [readonly]="true">
                 <mat-icon matSuffix>event</mat-icon>
             </mat-form-field>
         </div>
         <mat-form-field appearance="fill">
             <mat-label>Fasonista</mat-label>
-            <mat-select formControlName="subcontractorControl" required onchange="saveIdSubcontractor()">
+            <mat-select formControlName="fasonatori_idfasonatori" required (onchange)="saveIdSubcontractor()">
                 <mat-option>--</mat-option>
                 <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor.idfasonatori">
                     {{subcontractor.descrizione}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="reactiveForm.controls.subcontractorControl.hasError('required')">Selezionare un fasonatore</mat-error>
+            <mat-error *ngIf="reactiveForm.controls.fasonatori_idfasonatori.hasError('required')">Selezionare un fasonatore</mat-error>
             <mat-icon matSuffix>list_alt</mat-icon>
         </mat-form-field>
 
@@ -68,20 +84,20 @@
         <div class="left-side">
             <mat-form-field appearance="fill">
                 <mat-label>Modalità di Consegna</mat-label>
-                <mat-select formControlName="modalitaConsegna" required readonly>
+                <mat-select formControlName="mod_consegna" required readonly>
                     <mat-option>--</mat-option>
-                    <mat-option *ngFor="let deliveryMode of deliveryModes" [value]="deliveryMode">
+                    <mat-option *ngFor="let deliveryMode of deliveryModes" [value]="deliveryMode.descrizione">
                         {{deliveryMode.descrizione}}
                     </mat-option>
                 </mat-select>
-                <mat-error *ngIf="reactiveForm.controls.modalitaConsegna.hasError('required')">Selezionare una modalità di consegna</mat-error>
+                <mat-error *ngIf="reactiveForm.controls.mod_consegna.hasError('required')">Selezionare una modalità di consegna</mat-error>
                 <mat-icon matSuffix>list_alt</mat-icon>
             </mat-form-field>
         </div>
         <div class="right-side">
             <mat-form-field appearance="fill">
                 <mat-label>Data di Consegna</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dataConsegna" required (dateChange)="controllaDataConsegna($event)" readonly>
+                <input matInput [matDatepicker]="picker" formControlName="data_consegna" required (dateChange)="controllaDataConsegna($event)" [readonly]="true">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -96,13 +112,13 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Note (per il cliente)</mat-label>
-            <textarea matInput placeholder="inserisre nota..." formControlName="noteCliente"></textarea>
+            <textarea matInput placeholder="inserisre nota..." formControlName="note"></textarea>
             <mat-icon matSuffix>keyboard</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>Note (per il fasonista)</mat-label>
-            <textarea matInput placeholder="inserisre nota..." formControlName="noteFasonista"></textarea>
+            <textarea matInput placeholder="inserisre nota..." formControlName="note_x_fasonista"></textarea>
             <mat-icon matSuffix>keyboard</mat-icon>
         </mat-form-field>
 

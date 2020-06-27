@@ -38,7 +38,7 @@ export class AuthenticationService {
             { username, password }
             )
             .pipe(map(user => {
-                console.log('user mapping');
+                // console.log('user mapping');
                 // console.log('Token: ' + user.token);                
                 this.handlerRestBackendService.setToken(user.token);
                 // store user details and jwt token in local storage to keep user logged in between page refreshes

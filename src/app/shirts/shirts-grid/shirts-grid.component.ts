@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource } from '@angular/material';
 import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
+import { GridModel } from 'src/app/backend-service/datagrid.model';
+import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 
 interface CamiciaElement {  
   idcamicie: number,
@@ -27,7 +29,7 @@ interface CamiciaElement {
   templateUrl: './shirts-grid.component.html',
   styleUrls: ['./shirts-grid.component.css']
 })
-export class ShirtsGridComponent implements OnInit {
+export class ShirtsGridComponent extends GridModel implements OnInit {
 
   // Dati coinvolti nel binding
   dummy_data: string = "dummy_data"
@@ -47,26 +49,17 @@ export class ShirtsGridComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginatorShirts: MatPaginator;  
 
   constructor(
+    restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog
-  ) { }
+  ) { 
+    super(restBackendService); // si innesca il costruttore della classe padre
+  }
 
   ngOnInit() {
-    this.getRemoteData();
-    this.dataSourceShirt.sort = this.sortShirts;
-    this.dataSourceShirt.paginator = this.paginatorShirts;    
+    this.getRemoteData('shirts');
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceShirt.filter = filterValue.trim().toLowerCase();
-  }  
-
-  clearSearch(){
-    this.dataSourceShirt.filter = "";
-    this.testo_ricerca = "";
-  }
-
-  openShirtDialog(formModal: string, name: string){
+  openResourceDialog(formModal: string, name: string){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {idshirt: "camicia 1", formModal: formModal };
@@ -78,24 +71,6 @@ export class ShirtsGridComponent implements OnInit {
     });    
     
   }   
-  
-  getRemoteData() {
-    
-    const SHIRTS_DATA: CamiciaElement[] = [];
-    // const SHIRTS_DATA: CamiciaElement[] = [
-    //   {
-    //     idcamicie: 1,
-    //     colore: 'rossa',
-    //     quantita: 3
-    //   },
-    //   {
-    //     idcamicie: 2,
-    //     colore: 'gialla',
-    //     quantita: 2
-    //   }          
-    // ];
-
-    this.dataSourceShirt = new MatTableDataSource(SHIRTS_DATA);  
-  }    
+ 
 
 }

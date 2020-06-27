@@ -56,66 +56,130 @@ export class OrderGridComponent extends GridModel implements OnInit {
   }
 
 
-  openResourceDialog(formModal: string, order: Order) {
+  openResourceDialog(formModal: string, order: Order ) {
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      order: order, 
-      formModal: formModal, 
-    };
-
-    const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-
-      if (result) {
-        //CHIAMATA REST PER L'AGGIORNAMENTO DELL'ORDINE
-        console.log(result);
-        var d = new Date("2015-03-25");
-
-        var newOrderInfo: Order = result;
-
-          // idordine: "", 
-          // acconto: "",
-          // consegnato: ""
-          // dataConsegna: ""
-          // dataOrdine: Tue Jun 16 2020 00:00:00 GMT+0200 (Ora legale dell’Europa centrale) {}
-          // formModal: ""
-          // idordine: ""
-          // modalitaConsegna: {descrizione: "Corriere Semplice"}
-          // noteCliente: ""
-          // noteFasonista: ""
-          // saldato: ""
-          // saldo: ""
-          // subcontractorControl: "Nonnino - ( tel: 5454212 )"
-          // totale: 
-
-        this.restBackendService.putResource('orders',
-        {
-          "idordini": 101,
-          "note": "note",
-          "acconto": "20,11",
-          "saldo": "100,50",
-          "totale": "120,66",
-          "data_consegna": "06/28/2020 09:19:27",
-          "consegnato": "NO",
-          "saldato": "NO",
-          "note_x_fasonista": "note_x_fasonista",
-          "mod_consegna": "MANO",
-          "data_ordine": "05/28/2020 09:19:27",
-          "clienti_idclienti": 101,
-          "fasonatori_idfasonatori": 101,
-          "id_misure_ordinate": 101
-        }).subscribe(
-          (data) =>{},
-          (error) =>{}
-        )
+    this.restBackendService.getResource('customers').subscribe(
+      (data) => {
+        var customers: Customer[] = data;
+        var customer: Customer = customers.find(x => x.idclienti === order.clienti_idclienti);
 
 
-      }
+        this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
+          (data) => {          
+            
+            //INIZIO
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.data = {
+              customer: customer,
+              order: order, 
+              measure: data[0],
+              formModal: formModal, 
+            };
+        
+            const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
+        
+            dialogRef.afterClosed().subscribe(result => {
+      
+              if (result) {
+                var updatedOrder: Order = result;
+                //CHIAMATA REST PER L'AGGIORNAMENTO DELL'ORDINE
+                console.log('aggiorna');
 
-    });    
+                var data_consegna = new Date(updatedOrder.data_consegna);
+                // INIZIO formattazione della data di consegna
+                var giorno: number = data_consegna.getDate() ;
+                var strGiorno: string;
+                if ( giorno < 10 ) 
+                  strGiorno = '0' + giorno.toFixed(0);
+                else
+                  strGiorno = giorno.toFixed(0);    
+
+                var mese: number = data_consegna.getMonth() + 1 ;
+                var strMese: string;
+                if ( mese < 10 ) 
+                  strMese = '0' + mese.toFixed(0);
+                else
+                  strMese = mese.toFixed(0);                
+
+                var strDataConsegna = strGiorno + '/' +
+                                      strMese + '/' +
+                                      data_consegna.getFullYear().toFixed(0);
+
+                if( result.saldato )
+                  var saldato = 'SI';
+                else
+                  var saldato = 'NO';
+
+                if( result.consegnato )
+                  var consegnato = 'SI';
+                else
+                  var consegnato = 'NO';   
+                // FINE formattazione della data di consegna
+                console.log({
+                  "idordini": updatedOrder.idordini, 
+                  "note": updatedOrder.note,
+                  "acconto": updatedOrder.acconto,
+                  "saldo": updatedOrder.saldo,
+                  "totale": updatedOrder.totale,
+                  "data_consegna": strDataConsegna,
+                  "consegnato": consegnato,
+                  "saldato": saldato,
+                  "note_x_fasonista": updatedOrder.note_x_fasonista,
+                  "mod_consegna": updatedOrder.mod_consegna,
+                  "data_ordine": updatedOrder.data_ordine,
+                  "clienti_idclienti": updatedOrder.clienti_idclienti,
+                  "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
+                  "id_misure_ordinate": updatedOrder.id_misure_ordinate
+                });
+
+                // console.log(               {
+                //   "idordini": result.idordini, 
+                //   "note": result.note,
+                //   "acconto": result.acconto,
+                //   "saldo": result.saldo,
+                //   "totale": result.totale,
+                //   "data_consegna": strDataConsegna,
+                //   "consegnato": consegnato,
+                //   "saldato": saldato,
+                //   "note_x_fasonista": result.note_x_fasonista,
+                //   "mod_consegna": result.mod_consegna,
+                //   "data_ordine": result.data_ordine,
+                //   "clienti_idclienti": result.clienti_idclienti,
+                //   "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
+                //   "id_misure_ordinate": result.id_misure_ordinate
+                // });
+
+                this.putData('orders',                  
+                {
+                  "idordini": result.idordini, 
+                  "note": result.note,
+                  "acconto": result.acconto,
+                  "saldo": result.saldo,
+                  "totale": result.totale,
+                  "data_consegna": strDataConsegna,
+                  "consegnato": result.consegnato,
+                  "saldato": result.saldato,
+                  "note_x_fasonista": result.note_x_fasonista,
+                  "mod_consegna": result.mod_consegna,
+                  "data_ordine": result.data_ordine,
+                  "clienti_idclienti": result.clienti_idclienti,
+                  "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
+                  "id_misure_ordinate": result.id_misure_ordinate
+                });
+             
+              }
+
+
+              }); //FINE
+
+          },
+          (error) => {}
+        );
+      },
+      (error) => {}
+    );
+
+       
     
   }  
 
@@ -141,7 +205,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      // console.log('Dialog result: ${result}');
     });  
   }
 
@@ -170,7 +234,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
           
               const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
               dialogRef.afterClosed().subscribe(result => {
-                console.log(result);
+                // console.log(result);
               });             
 
           }
@@ -389,7 +453,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
            
            this.restBackendService.getResource('customers').subscribe(
              (data) => {
-                   console.log(data);
+                   // console.log(data);
                    this.recorSetCustomer = data;   
                    
                    for(let i = 0; i < recorSet.length; i++) {
@@ -401,7 +465,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
                      var nomeCliente = this.recorSetCustomer.find(x => x.idClienti === idClienti).nominativo + 
                      ' ( ' + this.recorSetCustomer.find(x => x.idClienti === idClienti).telefono + ' )';
                      recorSet[i].nome_cliente = nomeCliente;
-                     console.log(nomeCliente);
+                     // console.log(nomeCliente);
        
                    }            
        

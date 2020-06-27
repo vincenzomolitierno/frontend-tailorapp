@@ -386,7 +386,7 @@ export class MeasureFormComponent implements OnInit  {
     console.log('base64 + appunti intercettato dal parent');
 
     // this.measure.note_grafiche = appuntiBase64;
-    // console.log(appuntiBase64);
+    console.log(appuntiBase64);
 
     this.reactiveForm.get('note_grafiche').setValue(appuntiBase64);
     
