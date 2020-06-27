@@ -16,11 +16,6 @@ mat-divider {
     margin-bottom: 15px;
 }
 
-.mat-radio-button~.mat-radio-button {
-    margin-left: 25px;
-    margin-top: 10px;
-}
-
 .left-side {
     float: left;
     width: 47.5%;

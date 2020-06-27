@@ -103,6 +103,8 @@ export class OrderFormComponent implements OnInit {
       this.reactiveForm.get('saldo').setValue(Number(0).toFixed(2).replace('.',','));  
       
       this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));
+
+      
     
     } else if ( this.formModal=='aggiornamento' ) {
 
@@ -115,7 +117,6 @@ export class OrderFormComponent implements OnInit {
       this.reactiveForm.get('saldo').setValue(this.dataOrder.saldo);
 
       this.reactiveForm.get('mod_consegna').setValue(this.dataOrder.mod_consegna);
-      // console.log(this.dataOrder.mod_consegna);
 
       if ( this.dataOrder.consegnato == 'SI') 
         this.reactiveForm.get('consegnato').setValue(true);
@@ -138,6 +139,9 @@ export class OrderFormComponent implements OnInit {
 
       this.reactiveForm.get('note').setValue(this.dataOrder.note);
       this.reactiveForm.get('note_x_fasonista').setValue(this.dataOrder.note_x_fasonista);
+
+      // SI INIZIALIZZANO LE CAMICE
+      
 
     }
 

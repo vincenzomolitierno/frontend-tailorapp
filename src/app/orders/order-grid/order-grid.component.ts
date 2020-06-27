@@ -115,7 +115,8 @@ export class OrderGridComponent extends GridModel implements OnInit {
                 else
                   var consegnato = 'NO';   
                 // FINE formattazione della data di consegna
-                console.log({
+               this.putData('orders',                  
+                {
                   "idordini": updatedOrder.idordini, 
                   "note": updatedOrder.note,
                   "acconto": updatedOrder.acconto,
@@ -130,41 +131,6 @@ export class OrderGridComponent extends GridModel implements OnInit {
                   "clienti_idclienti": updatedOrder.clienti_idclienti,
                   "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
                   "id_misure_ordinate": updatedOrder.id_misure_ordinate
-                });
-
-                // console.log(               {
-                //   "idordini": result.idordini, 
-                //   "note": result.note,
-                //   "acconto": result.acconto,
-                //   "saldo": result.saldo,
-                //   "totale": result.totale,
-                //   "data_consegna": strDataConsegna,
-                //   "consegnato": consegnato,
-                //   "saldato": saldato,
-                //   "note_x_fasonista": result.note_x_fasonista,
-                //   "mod_consegna": result.mod_consegna,
-                //   "data_ordine": result.data_ordine,
-                //   "clienti_idclienti": result.clienti_idclienti,
-                //   "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
-                //   "id_misure_ordinate": result.id_misure_ordinate
-                // });
-
-                this.putData('orders',                  
-                {
-                  "idordini": result.idordini, 
-                  "note": result.note,
-                  "acconto": result.acconto,
-                  "saldo": result.saldo,
-                  "totale": result.totale,
-                  "data_consegna": strDataConsegna,
-                  "consegnato": result.consegnato,
-                  "saldato": result.saldato,
-                  "note_x_fasonista": result.note_x_fasonista,
-                  "mod_consegna": result.mod_consegna,
-                  "data_ordine": result.data_ordine,
-                  "clienti_idclienti": result.clienti_idclienti,
-                  "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
-                  "id_misure_ordinate": result.id_misure_ordinate
                 });
              
               }

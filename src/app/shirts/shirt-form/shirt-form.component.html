@@ -1,155 +1,18 @@
 <form novalidate [formGroup]="reactiveForm">
 
     <h2 mat-dialog-title>Modulo {{formModal}} camicia</h2>
+    <h2 mat-dialog-title>Id ordini {{ordini_idordini}}</h2>
+
     <mat-dialog-content class="mat-typography">
 
-        <div class="grid-container three-columns-template">
+        <div class="grid-container">
 
             <div class="grid-item">
                 <mat-form-field appearance="fill">
                     <mat-label>Colore Camicia</mat-label>
-                    <input matInput placeholder="inserire colore" formControlName="color">
+                    <input matInput placeholder="inserire colore" formControlName="colore">
                     <mat-icon matSuffix>keyboard</mat-icon>
                 </mat-form-field>
-
-            </div>
-
-            <div class="grid-item">
-                <mat-form-field appearance="fill">
-                    <mat-label>Modello Collo</mat-label>
-                    <mat-select formControlName="modellopolso_idmodello" required (onchange)="saveIdNeckModel()">
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let neckModelIndicator of neckModelIndicators" [value]="neckModelIndicator.idmodelli_collo">
-                            {{neckModelIndicator.descrizione}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matSuffix>list_alt</mat-icon>
-                    <mat-error *ngIf="neckModelIndicatorControl.hasError('required')">Selezionare un collo</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="grid-item">
-                <mat-form-field appearance="fill">
-                    <mat-label>Modello Polso</mat-label>
-                    <mat-select [formControl]="wristModelIndicatorControl" required (onchange)="saveIdNeckModel()">
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let wristModelIndicator of wristModelIndicators" [value]="wristModelIndicator.idmodelli_polso">
-                            {{wristModelIndicator.descrizione}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matSuffix>list_alt</mat-icon>
-                    <mat-error *ngIf="wristModelIndicatorControl.hasError('required')">Selezionare un collo</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="grid-item">
-                <mat-checkbox>Stecche estraibili</mat-checkbox>
-                <div class="gap"></div>
-            </div>
-
-            <div class="grid-item">
-                <mat-checkbox>Tasca</mat-checkbox>
-                <div class="gap"></div>
-            </div>
-
-            <div class="grid-item">
-                <mat-checkbox>Cuciture a mano</mat-checkbox>
-                <div class="gap"></div>
-            </div>
-
-            <div class="grid-item">
-                <mat-form-field appearance="fill">
-                    <mat-label>Tipo Bottone</mat-label>
-                    <input matInput placeholder="inserire il colore" [(ngModel)]="tipo_bottone">
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                </mat-form-field>
-            </div>
-
-            <div class="grid-item">
-                <mat-form-field appearance="fill">
-                    <mat-label>Avanti</mat-label>
-                    <mat-select [formControl]="listIndicatorControl" required>
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
-                            {{listIndicator.descrizione}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matSuffix>list_alt</mat-icon>
-                    <mat-error *ngIf="listIndicatorControl.hasError('required')">Selezionare avanti</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="grid-item">
-                <mat-form-field appearance="fill">
-                    <mat-label>Dietro</mat-label>
-                    <mat-select [formControl]="listIndicatorControl" required>
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
-                            {{listIndicator.descrizione}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matSuffix>list_alt</mat-icon>
-                    <mat-error *ngIf="listIndicatorControl.hasError('required')">Selezionare dietro</mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="grid-item three-columns-span">
-                <mat-checkbox [(ngModel)]="pannello_iniziali">Inserire iniziali</mat-checkbox>
-                <div class="gap"></div>
-            </div>
-
-            <div class="grid-item three-columns-span">
-
-                <div class="grid-container two-columns-template" style="border: 0.5px solid black;" *ngIf="pannello_iniziali">
-
-                    <div class="grid-item">
-                        <div class="gap"></div>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Iniziali</mat-label>
-                            <input matInput placeholder="inserire le iniziali" [(ngModel)]="shirt.iniziali">
-                            <mat-icon matSuffix>keyboard</mat-icon>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="grid-item">
-                        <div class="gap"></div>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Posizione iniziali</mat-label>
-                            <mat-select [formControl]="listIndicatorControl" required>
-                                <mat-option>--</mat-option>
-                                <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
-                                    {{listIndicator.descrizione}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-icon matSuffix>list_alt</mat-icon>
-                            <mat-error *ngIf="listIndicatorControl.hasError('required')">Selezionare posizione</mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="grid-item">
-                        <mat-radio-group aria-label="Select an option" [(ngModel)]="shirt.stile_carattere">
-                            <mat-radio-button value="corsivo">Corsivo</mat-radio-button>
-                            <mat-radio-button value="stampato">Stampato</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-
-                    <div class="grid-item">
-                        <mat-radio-group aria-label="Select an option" [(ngModel)]="shirt.tipo_lettera">
-                            <mat-radio-button value="maiuscole">Maiuscole</mat-radio-button>
-                            <mat-radio-button value="minuscole">Minuscole</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-
-                    <div class="grid-item">
-                        <div class="gap"></div>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Colore iniziali</mat-label>
-                            <input matInput placeholder="inserire il colore delle iniziali" [(ngModel)]="shirt.iniziali">
-                            <mat-icon matSuffix>keyboard</mat-icon>
-                        </mat-form-field>
-                    </div>
-                    <!-- fine pannello iniziali -->
-                </div>
 
             </div>
 
@@ -159,7 +22,8 @@
                         <button mat-mini-fab color="primary" (click)="buttonDecreaseQty()"><mat-icon>remove</mat-icon></button>
                     </div>
                     <div class="value-set">
-                        Numero capi<br> {{shirt.quantita.toFixed(0)}}
+                        <p>Numero Capi</p>
+                        <input type="text" formControlName="numero_capi" class="value-display" readonly>
                     </div>
                     <div class="plus-button">
                         <button mat-mini-fab color="primary" (click)="buttonIncreaseQty()"><mat-icon>add</mat-icon></button>
@@ -167,17 +31,171 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="grid-container">
+
+
             <div class="grid-item">
                 <mat-form-field appearance="fill">
-                    <mat-label>Note</mat-label>
-                    <textarea matInput placeholder="inserisre nota..."></textarea>
-                    <mat-icon matSuffix>keyboard</mat-icon>
+                    <mat-label>Modello Collo</mat-label>
+                    <mat-select formControlName="modellocollo_idmodello" required (onchange)="saveIdNeckModel()">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let neckModelIndicator of neckModelIndicators" [value]="neckModelIndicator.idmodelli_collo">
+                            {{neckModelIndicator.descrizione}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="reactiveForm.controls.modellocollo_idmodello.hasError('required')">Selezionare un collo</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+                <mat-form-field appearance="fill">
+                    <mat-label>Modello Polso</mat-label>
+                    <mat-select formControlName="modellopolso_idmodello" required (onchange)="saveIdNeckModel()">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let wristModelIndicator of wristModelIndicators" [value]="wristModelIndicator.idmodelli_polso">
+                            {{wristModelIndicator.descrizione}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="reactiveForm.controls.modellopolso_idmodello.hasError('required')">Selezionare un collo</mat-error>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="grid-container">
+
+            <div class="grid-item">
+                <mat-form-field appearance="fill">
+                    <mat-label>Avanti</mat-label>
+                    <mat-select formControlName="avanti_idavanti" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
+                            {{listIndicator.descrizione}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="reactiveForm.controls.avanti_idavanti.hasError('required')">Selezionare avanti</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+                <mat-form-field appearance="fill">
+                    <mat-label>Dietro</mat-label>
+                    <mat-select formControlName="indietro_idindietro" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
+                            {{listIndicator.descrizione}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="reactiveForm.controls.indietro_idindietro.hasError('required')">Selezionare dietro</mat-error>
                 </mat-form-field>
             </div>
 
         </div>
 
 
+        <div class="grid-container">
+            <div class="grid-item">
+                <mat-form-field appearance="fill">
+                    <mat-label>Tipo Bottone</mat-label>
+                    <input matInput placeholder="inserire il colore" formControlName="tipo_bottone">
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="grid-item">
+                <mat-checkbox formControlName="stecche_estraibili" style="text-align: left; padding-left: 20px;">Stecche estraibili</mat-checkbox>
+            </div>
+
+        </div>
+
+        <div class="grid-container">
+
+            <div class="grid-item" style="text-align: left; padding-left: 20px;">
+                <mat-checkbox formControlName="tasca">Tasca</mat-checkbox>
+            </div>
+
+            <div class="grid-item" style="text-align: left; padding-left: 20px;">
+                <mat-checkbox formControlName="cuciture">Cuciture a mano</mat-checkbox>
+            </div>
+
+        </div>
+
+        <div class="grid-container" style="grid-template-columns: 100%;">
+
+            <div class="grid-item" style="text-align: left; padding-left: 20px;">
+                <mat-checkbox formControlName="pos_iniziali">Inserire iniziali</mat-checkbox>
+                <div class="gap"></div>
+            </div>
+
+        </div>
+
+        <div class="grid-container" style="border: 0.5px solid black; grid-template-columns: 50% 50%; padding-bottom: 20px; padding-top: 20px;" *ngIf="pannello_iniziali">
+
+            <div class="grid-item">
+                <div class="gap"></div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Iniziali</mat-label>
+                    <input matInput placeholder="inserire le iniziali" formControlName="iniziali">
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="grid-item">
+                <div class="gap"></div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Posizione iniziali</mat-label>
+                    <mat-select formControlName="iniziali" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
+                            {{listIndicator.descrizione}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>list_alt</mat-icon>
+                    <mat-error *ngIf="reactiveForm.controls.iniziali.hasError('required')">Selezionare posizione</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="grid-item" style="text-align: left;">
+                <mat-radio-group aria-label="Select an option" formControlName="stile_carattere" style="display: flex; flex-direction: column;">
+                    <mat-radio-button value="corsivo">Corsivo</mat-radio-button>
+                    <mat-radio-button value="stampato">Stampato</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="grid-item" style="text-align: left;">
+                <mat-radio-group aria-label="Select an option" formControlName="maiuscolo" style="display: flex; flex-direction: column;">
+                    <mat-radio-button value="maiuscole">Maiuscole</mat-radio-button>
+                    <mat-radio-button value="minuscole">Minuscole</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <!-- <div class="grid-item">
+                        <div class="gap"></div>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Colore iniziali</mat-label>
+                            <input matInput placeholder="inserire il colore delle iniziali" formControlName="maiuscolo">
+                            <mat-icon matSuffix>keyboard</mat-icon>
+                        </mat-form-field>
+                    </div> -->
+            <!-- fine pannello iniziali -->
+        </div>
+
+        <div class="grid-container" style="grid-template-columns: 100%;">
+
+            <div class="grid-item">
+                <mat-form-field appearance="fill">
+                    <mat-label>Note</mat-label>
+                    <textarea matInput placeholder="inserisre nota..." formControlName="note"></textarea>
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                </mat-form-field>
+            </div>
+
+        </div>
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">

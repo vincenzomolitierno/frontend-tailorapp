@@ -32,7 +32,7 @@ export class ShirtFormComponent implements OnInit {
   name: string = 'empty';
   dummy_data: string = 'X,Y';
 
-  pannello_iniziali: boolean = false;
+  pannello_iniziali: boolean = true;
 
   colour: string = '';
   tipo_bottone: string = '';

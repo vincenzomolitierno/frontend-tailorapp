@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource } from '@angular/material';
 import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
@@ -31,6 +31,8 @@ interface CamiciaElement {
 })
 export class ShirtsGridComponent extends GridModel implements OnInit {
 
+  @Input() ordini_idordini: number;
+
   // Dati coinvolti nel binding
   dummy_data: string = "dummy_data"
   testo_ricerca: string = "";  
@@ -43,15 +45,9 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     'update',
     'delete'
   ];
-  dataSourceShirt;  
 
-  @ViewChild('table', { read: MatSort, static: true }) sortShirts: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginatorShirts: MatPaginator;  
-
-  constructor(
-    restBackendService: RESTBackendService, // si inietta il servizio
-    public dialog: MatDialog
-  ) { 
+  constructor( restBackendService: RESTBackendService, // si inietta il servizio
+    public dialog: MatDialog ) { 
     super(restBackendService); // si innesca il costruttore della classe padre
   }
 
@@ -59,15 +55,17 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     this.getRemoteData('shirts');
   }
 
-  openResourceDialog(formModal: string, name: string){
+  openResourceDialog(formModal: string) {
 
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {idshirt: "camicia 1", formModal: formModal };
+    dialogConfig.data = {
+      indietro_idindietro: this.ordini_idordini, 
+      formModal: formModal };
 
     const dialogRef = this.dialog.open(ShirtFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      console.log(result);
     });    
     
   }   
