@@ -23,11 +23,14 @@
                     </div>
                     <div class="value-set">
                         <p>Numero Capi <sup>*</sup></p>
-                        <input type="text" formControlName="numero_capi" class="value-display" readonly required>
-                        <mat-error *ngIf="reactiveForm.controls.numero_capi.hasError('required')">Almeno 1 capo</mat-error>
+                        <input type="text" formControlName="numero_capi" class="value-display" readonly>
                     </div>
+
                     <div class="plus-button">
                         <button mat-mini-fab color="primary" (click)="buttonIncreaseQty()"><mat-icon>add</mat-icon></button>
+                    </div>
+                    <div style="clear: left; margin-top: 4.5px;  color: red;font-size: 0.7rem; border-top: 1px solid red;grid-column: 1 / 4;" *ngIf="!(reactiveForm.controls.numero_capi.value > 0)">
+                        <p>Almeno 1 capo</p>
                     </div>
                 </div>
             </div>
@@ -104,7 +107,7 @@
             <div class="grid-item">
                 <mat-form-field appearance="fill">
                     <mat-label>Tipo Bottone</mat-label>
-                    <input matInput placeholder="inserire il colore" formControlName="tipo_bottone">
+                    <input matInput placeholder="inserire il tipo di bottone" formControlName="tipo_bottone">
                     <mat-icon matSuffix>keyboard</mat-icon>
                 </mat-form-field>
             </div>
@@ -150,7 +153,7 @@
                 <div class="gap"></div>
                 <mat-form-field appearance="fill">
                     <mat-label>Posizione iniziali</mat-label>
-                    <mat-select formControlName="iniziali">
+                    <mat-select formControlName="posizione_iniziali">
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
                             {{listIndicator.descrizione}}
@@ -163,15 +166,15 @@
 
             <div class="grid-item" style="text-align: left;">
                 <mat-radio-group aria-label="Select an option" formControlName="stile_carattere" style="display: flex; flex-direction: column;">
-                    <mat-radio-button value="corsivo">Corsivo</mat-radio-button>
-                    <mat-radio-button value="stampato">Stampato</mat-radio-button>
+                    <mat-radio-button value="SI">Corsivo</mat-radio-button>
+                    <mat-radio-button value="NO">Stampato</mat-radio-button>
                 </mat-radio-group>
             </div>
 
             <div class="grid-item" style="text-align: left;">
                 <mat-radio-group aria-label="Select an option" formControlName="maiuscolo" style="display: flex; flex-direction: column;">
-                    <mat-radio-button value="maiuscole">Maiuscole</mat-radio-button>
-                    <mat-radio-button value="minuscole">Minuscole</mat-radio-button>
+                    <mat-radio-button value="SI">Maiuscole</mat-radio-button>
+                    <mat-radio-button value="NO">Minuscole</mat-radio-button>
                 </mat-radio-group>
             </div>
 

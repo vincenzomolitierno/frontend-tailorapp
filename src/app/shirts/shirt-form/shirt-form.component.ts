@@ -64,10 +64,11 @@ export class ShirtFormComponent implements OnInit {
       iniziali: new FormControl(''),
       pos_iniziali: new FormControl(''),
       stile_carattere: new FormControl(''),
+      posizione_iniziali: new FormControl(''),
       maiuscolo: new FormControl(''),
       presenza_iniziali: new FormControl(''),
       note: new FormControl(''),
-      numero_capi: new FormControl('',Validators.required),
+      numero_capi: new FormControl('',[Validators.required, Validators.min(1)]),
       modellopolso_idmodello: new FormControl('',Validators.required),
       modellocollo_idmodello: new FormControl('',Validators.required),
       avanti_idavanti: new FormControl('',Validators.required),
@@ -89,6 +90,11 @@ export class ShirtFormComponent implements OnInit {
   wristModelIndicators;
   backModelIndicators;
   forwardModelIndicators;
+  listIndicators = [
+    {descrizione: 'Davanti'},
+    {descrizione: 'Collo'},
+    {descrizione: 'Polso'},
+    {descrizione: 'Tasca'}];
 
   private loadControlsForm(){
 
@@ -115,8 +121,26 @@ export class ShirtFormComponent implements OnInit {
     );     
 
     // POPOLAZIONE DEL COMBOBOX MODELLI AVANTI
+    this.restBackendService.getResource('forwardsidemodels').subscribe(
+      (data) => {
+             this.forwardModelIndicators = data;   
+            },
+      (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      }
+    );        
 
     // POPOLAZIONE DEL COMBOBOX MODELLI DIETRO
+    this.restBackendService.getResource('backsidemodels').subscribe(
+      (data) => {
+             this.backModelIndicators = data;   
+            },
+      (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      }
+    );      
 
   }  
   

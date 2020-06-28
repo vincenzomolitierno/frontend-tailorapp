@@ -3,6 +3,7 @@ import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource, 
 import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 
 interface CamiciaElement {  
   idcamicie: number,
@@ -67,9 +68,79 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+
+      if(result) {
+        console.log('insericso camicia');
+
+        if(result.tasca)
+          var tasca = 'SI';
+        else  
+          var tasca = 'NO';
+
+        if(result.cuciture)
+          var cuciture = 'SI';
+        else  
+          var cuciture = 'NO';    
+          
+        if(result.stecche_estraibili)
+          var stecche_estraibili = 'SI';
+        else  
+          var stecche_estraibili = 'NO';           
+
+     var obj = {    
+        'avanti_idavanti': result.avanti_idavanti,
+        "colore": result.colore,
+        "cuciture": cuciture,
+        // "idcamicie": result.idcamicie,
+        "indietro_idindietro": result.indietro_idindietro,
+        "iniziali": result.iniziali,
+        "maiuscolo": result.maiuscolo,
+        "modellocollo_idmodello": result.modellocollo_idmodello,
+        "modellopolso_idmodello": result.modellopolso_idmodello,
+        "note": result.note,
+        "numero_capi": result.numero_capi,
+        "ordini_idordini": 101, //result.ordini_idordini,
+        "posizione_iniziali": result.posizione_iniziali.descrizione,
+        "stecche_estraibili": stecche_estraibili,
+        "stile_carattere": result.stile_carattere,
+        "tasca": tasca,
+        "tipo_bottone": result.tipo_bottone
+      }
+
+      console.log(obj);
+
+      this.postData('shirts', obj); 
+
+
+      }
+
     });    
     
   }   
+
+  public openDeleteDialog(model: any){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      titolo: 'ATTENZIONE!', 
+      messaggio: 'Eliminare la camicia dall\'ordine corrente?',
+    };
+
+    const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.delData('shirts',        
+          {
+            "idcamicie": model.idcamicie
+          }
+        );
+
+      }
+      
+    });     
+
+  }    
  
 
 }
