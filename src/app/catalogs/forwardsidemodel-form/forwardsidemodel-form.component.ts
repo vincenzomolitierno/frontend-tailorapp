@@ -32,7 +32,7 @@ export class ForwardsidemodelFormComponent implements OnInit {
       });      
 
       //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-      this.restBackendService.getResource('forwardsidemodel').subscribe(
+      this.restBackendService.getResource('forwardsidemodels').subscribe(
         (data) => {          
           this.options = data;    
           console.log(data)

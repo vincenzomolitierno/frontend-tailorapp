@@ -32,7 +32,7 @@ export class NeckmodelFormComponent implements OnInit {
       });
         
       //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-      this.restBackendService.getResource('neckmodel').subscribe(
+      this.restBackendService.getResource('neckmodels').subscribe(
         (data) => {          
               this.options = data;    
               console.log(data)

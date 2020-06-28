@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
@@ -47,8 +47,9 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
   ];
 
   constructor( restBackendService: RESTBackendService, // si inietta il servizio
-    public dialog: MatDialog ) { 
-    super(restBackendService); // si innesca il costruttore della classe padre
+    public dialog: MatDialog,
+    snackBar: MatSnackBar ) { 
+    super(restBackendService, snackBar); // si innesca il costruttore della classe padre
   }
 
   ngOnInit() {

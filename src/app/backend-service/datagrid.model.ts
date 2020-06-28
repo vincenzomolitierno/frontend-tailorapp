@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { RESTBackendService } from './rest-backend.service';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
 import { ViewChild } from '@angular/core';
 
 import { QueryParameter } from './data.model';
@@ -24,32 +24,35 @@ export class GridModel {
   //Attributo che serve per ricevere il riferimento al servizio del 
   //backend iniettato nella classe derivata
   public restBackendService: RESTBackendService;
+  public snackBar: MatSnackBar;
 
   //Attributi che servono alla classe derivata per 
   // @ViewChild('table', { read: MatSort, static: true }) sortTable: MatSort;
   @ViewChild(MatSort, {static: true}) sortTable: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginatorTable: MatPaginator;  
 
-  constructor(_restBackendService: RESTBackendService){
+  constructor(_restBackendService: RESTBackendService,
+    _snackBar: MatSnackBar){
     this.restBackendService = _restBackendService;
+    this.snackBar = _snackBar;
     
-    this.viewCatalogControlButton = false;
+    this.viewCatalogControlButton = true;
 
     if(this.viewCatalogControlButton) {
       this.displayedCatalogColumns = [
-        // 'idmodello',
-        'descrizione', 
-        'update',
+        'idmodello',
+        'modello', 
+        // 'update',
         'delete'
       ];
-  } else {
+    } else {
       this.displayedCatalogColumns = [
         // 'idmodello',
         'descrizione', 
         // 'update',
         // 'delete'
       ];
-  }
+    }
 
   }
 
@@ -196,6 +199,17 @@ export class GridModel {
     );
   }
 
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'Chiudi', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+  }
+
+  public openDeleteDialog(modello: any){
+    this.openSnackBar('Cancellazione della voce di catalogo bloccata.\nContattare l\'assistenza');
+  }  
 
 
 }

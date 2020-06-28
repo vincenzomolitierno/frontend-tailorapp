@@ -32,7 +32,9 @@ export class ShirtFormComponent implements OnInit {
   name: string = 'empty';
   dummy_data: string = 'X,Y';
 
-  pannello_iniziali: boolean = true;
+  pannello_iniziali: boolean = false;
+
+  ordini_idordini: number;
 
   colour: string = '';
   tipo_bottone: string = '';
@@ -43,16 +45,18 @@ export class ShirtFormComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) data,
         public restBackendService: RESTBackendService) {
     
-    this.formModal = data.formModal;
+    this.formModal = data.formModal;    
     console.log('inizio camicie');
     console.log(data);
+
+    this.ordini_idordini = data.ordini_idordini;
 
     //costruzione del reactive form
     this.reactiveForm = new FormGroup({
         
       idcamicie: new FormControl(''),
 
-      colore: new FormControl(''),
+      colore: new FormControl('', Validators.required),
       stecche_estraibili: new FormControl(''),
       tasca: new FormControl(''),
       cuciture: new FormControl(''),
@@ -63,11 +67,11 @@ export class ShirtFormComponent implements OnInit {
       maiuscolo: new FormControl(''),
       presenza_iniziali: new FormControl(''),
       note: new FormControl(''),
-      numero_capi: new FormControl(''),
-      modellopolso_idmodello: new FormControl(''),
-      modellocollo_idmodello: new FormControl(''),
-      avanti_idavanti: new FormControl(''),
-      indietro_idindietro: new FormControl(''),
+      numero_capi: new FormControl('',Validators.required),
+      modellopolso_idmodello: new FormControl('',Validators.required),
+      modellocollo_idmodello: new FormControl('',Validators.required),
+      avanti_idavanti: new FormControl('',Validators.required),
+      indietro_idindietro: new FormControl('',Validators.required),
       ordini_idordini: new FormControl('')
      
     });
@@ -75,58 +79,59 @@ export class ShirtFormComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    this.loadControlsForm();
+
+    this.reactiveForm.get('numero_capi').setValue('0'); 
   }
 
-  // neckModelIndicatorControl = new FormControl('', Validators.required);
-  // neckModelIndicators: NeckModelIndicator[] = [
-  //   {tag: '1', descrizione: 'collo 1'},
-  //   {tag: '2', descrizione: 'collo 2'},
-  //   {tag: '3', descrizione: 'collo 3'},
-  // ];   
-
-  // wristModelIndicatorControl = new FormControl('', Validators.required);
-  // wristModelIndicators: WristModelIndicator[] = [
-  //   {tag: '1', descrizione: 'polso 1'},
-  //   {tag: '2', descrizione: 'polso 2'},
-  //   {tag: '3', descrizione: 'polso 3'},
-  // ];   
-
-  // listIndicatorControl = new FormControl('', Validators.required);
-  // listIndicators: listIndicator[] = [
-  //   {tag: '1', descrizione: 'valore 1'},
-  //   {tag: '2', descrizione: 'valore 2'},
-  //   {tag: '3', descrizione: 'valore 3'},
-  // ];  
+  neckModelIndicators;
+  wristModelIndicators;
+  backModelIndicators;
+  forwardModelIndicators;
 
   private loadControlsForm(){
-    //SI popola il combobox con l'elenco dei fasonatori
-    this.restBackendService.getResource('subcontractors').subscribe(
+
+    // POPOLAZIONE DEL COMBOBOX MODELLI COLLO
+    this.restBackendService.getResource('neckmodels').subscribe(
       (data) => {
-
-            var descrizione = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
-            for (let index = 0; index < data.length; index++) {
-              data[index].descrizione = descrizione[index];              
-            }
-            var result = data;
-            console.log(result);
-
-            // this.subcontractors = result;   
-
+             this.neckModelIndicators = data;   
             },
       (error) => {
           console.error(error);
           console.error('Message: ' + error.message);
       }
-    );    
+    );  
+    
+    // POPOLAZIONE DEL COMBOBOX MODELLI POLSO
+    this.restBackendService.getResource('wristmodels').subscribe(
+      (data) => {
+             this.wristModelIndicators = data;   
+            },
+      (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);
+      }
+    );     
+
+    // POPOLAZIONE DEL COMBOBOX MODELLI AVANTI
+
+    // POPOLAZIONE DEL COMBOBOX MODELLI DIETRO
+
   }  
   
   
   buttonIncreaseQty(){
-    this.shirt.quantita = this.shirt.quantita + 1; 
+    this.reactiveForm.get('numero_capi').setValue(  (parseFloat(this.reactiveForm.get('numero_capi').value) + 1).toFixed(0) ); 
   }
 
   buttonDecreaseQty(){
-    this.shirt.quantita = this.shirt.quantita - 1; 
+    if ( this.reactiveForm.get('numero_capi').value > 0 )
+    this.reactiveForm.get('numero_capi').setValue(  (parseFloat(this.reactiveForm.get('numero_capi').value) - 1).toFixed(0) ); 
+  }
+
+  switchPanel(){
+    this.pannello_iniziali = !this.pannello_iniziali;
   }
 
 

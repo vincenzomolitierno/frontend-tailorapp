@@ -26,8 +26,14 @@
     <div class="mat-elevation-z2 table-container" style="clear: left;">
         <table mat-table [dataSource]="dataSource" matSort #table>
 
-            <!-- Description Column -->
-            <ng-container matColumnDef="descrizione">
+            <!-- idmodello Column -->
+            <ng-container matColumnDef="idmodello">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.idmodello}} </td>
+            </ng-container>
+
+            <!-- modello Column -->
+            <ng-container matColumnDef="modello">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrizione </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.modello}} </td>
             </ng-container>
@@ -46,7 +52,7 @@
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
                 <td mat-cell *matCellDef="let row" class="last-row-button">
-                    <button mat-raised-button matTooltip="Elimina {{nome_catalogo}}" matTooltipPosition="left"><mat-icon>delete</mat-icon></button>
+                    <button mat-raised-button matTooltip="Elimina {{nome_catalogo}}" matTooltipPosition="left" (click)="openDeleteDialog(row)"><mat-icon>delete</mat-icon></button>
                 </td>
             </ng-container>
 

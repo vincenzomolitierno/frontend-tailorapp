@@ -32,7 +32,7 @@ export class WristmodelFormComponent implements OnInit {
       });      
 
       //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-      this.restBackendService.getResource('wirstmodel').subscribe(
+      this.restBackendService.getResource('wirstmodels').subscribe(
         (data) => {          
           this.options = data;    
           console.log(data)

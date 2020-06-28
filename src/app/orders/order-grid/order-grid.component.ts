@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { OrderFormComponent } from '../order-form/order-form.component';
 import { OrderViewComponent } from '../order-view/order-view.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
@@ -40,9 +40,10 @@ export class OrderGridComponent extends GridModel implements OnInit {
    
     constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
-      public dialog: MatDialog
+      public dialog: MatDialog,
+      snackBar: MatSnackBar
     ) { 
-      super(restBackendService); // si innesca il costruttore della classe padre
+      super(restBackendService, snackBar); // si innesca il costruttore della classe padre
       this.resource = Array<Order>();
     }
 

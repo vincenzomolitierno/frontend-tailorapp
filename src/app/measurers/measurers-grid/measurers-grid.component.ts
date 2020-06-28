@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatDialog, MatDialogConfig, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatDialog, MatDialogConfig, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { MeasurerFormComponent } from '../measurer-form/measurer-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
@@ -26,9 +26,10 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
 
     constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
-      public dialog: MatDialog
+      public dialog: MatDialog,
+      snackBar: MatSnackBar
     ) { 
-      super(restBackendService); // si innesca il costruttore della classe padre
+      super(restBackendService, snackBar); // si innesca il costruttore della classe padre
       this.resource = Array<Measurer>();
     }
   

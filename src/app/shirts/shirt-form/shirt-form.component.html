@@ -10,7 +10,7 @@
             <div class="grid-item">
                 <mat-form-field appearance="fill">
                     <mat-label>Colore Camicia</mat-label>
-                    <input matInput placeholder="inserire colore" formControlName="colore">
+                    <input matInput placeholder="inserire colore" formControlName="colore" required>
                     <mat-icon matSuffix>keyboard</mat-icon>
                 </mat-form-field>
 
@@ -22,8 +22,9 @@
                         <button mat-mini-fab color="primary" (click)="buttonDecreaseQty()"><mat-icon>remove</mat-icon></button>
                     </div>
                     <div class="value-set">
-                        <p>Numero Capi</p>
-                        <input type="text" formControlName="numero_capi" class="value-display" readonly>
+                        <p>Numero Capi <sup>*</sup></p>
+                        <input type="text" formControlName="numero_capi" class="value-display" readonly required>
+                        <mat-error *ngIf="reactiveForm.controls.numero_capi.hasError('required')">Almeno 1 capo</mat-error>
                     </div>
                     <div class="plus-button">
                         <button mat-mini-fab color="primary" (click)="buttonIncreaseQty()"><mat-icon>add</mat-icon></button>
@@ -39,10 +40,10 @@
             <div class="grid-item">
                 <mat-form-field appearance="fill">
                     <mat-label>Modello Collo</mat-label>
-                    <mat-select formControlName="modellocollo_idmodello" required (onchange)="saveIdNeckModel()">
+                    <mat-select formControlName="modellocollo_idmodello" (onchange)="saveIdNeckModel()" required>
                         <mat-option>--</mat-option>
-                        <mat-option *ngFor="let neckModelIndicator of neckModelIndicators" [value]="neckModelIndicator.idmodelli_collo">
-                            {{neckModelIndicator.descrizione}}
+                        <mat-option *ngFor="let neckModelIndicator of neckModelIndicators" [value]="neckModelIndicator.idmodello">
+                            {{neckModelIndicator.modello}}
                         </mat-option>
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
@@ -53,10 +54,10 @@
             <div class="grid-item">
                 <mat-form-field appearance="fill">
                     <mat-label>Modello Polso</mat-label>
-                    <mat-select formControlName="modellopolso_idmodello" required (onchange)="saveIdNeckModel()">
+                    <mat-select formControlName="modellopolso_idmodello" (onchange)="saveIdNeckModel()" required>
                         <mat-option>--</mat-option>
-                        <mat-option *ngFor="let wristModelIndicator of wristModelIndicators" [value]="wristModelIndicator.idmodelli_polso">
-                            {{wristModelIndicator.descrizione}}
+                        <mat-option *ngFor="let wristModelIndicator of wristModelIndicators" [value]="wristModelIndicator.idmodello">
+                            {{wristModelIndicator.modello}}
                         </mat-option>
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
@@ -73,8 +74,8 @@
                     <mat-label>Avanti</mat-label>
                     <mat-select formControlName="avanti_idavanti" required>
                         <mat-option>--</mat-option>
-                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
-                            {{listIndicator.descrizione}}
+                        <mat-option *ngFor="let forwardModelIndicator of forwardModelIndicators" [value]="forwardModelIndicator.idavanti">
+                            {{forwardModelIndicator.modello}}
                         </mat-option>
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
@@ -87,8 +88,8 @@
                     <mat-label>Dietro</mat-label>
                     <mat-select formControlName="indietro_idindietro" required>
                         <mat-option>--</mat-option>
-                        <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
-                            {{listIndicator.descrizione}}
+                        <mat-option *ngFor="let backModelIndicator of backModelIndicators" [value]="backModelIndicator.idindietro">
+                            {{backModelIndicator.modello}}
                         </mat-option>
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
@@ -128,7 +129,7 @@
         <div class="grid-container" style="grid-template-columns: 100%;">
 
             <div class="grid-item" style="text-align: left; padding-left: 20px;">
-                <mat-checkbox formControlName="pos_iniziali">Inserire iniziali</mat-checkbox>
+                <mat-checkbox formControlName="pos_iniziali" (click)="switchPanel()">Inserire iniziali</mat-checkbox>
                 <div class="gap"></div>
             </div>
 
@@ -149,7 +150,7 @@
                 <div class="gap"></div>
                 <mat-form-field appearance="fill">
                     <mat-label>Posizione iniziali</mat-label>
-                    <mat-select formControlName="iniziali" required>
+                    <mat-select formControlName="iniziali">
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator">
                             {{listIndicator.descrizione}}
@@ -199,8 +200,8 @@
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Annulla {{formModal}} camicia" matTooltipPosition="above" mat-dialog-close>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma {{formModal}} camicia" matTooltipPosition="above" [mat-dialog-close]="true" cdkFocusInitial>Conferma</button>
+        <button mat-raised-button matTooltip="Annulla {{formModal}} camicia" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} camicia" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.value" [disabled]="reactiveForm.invalid">Conferma</button>
     </mat-dialog-actions>
 
 </form>

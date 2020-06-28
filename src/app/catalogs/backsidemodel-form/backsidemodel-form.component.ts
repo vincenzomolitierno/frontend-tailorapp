@@ -33,7 +33,7 @@ export class BacksidemodelFormComponent implements OnInit {
       });      
 
       //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-      this.restBackendService.getResource('backsidemodel').subscribe(
+      this.restBackendService.getResource('backsidemodels').subscribe(
         (data) => {
           this.options = data;    
           console.log(data)

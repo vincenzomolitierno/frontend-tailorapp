@@ -13,8 +13,6 @@ import { isUndefined } from 'util';
 import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
-import { Order } from 'src/app/orders/data.model';
-import { isEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-grid',
@@ -63,9 +61,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog,
     private scriptService: ScriptService,
-    private _snackBar: MatSnackBar
+    _snackBar: MatSnackBar
   ) { 
-    super(restBackendService); // si innesca il costruttore della classe padre
+    super(restBackendService,_snackBar); // si innesca il costruttore della classe padre
     this.resource = Array<Customer>();
 
     this.measureCustomerDetailView = new Measure();
@@ -542,7 +540,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   } 
 
     openSnackBar() {
-      this._snackBar.open('Misure assenti, inserire una misura per il cliente', 'End now', {
+      this.snackBar.open('Misure assenti, inserire una misura per il cliente', 'End now', {
         duration: 5000,
         horizontalPosition: 'center',
         verticalPosition: 'top',

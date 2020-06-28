@@ -21,10 +21,10 @@ export class BackendServer {
     private apiResourceOrdersQuery: string = this.base + '/ordiniValues';
 
     // CATALOGHI
-    private apiResourceNeckmodel: string = this.base + '/modellocollo';
-    private apiResourceWirstmodel: string = this.base + '/modellopolso';
-    private apiResourceForwardside: string = this.base + '/avanti';
-    private apiResourceBackside: string = this.base + '/indietro';
+    private apiResourceNeckModels: string = this.base + '/modellocollo';
+    private apiResourceWristModels: string = this.base + '/modellopolso';
+    private apiResourceForwardsideModels: string = this.base + '/avanti';
+    private apiResourceBacksideModels: string = this.base + '/indietro';
 
     //CAMICIE
     private apiResourceShirts: string = this.base + '/camicie';
@@ -85,17 +85,17 @@ export class BackendServer {
             case 'measurers':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceMeasurers;                  
 
-            case 'neckmodel':
-                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceNeckmodel;   
+            case 'neckmodels':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceNeckModels;   
 
-            case 'wirstmodel':
-                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceWirstmodel;   
+            case 'wristmodels':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceWristModels;   
 
-            case 'forwardsidemodel':
-                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceForwardside;   
+            case 'forwardsidemodels':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceForwardsideModels;   
 
-            case 'backsidemodel':
-                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBackside;   
+            case 'backsidemodels':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceBacksideModels;   
 
             case 'measures':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceMeasures;   

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatDialogConfig, MatDialog, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { SubcontractorFormComponent } from '../subcontractor-form/subcontractor-form.component';
 import { Subcontractor } from '../subcontractor.model';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
@@ -27,9 +27,10 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
 
   constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
-      public dialog: MatDialog
+      public dialog: MatDialog,
+      _snackBar: MatSnackBar
     ) { 
-      super(restBackendService); // si innesca il costruttore della classe padre
+      super(restBackendService,_snackBar); // si innesca il costruttore della classe padre
       this.resource = Array<Subcontractor>();
     }
   
