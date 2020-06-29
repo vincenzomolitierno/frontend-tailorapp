@@ -386,26 +386,36 @@
 
         </div>
 
-        <!-- controllo necessario a contenere il base 64 della camicia per inserirlo all'interno dell'oggetto reactiveForm
-        e gestirlo on tutti gli altri cmapi in modalità reactive form -->
-        <input type="text" formControlName="note_grafiche" style="display: none;">
-
         <!-- controllo necessario a la modalità di gestione della misura (inserimento/aggiornamento) per inserirlo all'interno dell'oggetto reactiveForm
         e gestirlo on tutti gli altri cmapi in modalità reactive form -->
         <input type="text" formControlName="formModal" style="display: none;">
 
         <mat-divider></mat-divider>
+        <!-- INIZIO MODIFICA -->
         <!-- inserimento input grafico -->
-        <div style="text-align: center;">
+        <!-- <div style="text-align: center;">
             <app-shirt-marks (sendBase64)="catchAppuntiBase64($event)" [base64]='measure.note_grafiche'></app-shirt-marks>
+        </div> -->
+
+
+        <div style="width: 100%; margin-top: 25px; text-align: center;">
+            <div style="float: left; width: 100%; text-align: center; margin-bottom: 15px;">
+                <button mat-raised-button matTooltip="Pulisci segni" matTooltipPosition="right" (click)="pulisci()"><mat-icon>backspace</mat-icon></button>
+            </div>
+            <div style="float: left; width: 100%;">
+                <image-drawing [showToolbox]="false" borderCss="1px solid black" [showCancelButton]="false" [enableLoadAnotherImage]="false" [enableRemoveImage]="false" [src]="Appunti" outputMimeType="'image/jpeg'" [i18n]="i18n" [locale]="locale" [drawingSizes]="{  medium: 5 }"
+                    [colors]="{  black: '#000'}" (touchend)="catturadisegno()" (click)="catturadisegno()">
+
+                </image-drawing>
+            </div>
         </div>
 
-
+        <!-- FINE MODIFICA -->
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-raised-button matTooltip="Annulla {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.value" [disabled]="reactiveForm.invalid">Conferma</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} della misura" matTooltipPosition="above" [mat-dialog-close]="{'controls': this.reactiveForm.value, 'base64': this.AppuntiBase64}" (click)="catturadisegno()" [disabled]="reactiveForm.invalid">Conferma</button>
     </mat-dialog-actions>
 
 </form>

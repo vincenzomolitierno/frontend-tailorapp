@@ -197,6 +197,21 @@ export class GridModel {
 
   }  
 
+  public putDataLess(tagResource: string, body: object):void {
+
+    this.errorMessage = '';
+
+    this.restBackendService.putResource(tagResource, body).subscribe(
+      (data) => {     
+        // this.getRemoteData(tagResource);        
+      },
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;        
+      });    
+
+  }   
+
   
   public recorSetCustomer: Array<any> = [];
   getCustomers() {

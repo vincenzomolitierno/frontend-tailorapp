@@ -324,12 +324,15 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
 
-      if(!(result==false) && !isUndefined(result) ){
+      console.log(result);
 
-        var base64: string = result.note_grafiche;
+      if( result ) {
+
+        var base64: string = result.base64;
         base64 = base64.replace('data:image/png;base64,','');
-        console.log(base64);
+        // console.log(base64);
 
+        result = result.controls;
         var torace: string = result.torace_1_bottone + ";"
                              + result.torace_2_bottone + ";" 
                              + result.torace_3_bottone + ";" 
@@ -339,54 +342,59 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                              + result.torace_7_bottone + ";" 
                              + result.torace_8_bottone + ";" 
 
-        //chiamata REST
-        this.postDataLess('measures',        
-        {
-          "taglia_misurometro": result.shirtIndicatorControlSize,
-          "collo": result.collo,
-          "polso": result.polso,
-          "spalla": result.spalla,
-          "bicipite": result.bicipite,
-          "lung_bicipite": result.lunghezza_manica,
-          "vita_dietro": result.vita_dietro,
-          "lung_camicia": result.lunghezza_camicia,
-          "avambraccio": result.avambraccio,
-          "lung_avambraccio": result.centro_schiena,
-          "bacino_dietro": result.bacino_dietro,
-          "bacino": '',
-          "torace": torace,
-          "misurometro": result.shirtIndicatorControl,
-          "note_grafiche": base64,
-          "clienti_idclienti": result.idcliente,
-          "data_misure": ''            
-        });
+        console.log('misurometro: ' + result.shirtIndicatorControl);
 
         if(result.formModal == 'inserimento')  {
           console.log('inserimento');
 
-          // console.log( {
-          //   "taglia_misurometro": result.shirtIndicatorControlSize,
-          //   "collo": result.collo,
-          //   "polso": result.polso,
-          //   "spalla": result.spalla,
-          //   "bicipite": result.bicipite,
-          //   "lung_bicipite": result.lunghezza_manica,
-          //   "vita_dietro": result.vita_dietro,
-          //   "lung_camicia": result.lunghezza_camicia,
-          //   "avambraccio": result.avambraccio,
-          //   "lung_avambraccio": result.lunghezza_avambraccio,
-          //   "bacino_dietro": result.bacino_dietro,
-          //   "bacino": '',
-          //   "torace": torace,
-          //   "misurometro": result.shirtIndicatorControl,
-          //   "note_grafiche": base64,
-          //   "clienti_idclienti": result.idcliente,
-          //   "data_misure": ''            
-          // });          
-
+          //chiamata REST
+          this.postDataLess('measures',        
+          {
+            "taglia_misurometro": result.shirtIndicatorControlSize,
+            "collo": result.collo,
+            "polso": result.polso,
+            "spalla": result.spalla,
+            "bicipite": result.bicipite,
+            "lung_bicipite": result.lunghezza_manica,
+            "vita_dietro": result.vita_dietro,
+            "lung_camicia": result.lunghezza_camicia,
+            "avambraccio": result.avambraccio,
+            "lung_avambraccio": result.centro_schiena,
+            "bacino_dietro": result.bacino_dietro,
+            "bacino": '',
+            "torace": torace,
+            "misurometro": result.shirtIndicatorControl,
+            "note_grafiche": base64,
+            "clienti_idclienti": result.idcliente,
+            "data_misure": ''            
+          });          
+          
         }
         else if (result.formModal == 'aggiornamento'){
           console.log('aggiornamento');
+
+          //chiamata REST
+          this.putDataLess('measures',        
+          {
+            "idmisure": result.idmisure,
+            "taglia_misurometro": result.shirtIndicatorControlSize,
+            "collo": result.collo,
+            "polso": result.polso,
+            "spalla": result.spalla,
+            "bicipite": result.bicipite,
+            "lung_bicipite": result.lunghezza_manica,
+            "vita_dietro": result.vita_dietro,
+            "lung_camicia": result.lunghezza_camicia,
+            "avambraccio": result.avambraccio,
+            "lung_avambraccio": result.centro_schiena,
+            "bacino_dietro": result.bacino_dietro,
+            "bacino": '',
+            "torace": torace,
+            "misurometro": result.shirtIndicatorControl,
+            "note_grafiche": base64,
+            "clienti_idclienti": result.idcliente,
+            "data_misure": ''            
+          });            
 
         } //fine PUT
 

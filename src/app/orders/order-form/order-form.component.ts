@@ -104,6 +104,8 @@ export class OrderFormComponent implements OnInit {
       
       this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));
 
+      this.reactiveForm.get('idordini').setValue(0);
+
       //si crea un ordine vuoto per disporre di un id
 
       // this.restBackendService.postResource('orders',                  

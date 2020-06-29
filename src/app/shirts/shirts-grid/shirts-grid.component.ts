@@ -208,7 +208,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
 
     this.openSnackBar(
-        'avanti: ' +' ' + shirt.avanti + ' | ' +
+        'avanti: ' +' ' + shirt.avanti + ' | ' + '\r' +
         'colore: ' +' ' + shirt.colore + ' | ' +
         'cuciture: ' +' ' + shirt.cuciture + ' | ' +
         'idcamicie: ' +' ' + shirt.idcamicie + ' | ' +

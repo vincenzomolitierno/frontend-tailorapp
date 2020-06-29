@@ -20,10 +20,10 @@ export class ShirtMarksComponent {
     viewOldBase64: boolean = false;
 
     public locale: string = 'en';
-    // public width = window.innerWidth ;
-    // public height = window.innerHeight ;
-    public width = 460;
-    public height = 200; 
+
+    public width = window.innerWidth ;
+    public height = window.innerHeight ;
+
     
 	public Aggiorna = false;
     public Appunti: string ;
@@ -89,8 +89,8 @@ export class ShirtMarksComponent {
 
         this.AppuntiBase64 =  this.IDC.getImage();	
         this.Appunti = this.AppuntiBase64;
-        console.log(this.AppuntiBase64);
-        console.log('invio degli appunti + base64 al parent');      
+        // console.log(this.AppuntiBase64);
+        // console.log('invio degli appunti + base64 al parent');      
         this.sendBase64.emit(this.AppuntiBase64);
           
     }

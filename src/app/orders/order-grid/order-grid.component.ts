@@ -229,19 +229,19 @@ export class OrderGridComponent extends GridModel implements OnInit {
         var customers: Customer[] = data;
         var customer: Customer = customers.find(x => x.idclienti === order.clienti_idclienti);
         
-        console.log(customer);
+        // console.log(customer);
 
         this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
           (data) => {   
             
             var measure: Measure = data[0];            
-            console.log(measure);
+            // console.log(measure);
 
             this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + order.idordini ).subscribe(
               (data) => {
 
                 var shirts: Shirt[] = data;            
-                console.log(shirts);                
+                // console.log(shirts);                
                 this.generatePdf(order, measure, customer, shirts, key);
               },
               (error) => {},
@@ -296,21 +296,34 @@ export class OrderGridComponent extends GridModel implements OnInit {
       
     }
     // ###############
+    // var fasonatore: string;
+    // //SI popola il combobox con l'elenco dei fasonatori
+    // this.restBackendService.getResource('subcontractors').subscribe(
+    //   (data) => {
+    //     console.log(data);
+            
+            
+    //         var result = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
+    //         fasonatore = result;   
+
+    //         },
+    //   (error) => {
+    //       console.error(error);
+    //       console.error('Message: ' + error.message);
+    //   }
+    // );
+
+    // ################
    
 
     var refSize:number = 14;
 
-    if ( type == 'for_customer') {
-      var titolo: string = 'STAMPA PER CLIENTE \n ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine;
-    } else if ( type == 'for_subcontractor' ) {
-      var titolo: string = 'STAMPA PER FASONISTA ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine;
-    }
 
-     const documentDefinition = {
+     const documentCustomerDefinition = {
        
         content: [
           {
-            text: titolo,
+            text: 'STAMPA PER CLIENTE \n ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
             style: 'header'
           } ,
           {
@@ -328,41 +341,41 @@ export class OrderGridComponent extends GridModel implements OnInit {
           {
             columns: [
               {
-                text: 'Collo: '        + 'dummy' + '\n' +
-                      'Spalla: '       + 'dummy' + '\n' +
-                      'Lun. Manica: '  + 'dummy' + '\n' +
-                      'Bicipite: '     + 'dummy' + '\n' +
-                      'Vita Dietro: '  + 'dummy' + '\n' ,
+                text: 'Collo: '        + measure.collo + '\n' +
+                      'Spalla: '       + measure.spalla + '\n' +
+                      'Lun. Manica: '  + measure.lung_bicipite + '\n' +
+                      'Bicipite Tot x Braccio: '     + measure.bicipite + '\n' +
+                      'Avamb Tot x Braccio: '  + measure.avambraccio + '\n' ,
                 style: 'name'
               },
               {
-                text: 'Polso: '           + 'dummy' + '\n' +
-                      'Lun. Camicia: '     + 'dummy' + '\n' +
-                      'Avambraccio: '      + 'dummy' + '\n' +
-                      'Lun. Avambraccio: ' + 'dummy' + '\n' +
-                      'Bacino Dietro: '    + 'dummy' + '\n',
+                text: 'Lun Camicia: '           + measure.lung_camicia + '\n' +
+                      'Centro Schiena: '     + measure.lung_avambraccio + '\n' +
+                      'Vita Dietro: '      + measure.vita_dietro + '\n' +
+                      'Bacino Dietro: ' + measure.bacino_dietro + '\n' +
+                      'Polso: '    + measure.polso + '\n',
                 style: 'name'
               },
               {
                 text: 'TORACE AVANTI' + '\n' +
-                      '1° Bottone: '     + 'dummy' + '\n' +
-                      '2° Bottone: '     + 'dummy' + '\n' +
-                      '3° Bottone: '     + 'dummy' + '\n',
+                      '1° Bottone: '     + measure.torace.split(';')[0] + '\n' +
+                      '2° Bottone: '     + measure.torace.split(';')[1] + '\n' +
+                      '3° Bottone: '     + measure.torace.split(';')[2] + '\n',
                 style: 'name'
               },
               {
-                text: '4° Bottone: '     + 'dummy' + '\n' +
-                      '5° Bottone: '     + 'dummy' + '\n' +
-                      '6° Bottone: '     + 'dummy' + '\n' +
-                      '7° Bottone: '     + 'dummy' + '\n' +
-                      '8° Bottone: '     + 'dummy' + '\n',
+                text: '4° Bottone: '     + measure.torace.split(';')[3] + '\n' +
+                      '5° Bottone: '     + measure.torace.split(';')[4] + '\n' +
+                      '6° Bottone: '     + measure.torace.split(';')[5] + '\n' +
+                      '7° Bottone: '     + measure.torace.split(';')[6] + '\n' +
+                      '8° Bottone: '     + measure.torace.split(';')[7] + '\n',
                 style: 'name'
               }                                        
             ]
           },
           '\n',
           {
-            image: Base64Utility.base64ShirtEmpty,
+            image: 'data:image/png;base64,' + measure.note_grafiche,
             width: 250,
             alignment: 'center'
           },
@@ -376,26 +389,27 @@ export class OrderGridComponent extends GridModel implements OnInit {
           {
             style: 'name',
             table: {
-              heights: 50,
-              widths: ['*', 150],
+              heights: '*',
+              widths: ['*', 100],
               body: obj
             }
           },                                       
-          {
-            text: 'Fasonista: ' + order.fasonatori_idfasonatori,
-            style: 'subheader',
-            alignment: 'left',
-          },
-          'Note del fasonista',
-          {
-            style: 'name',
-            table: {
-              widths: ['*'],
-              body: [
-                [order.note_x_fasonista],
-              ]
-            }
-          },          
+          // {
+          //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
+          //   style: 'subheader',
+          //   alignment: 'left',
+          // },
+          // 'Note del fasonista',
+          // {
+          //   style: 'name',
+          //   alignment: 'left',
+          //   table: {
+          //     widths: ['*'],              
+          //     body: [
+          //       [order.note_x_fasonista],
+          //     ]
+          //   }
+          // },          
           {
             columns: [
               {
@@ -404,7 +418,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
                 alignment: 'left'
               },
               {
-                text: 'Modalità consegna: ' + + order.mod_consegna,
+                text: 'Modalità consegna: ' + order.mod_consegna,
                 style: 'subheader',
                 alignment: 'left'
               }
@@ -413,17 +427,18 @@ export class OrderGridComponent extends GridModel implements OnInit {
           'Note per il cliente: ' ,
           {
             style: 'name',
+            alignment: 'left',
             table: {
               widths: ['*'],
               body: [
-                [+ order.note],
+                [order.note],
               ]
             }
           },
           {
             columns: [
               {
-                text: 'Totale: ' +  + order.totale + '\n'
+                text: 'Totale: ' +  order.totale + '\n'
                     + 'Acconto: ' + order.acconto + '\n'
                     + 'Saldo: ' + order.saldo + '\n',
                 style: 'subheader'
@@ -483,9 +498,193 @@ export class OrderGridComponent extends GridModel implements OnInit {
       
       };
 
+      const documentSubcontractorDefinition = {
+       
+        content: [
+          {
+            text: 'STAMPA PER FASONISTA ' + order.fasonatori_idfasonatori + ' ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
+            style: 'header'
+          } ,
+          {
+            columns: [
+              {
+                text: 'Committente: ' + customer.nominativo ,
+                style: 'subheader'
+              },
+              {
+                text: 'Misurometro: ' + measure.misurometro,
+                style: 'subheader'
+              }
+            ]
+          },  
+          {
+            columns: [
+              {
+                text: 'Collo: '        + measure.collo + '\n' +
+                      'Spalla: '       + measure.spalla + '\n' +
+                      'Lun. Manica: '  + measure.lung_bicipite + '\n' +
+                      'Bicipite Tot x Braccio: '     + measure.bicipite + '\n' +
+                      'Avamb Tot x Braccio: '  + measure.avambraccio + '\n' ,
+                style: 'name'
+              },
+              {
+                text: 'Lun Camicia: '           + measure.lung_camicia + '\n' +
+                      'Centro Schiena: '     + measure.lung_avambraccio + '\n' +
+                      'Vita Dietro: '      + measure.vita_dietro + '\n' +
+                      'Bacino Dietro: ' + measure.bacino_dietro + '\n' +
+                      'Polso: '    + measure.polso + '\n',
+                style: 'name'
+              },
+              {
+                text: 'TORACE AVANTI' + '\n' +
+                      '1° Bottone: '     + measure.torace.split(';')[0] + '\n' +
+                      '2° Bottone: '     + measure.torace.split(';')[1] + '\n' +
+                      '3° Bottone: '     + measure.torace.split(';')[2] + '\n',
+                style: 'name'
+              },
+              {
+                text: '4° Bottone: '     + measure.torace.split(';')[3] + '\n' +
+                      '5° Bottone: '     + measure.torace.split(';')[4] + '\n' +
+                      '6° Bottone: '     + measure.torace.split(';')[5] + '\n' +
+                      '7° Bottone: '     + measure.torace.split(';')[6] + '\n' +
+                      '8° Bottone: '     + measure.torace.split(';')[7] + '\n',
+                style: 'name'
+              }                                        
+            ]
+          },
+          '\n',
+          {
+            image: 'data:image/png;base64,' + measure.note_grafiche,
+            width: 250,
+            alignment: 'center'
+          },
+          '\n',
+          {
+            text: 'ELENCO CAMICIE',
+            style: 'subheader',
+            alignment: 'left',
+            margin: [0, 10, 0, 0]
+          },
+          {
+            style: 'name',
+            table: {
+              heights: '*',
+              widths: ['*', 100],
+              body: obj
+            }
+          },                                       
+          // {
+          //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
+          //   style: 'subheader',
+          //   alignment: 'left',
+          // },
+          'Note del fasonista',
+          {
+            style: 'name',
+            alignment: 'left',
+            table: {
+              widths: ['*'],              
+              body: [
+                [order.note_x_fasonista],
+              ]
+            }
+          },          
+          // {
+          //   columns: [
+          //     {
+          //       text: 'Data consegna: ' + order.data_consegna,
+          //       style: 'subheader',
+          //       alignment: 'left'
+          //     },
+          //     {
+          //       text: 'Modalità consegna: ' + order.mod_consegna,
+          //       style: 'subheader',
+          //       alignment: 'left'
+          //     }
+          //   ]
+          // },  
+          // 'Note per il cliente: ' ,
+          // {
+          //   style: 'name',
+          //   alignment: 'left',
+          //   table: {
+          //     widths: ['*'],
+          //     body: [
+          //       [order.note],
+          //     ]
+          //   }
+          // },
+          // {
+          //   columns: [
+          //     {
+          //       text: 'Totale: ' +  order.totale + '\n'
+          //           + 'Acconto: ' + order.acconto + '\n'
+          //           + 'Saldo: ' + order.saldo + '\n',
+          //       style: 'subheader'
+          //     },
+          //     {
+          //       text: 'Saldato: ' + order.saldato,
+          //       style: 'subheader'
+          //     }
+          //   ]
+          // }          
+        ],       
+        info: {
+          title: 'STAMPA ORDINE N°' + order.idordini,
+          author: 'idealprogetti.com',
+          subject: 'Riepilogo Lavorazioni',
+          keywords: 'RESUME, ONLINE RESUME', 
+          producer: 'vincenzo',
+          creator: 'molitierno'         
+        },
+        
+        styles: {
+          header: {
+            fontSize: refSize,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 10, 0, 10],
+          },
+          subheader: {
+            fontSize: refSize-2,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 10, 0, 10],
+          },
+          name: {
+            fontSize: refSize-4,
+            alignment: 'center',
+          },
+          jobTitle: {
+            fontSize: 14,
+            bold: true,
+            italics: true
+          },
+          sign: {
+            margin: [0, 50, 0, 10],
+            alignment: 'right',
+            italics: true
+          },
+          tableExample: {
+            margin: [0, 10, 0, 10]
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 11,
+            color: 'black'
+          }          
+        }   // fine style 
+      
+      };      
+
     //  pdfMake.createPdf(documentDefinition).download();
+      
+      if ( type == 'for_customer') {
+        pdfMake.createPdf(documentCustomerDefinition).open();
+      } else if ( type == 'for_subcontractor' ) {
+        pdfMake.createPdf(documentSubcontractorDefinition).open();
+      }    
      
-     pdfMake.createPdf(documentDefinition).open();
     }
 
 

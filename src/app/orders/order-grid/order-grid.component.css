@@ -1,1 +1,4 @@
 @import url('../../../assets/style/grid.style.css');
+.search-bar {
+    clear: left;
+}

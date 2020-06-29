@@ -1,12 +1,13 @@
-import { Component, OnInit, Inject, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Inject, AfterContentInit, Output, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { I18nInterface } from 'ngx-image-drawing';
+import { I18nInterface, ImageDrawingComponent } from 'ngx-image-drawing';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Customer } from 'src/app/customers/data.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
 import { Measure } from 'src/app/measurers/data.model';
 import { isUndefined } from 'util';
+import { Base64Utility } from '../data.model';
 
 interface ShirtIndicator {
   idmisurometri: string,
@@ -36,18 +37,29 @@ export class MeasureFormComponent implements OnInit  {
 
   dummy_data: string = 'X,Y'
 
-  // ##############################  
+   // ##############################  
+  // COMPONENTE DISEGNO
+  viewOldBase64: boolean = false;
+
   public locale: string = 'en';
   public width = window.innerWidth - 60;
-  public height = window.innerHeight - 250;
-
+  public height = window.innerHeight - 250;  
+  public Aggiorna = false;
+  public Appunti: string ;
+  public AppuntiBase64;
+    
   public i18n: I18nInterface = {
       saveBtn: 'Salva le modifiche!',
       sizes: {
           extra: 'Extra'
       }
   };
-  // ##############################  
+
+  @ViewChild(ImageDrawingComponent, { static: false })
+  private IDC: ImageDrawingComponent;   
+
+
+  // ##############################
 
   //Struttura dati per contenere i dati dei recuperati tramite chiamata REST
   shirtIndicators: ShirtIndicator[] = [];
@@ -71,6 +83,11 @@ export class MeasureFormComponent implements OnInit  {
 
   constructor(@Inject(MAT_DIALOG_DATA) data,
        public restBackendService: RESTBackendService) {
+
+        // COMPONENTE DISEGNO
+        this.locale = this.getNavigatorLanguage();
+        this.viewOldBase64 = false;
+        // COMPONENTE DISEGNO
          
         //inizializzazione delle strutture dati    
         this.customer = new Customer();
@@ -89,7 +106,7 @@ export class MeasureFormComponent implements OnInit  {
 
           shirtIndicatorControl: new FormControl('', Validators.required),
           shirtIndicatorControlSize: new FormControl('', Validators.required),
-          
+                    
           collo: new FormControl(''),
           spalla: new FormControl(''),
           lunghezza_manica: new FormControl(''),
@@ -116,31 +133,34 @@ export class MeasureFormComponent implements OnInit  {
 
           formModal: new FormControl('')
 
-        });                
+        });
+        
+        var obj = {'controls': this.reactiveForm.value, 'base64': this.AppuntiBase64};
    }
 
   ngOnInit() {
 
     //Si recuperano i misuratori per popolare il combobox
-    this.getRemoteDataForShirtIndicators('measurers');
 
-    //Si cercano le ultime misure se presenti per popolare gli input  
-    this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})
-
-  }
-
-  private getRemoteDataForShirtIndicators(tagResourse: string):any {
-    //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
-    this.restBackendService.getResource(tagResourse).subscribe(
+    this.restBackendService.getResource('measurers').subscribe(
       (data) => {
-            this.shirtIndicators = data;          
+            this.shirtIndicators = data; 
+            console.log(data);
+            //Si cercano le ultime misure se presenti per popolare gli input  
+            this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})
+
+
             },
       (error) => {
           console.error(error);
           console.error('Message: ' + error.message);
       }
     );
+
+
+
   }
+
 
   public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
 
@@ -154,17 +174,19 @@ export class MeasureFormComponent implements OnInit  {
             
             this.resourceQuery = data;
 
-            console.log('remoteData');
-            console.log(this.resourceQuery);
+            // console.log('remoteData');
+            // console.log(this.resourceQuery);
 
             if(this.resourceQuery.length > 0){
 
               console.log('misura esistente');                       
-              this.measure = this.resourceQuery[this.resourceQuery.length-1];               
+              this.measure = this.resourceQuery[this.resourceQuery.length-1];  
+              // console.log(this.measure);             
               this.formModal = 'aggiornamento';
   
               //si inizializzano i campi del form
-              this.reactiveForm.controls['shirtIndicatorControl'].setValue(this.measure.misurometro);              
+              
+              this.reactiveForm.get('shirtIndicatorControl').setValue(this.measure.misurometro);              
               this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);   
   
               this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
@@ -219,14 +241,14 @@ export class MeasureFormComponent implements OnInit  {
                 this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));                
               else
                 this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1)); 
-                                              
-              //si recupera il base64
-              // var idmisure = this.measure.idmisure;
-              // this.restBackendService.getResourceQuery(tagResourse,
-              //   'idmisure' + '=' + idmisure).subscribe(data =>{
-              //     this.reactiveForm.get('note_grafiche').setValue(data[0].note_grafiche);
-              //   });                
-              this.reactiveForm.get('note_grafiche').setValue(this.measure.note_grafiche);                      
+                                                           
+              // COMPONENTE DISEGNO
+              this.AppuntiBase64 = 'data:image/png;base64,' + this.measure.note_grafiche;
+              this.Appunti = this.AppuntiBase64;
+              
+              // COMPONENTE DISEGNO
+              
+
               this.reactiveForm.get('formModal').setValue(this.formModal); 
                 
               this.flagA = true;
@@ -380,24 +402,16 @@ export class MeasureFormComponent implements OnInit  {
 
   }
 
-
-  catchAppuntiBase64(appuntiBase64: string){
-
-    console.log('base64 + appunti intercettato dal parent');
-
-    // this.measure.note_grafiche = appuntiBase64;
-    console.log(appuntiBase64);
-
-    this.reactiveForm.get('note_grafiche').setValue(appuntiBase64);
-    
-  }
-
   shirtIndicatorChanged() {
     this.flagA = true;
     this.setFormDefaultValue();
   }
 
   setFormDefaultValue() {
+
+    this.flagB = false;
+
+    this.reactiveForm.get('shirtIndicatorControlSize').setValue('');   
 
     this.reactiveForm.get('collo').setValue(Number(0).toFixed(1));   
     this.reactiveForm.get('spalla').setValue(Number(0).toFixed(1));   
@@ -420,8 +434,37 @@ export class MeasureFormComponent implements OnInit  {
     this.reactiveForm.get('torace_7_bottone').setValue(Number(0).toFixed(1));                
     this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));  
     
-    // this.reactiveForm.get('note_grafiche').setValue('');
+    this.Appunti = "../../assets/images/CamiciaCompleta.jpg";
+
     this.reactiveForm.get('formModal').setValue(this.formModal);     
 
   }
+
+
+  // COMPONENTE DISEGNO
+  private getNavigatorLanguage = () => (navigator.languages && navigator.languages.length) ? navigator.languages[0] : (navigator as any).userLanguage || navigator.language || (navigator as any).browserLanguage || 'en';
+  public notificaAppuntiBase64(){
+
+    this.AppuntiBase64 =  this.IDC.getImage();	
+    this.Appunti = this.AppuntiBase64;
+    // console.log(this.AppuntiBase64);
+    // console.log('invio degli appunti + base64 al parent');      
+      
+  }
+
+  pulisci() {
+    this.IDC.clearCanvas();
+    //Aggiunto
+    this.Appunti = "../../assets/images/CamiciaCompleta.jpg";       
+    this.AppuntiBase64 = Base64Utility.base64ShirtEmpty;
+
+ }    
+
+  public catturadisegno() {
+      console.log('catturadisegno');             
+      this.AppuntiBase64 =  this.IDC.getImage();	
+  }
+
+
+  // CONPONENTE DISEGNO
 }
