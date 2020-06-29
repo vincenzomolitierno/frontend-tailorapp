@@ -127,6 +127,11 @@ export class OrderViewComponent implements OnInit {
   ngOnInit() {
 
   }
+
+
+  generatePdf() {
+
+  }
  
 
 }

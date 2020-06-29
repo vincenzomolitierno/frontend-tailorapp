@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginModule } from './login/login.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { RESTBackendService } from './backend-service/rest-backend.service';
+import { ScriptService } from './customers/customer-grid/script.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RESTBackendService } from './backend-service/rest-backend.service';
     DashboardModule
     ],
   providers: [
-    RESTBackendService
+    RESTBackendService,
+    ScriptService
   ],
   bootstrap: [
     AppComponent

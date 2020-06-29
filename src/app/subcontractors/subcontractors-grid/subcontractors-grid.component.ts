@@ -43,7 +43,7 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
   
     }
 
-  openResourceDialog(formModal: string, subcontractor: Subcontractor){
+  openResourceDialog(formModal: string, subcontractor?: Subcontractor){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {

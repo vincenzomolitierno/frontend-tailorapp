@@ -60,7 +60,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   constructor(
     restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog,
-    private scriptService: ScriptService,
+    public scriptService: ScriptService,
     _snackBar: MatSnackBar
   ) { 
     super(restBackendService,_snackBar); // si innesca il costruttore della classe padre
@@ -477,6 +477,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                     "id_misure_ordinate": result.id_misure_ordinate
                   });
               
+                  // SI REALIZZA UNA PUT PERCHE' LO SCHEMA DI UTILIZZO E' DIFFERENTE NEL SOLO 
+                  // CASO DELL'ORDINE, CHE AVENDO UN SOTTOCOMPONENTE PER LE CAMICIE C'E' 
+                  // BISOGNO DI CREALO PRIMA
                   this.restBackendService.postResource('orders',                  
                   {
                     "note": result.note,

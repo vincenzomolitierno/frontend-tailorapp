@@ -104,7 +104,7 @@ export class ShirtMarksComponent {
             this.AppuntiBase64 = 'data:image/png;base64,' + base64;
             this.Appunti = this.AppuntiBase64;
 
-            console.log(base64);
+            // console.log(base64);
             // this.Appunti = "../../assets/images/CamiciaCompleta.jpg";
             // this.dataURItoBlob(base64).subscribe(blob => {
             //     console.log('trasformazione fatta');

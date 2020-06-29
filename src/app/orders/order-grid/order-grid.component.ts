@@ -10,6 +10,7 @@ import { Shirt } from 'src/app/shirts/shirt.model';
 import { Measure } from 'src/app/measurers/data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { Base64Utility } from 'src/app/measure/data.model';
+import { ScriptService } from 'src/app/customers/customer-grid/script.service';
 
 declare let pdfMake: any ;
 
@@ -41,10 +42,13 @@ export class OrderGridComponent extends GridModel implements OnInit {
     constructor(
       restBackendService: RESTBackendService, // si inietta il servizio
       public dialog: MatDialog,
+      public scriptService: ScriptService,
       snackBar: MatSnackBar
     ) { 
       super(restBackendService, snackBar); // si innesca il costruttore della classe padre
       this.resource = Array<Order>();
+
+      this.scriptService.load('pdfMake', 'vfsFonts');
     }
 
   //Si inizializza il componente caricando i dati nella tabella
@@ -57,7 +61,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
   }
 
 
-  openResourceDialog(formModal: string, order: Order ) {
+  openResourceDialog(formModal: string, order?: Order ) {
 
     this.restBackendService.getResource('customers').subscribe(
       (data) => {
@@ -145,8 +149,6 @@ export class OrderGridComponent extends GridModel implements OnInit {
       },
       (error) => {}
     );
-
-       
     
   }  
 
@@ -189,7 +191,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
               
           
           
-                this.generatePdf(misureArray[0], cliente, shirt);
+                // this.generatePdf(misureArray[0], cliente, shirt);
 
           } else {
 
@@ -215,21 +217,104 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
   }
 
-  private generatePdf(measure: Measure, customer: Customer, shirts: Shirt){
+  // SEZIONE DEDICATA ALLE STAMPE
+
+  generatePdfPrint(order: Order, key: string) {
+
+    console.log(order);  
+    console.log(key);  
+
+    this.restBackendService.getResource('customers').subscribe(
+      (data) => {
+        var customers: Customer[] = data;
+        var customer: Customer = customers.find(x => x.idclienti === order.clienti_idclienti);
+        
+        console.log(customer);
+
+        this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
+          (data) => {   
+            
+            var measure: Measure = data[0];            
+            console.log(measure);
+
+            this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + order.idordini ).subscribe(
+              (data) => {
+
+                var shirts: Shirt[] = data;            
+                console.log(shirts);                
+                this.generatePdf(order, measure, customer, shirts, key);
+              },
+              (error) => {},
+            );
+            
+          },
+          (error) => {}
+        );
+      },
+      (error) => {}
+    );    
+
+    
+
+  }
+
+
+
+  private generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], type?: string){
 
     var obj: Object;
     obj = [['dettaglio camicia 1', ' '],
           ['dettaglio camicia 2', ' '],
           ['dettaglio camicia 3', ' ']];
+
+    for (let index = 0; index < shirts.length; index++) {
+      const element = shirts[index];
+
+      var stringa :string = 'avanti: ' + ' ' + element.avanti + ' | ' +
+      'colore: ' +' ' + element.colore + ' | ' +
+      'cuciture: ' +' ' + element.cuciture + ' | ' +
+      // 'idcamicie: ' +' ' + element.idcamicie + ' | ' +
+      'indietro: ' +' ' + element.indietro + ' | ' +
+      'iniziali: ' +' ' + element.iniziali + ' | ' +
+      'maiuscolo: ' +' ' + element.maiuscolo + ' | ' +
+      'modello collo: ' +' ' + element.modellocollo + ' | ' +
+      'modello polso: ' +' ' + element.modellopolso + ' | ' +
+      'note: ' +' ' + element.note + ' | ' +
+      'numero_capi: ' +' ' + element.numero_capi + ' | ' +
+      // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
+      'presenza iniziali: ' +' ' + element.presenza_iniziali + ' | ' +
+      'posizione iniziali: ' +' ' + element.pos_iniziali + ' | ' +
+      
+      'stecche estraibili: ' +' ' + element.stecche_estraibili + ' | ' +
+      'corsivo: ' +' ' + element._stile_carattere + ' | ' +
+      'tasca: ' +' ' + element.tasca + ' | ' +
+      'tipo bottone: ' +' ' + element.tipo_bottone;
+
+      console.log(stringa);
+
+      obj[index] = [stringa,' '];
+      
+    }
+
+
+   
+
+    // ###############
    
 
     var refSize:number = 14;
+
+    if ( type == 'for_customer') {
+      var titolo: string = 'STAMPA ORDINE N° ' + order.idordini + ' PER CLIENTE';
+    } else if ( type == 'for_subcontractor' ) {
+      var titolo: string = 'STAMPA ORDINE N° ' + order.idordini + ' PER FASONISTA';
+    }
 
      const documentDefinition = {
        
         content: [
           {
-            text: 'STAMPA ORDINE',
+            text: titolo,
             style: 'header'
           } ,
           {
@@ -355,10 +440,12 @@ export class OrderGridComponent extends GridModel implements OnInit {
           }          
         ],       
         info: {
-          title: 'STAMPA ORDINE',
+          title: 'STAMPA ORDINE N°' + order.idordini,
           author: 'idealprogetti.com',
           subject: 'Riepilogo Lavorazioni',
-          keywords: 'RESUME, ONLINE RESUME',          
+          keywords: 'RESUME, ONLINE RESUME', 
+          producer: 'vincenzo',
+          creator: 'molitierno'         
         },
         
         styles: {
@@ -400,7 +487,9 @@ export class OrderGridComponent extends GridModel implements OnInit {
       
       };
 
-     pdfMake.createPdf(documentDefinition).download();
+    //  pdfMake.createPdf(documentDefinition).download();
+     
+     pdfMake.createPdf(documentDefinition).open();
     }
 
 

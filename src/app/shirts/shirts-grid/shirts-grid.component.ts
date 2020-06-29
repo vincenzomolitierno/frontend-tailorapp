@@ -93,6 +93,16 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
         else  
           var presenza_iniziali = 'NO';   
 
+        if(result.maiuscolo)
+          var maiuscolo = 'SI';
+        else  
+          var maiuscolo = 'NO';    
+          
+        if(result.stile_carattere)
+          var stile_carattere = 'SI';
+        else  
+          var stile_carattere = 'NO';             
+
         if(result.posizione_iniziali.descrizione)
           var posizione_iniziali: string = result.posizione_iniziali.descrizione;
         else  
@@ -105,7 +115,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             // "idcamicie": result.idcamicie,
             "indietro_idindietro": result.indietro_idindietro,
             "iniziali": result.iniziali,
-            "maiuscolo": result.maiuscolo,
+            "maiuscolo": maiuscolo,
             "modellocollo_idmodello": result.modellocollo_idmodello,
             "modellopolso_idmodello": result.modellopolso_idmodello,
             "note": result.note,
@@ -114,7 +124,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             "pos_iniziali": posizione_iniziali,
             "presenza_iniziali": presenza_iniziali,
             "stecche_estraibili": stecche_estraibili,
-            "stile_carattere": result.stile_carattere,
+            "stile_carattere": stile_carattere,
             "tasca": tasca,
             "tipo_bottone": result.tipo_bottone
           }

@@ -30,7 +30,7 @@ export class WristmodelsGridComponent extends GridModel implements OnInit {
 
     //si invoca il metodo ereditato per caricare i dati dal backend, passando come
     //parametro in ingresso il tag che identifica la risorsa da recuperare
-    this.getRemoteData('wirstmodels');     
+    this.getRemoteData('wristmodels');     
 
   }
 
@@ -46,7 +46,7 @@ export class WristmodelsGridComponent extends GridModel implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if(result){
-            this.postData('neckmodels',        
+            this.postData('wristmodels',        
             {
               "modello": result
             });
@@ -69,7 +69,7 @@ export class WristmodelsGridComponent extends GridModel implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.delData('neckmodels',        
+        this.delData('wirstmodels',        
           {
             "idmodello": model.idmodello
           }

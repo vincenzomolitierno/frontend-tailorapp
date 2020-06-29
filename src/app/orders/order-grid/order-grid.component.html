@@ -5,7 +5,7 @@
             <h2>ORDINI</h2>
         </div>
         <div class="right-bar">
-            <button mat-raised-button matTooltip="Inserisci nuovo ordine" matTooltipPosition="left" (click)="openResourceDialog('inserimento','')" [disabled]="true"><mat-icon>create_new_folder</mat-icon></button>
+            <button mat-raised-button matTooltip="Inserisci nuovo ordine" matTooltipPosition="left" (click)="openResourceDialog('inserimento')" [disabled]="true"><mat-icon>create_new_folder</mat-icon></button>
         </div>
     </div>
 
@@ -133,12 +133,12 @@
                             <span>Elimina</span>
                         </button>
 
-                        <button mat-menu-item (click)="openViewOrder()">
+                        <button mat-menu-item (click)="generatePdfPrint(row,'for_customer')">
                             <mat-icon>pageview</mat-icon>
                             <span>Visualizza per cliente</span>
                         </button>
 
-                        <button mat-menu-item (click)="openViewOrderSubcontractor()">
+                        <button mat-menu-item (click)="generatePdfPrint(row,'for_subcontractor')">
                             <mat-icon>preview</mat-icon>
                             <span>Visualizza per fasonista</span>
                         </button>
