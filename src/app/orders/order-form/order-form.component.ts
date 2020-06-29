@@ -104,6 +104,35 @@ export class OrderFormComponent implements OnInit {
       
       this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));
 
+      //si crea un ordine vuoto per disporre di un id
+
+      this.restBackendService.postResource('orders',                  
+      {
+        "note": '',
+        "acconto": '',
+        "saldo": '',
+        "totale": '',
+        "data_consegna": '',
+        "consegnato": '',
+        "saldato": '',
+        "note_x_fasonista": '',
+        "mod_consegna": '',
+        "data_ordine": '',
+        "clienti_idclienti": 0,
+        "fasonatori_idfasonatori": 0,
+        "id_misure_ordinate": 0
+      }).subscribe(
+        (data) =>{
+          console.log('prova' + data);
+        },
+        (error) =>{
+          console.error(error);
+          console.error('Message: ' + error.message);                      
+        }
+      )        
+
+    
+
       
     
     } else if ( this.formModal=='aggiornamento' ) {

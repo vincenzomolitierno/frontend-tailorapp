@@ -2,7 +2,7 @@ export class Shirt {
 
     idcamicie: number = 0;
     colore: string = 'bianco';
-    quantita: number = 0;
+    numero_capi: number = 0;
     stecche_estraibili: string = 'no';
     tasca: string = 'no';
     cuciture: string = 'no';
@@ -10,6 +10,8 @@ export class Shirt {
     iniziali: string = '';
     posizione_iniziali: string = '';
     stile_carattere: string = 'corsivo';
+
+    presenza_iniziali: string = '';
 
     tipo_lettera: string = 'minuscole';
     maiuscolo: string = 'minuscolo';

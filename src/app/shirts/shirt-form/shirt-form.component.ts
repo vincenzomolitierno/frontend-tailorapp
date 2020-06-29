@@ -86,8 +86,6 @@ export class ShirtFormComponent implements OnInit {
 
     this.loadControlsForm();
 
-    alert(this.ordini_idordini);
-
     if ( this.formModal == 'inserimento' ) {
 
       this.reactiveForm.get('numero_capi').setValue('0'); 

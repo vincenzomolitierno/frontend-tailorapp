@@ -5,26 +5,8 @@ import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { Shirt } from '../shirt.model';
+import { isUndefined } from 'util';
 
-interface CamiciaElement {  
-  idcamicie: number,
-  colore: string,
-  quantita: number,
-  // stecche_estraibili: string,
-  // tasca: string,
-  // cuciture: string,
-  // tipo_bottone: string,
-  // iniziali: string,
-  // posizione_iniziali: string,
-  // stile_carattere: string,
-  // maiuscolo: string,
-  // note: string,
-  // ordini_idordini: number,
-  // modello_polso_idmodello_polso: number,
-  // modelli_collo_idmodelli_collo: number,
-  // avanti_idavanti: number,
-  // indietro_idindietro: number,
-}
 
 @Component({
   selector: 'app-shirts-grid',
@@ -33,7 +15,8 @@ interface CamiciaElement {
 })
 export class ShirtsGridComponent extends GridModel implements OnInit {
 
-  @Input() ordini_idordini: number;
+  
+  @Input() ordini_idordini: string;
 
   // Dati coinvolti nel binding
   dummy_data: string = "dummy_data"
@@ -44,7 +27,13 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     // 'idcamicie',
     'colore', 
     'numero_capi',
-    'update',
+
+
+
+
+
+    // 'update',
+    'view',
     'delete'
   ];
 
@@ -52,11 +41,21 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
   constructor( restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog,
     snackBar: MatSnackBar ) { 
-    super(restBackendService, snackBar); // si innesca il costruttore della classe padre
+    super(restBackendService, snackBar); // si innesca il costruttore della classe padre       
   }
 
   ngOnInit() {
-    this.getRemoteData('shirts');
+    
+    console.log(this.ordini_idordini);
+    
+    if ( this.ordini_idordini ) {
+      console.log('ordine preesistente');
+      this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
+
+    } else {
+      console.log('nuovo ordine');
+    }
+
   }
 
   openResourceDialog(formModal: string, shirt?: Shirt) {
@@ -64,7 +63,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       shirt: shirt,
-      indietro_idindietro: this.ordini_idordini, 
+      ordini_idordini: this.ordini_idordini, 
       formModal: formModal };
 
     const dialogRef = this.dialog.open(ShirtFormComponent, dialogConfig);
@@ -93,10 +92,12 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
           var presenza_iniziali = 'SI';
         else  
           var presenza_iniziali = 'NO';   
-          
-        console.log('colore: ' + result.colore);
-        console.log('note: ' + result.note);
 
+        if(result.posizione_iniziali.descrizione)
+          var posizione_iniziali: string = result.posizione_iniziali.descrizione;
+        else  
+          var posizione_iniziali: string = '';            
+          
         var obj = {    
             'avanti_idavanti': result.avanti_idavanti,
             "colore": result.colore,
@@ -109,8 +110,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             "modellopolso_idmodello": result.modellopolso_idmodello,
             "note": result.note,
             "numero_capi": parseInt(result.numero_capi),
-            "ordini_idordini": 101, //result.ordini_idordini,
-            "pos_iniziali": result.posizione_iniziali.descrizione,
+            "ordini_idordini": this.ordini_idordini,
+            "pos_iniziali": posizione_iniziali,
             "presenza_iniziali": presenza_iniziali,
             "stecche_estraibili": stecche_estraibili,
             "stile_carattere": result.stile_carattere,
@@ -121,6 +122,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
         console.log(obj);
 
         this.postData('shirts', obj); 
+
+        
 
       }
 
@@ -148,11 +151,73 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
           }
         );
 
+        this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
+
       }
       
     });     
 
-  }    
+  }   
+  
+  // OVERRIDE
+  public postData(tagResource: string, body: object):void {
+
+    this.errorMessage = '';
+
+    this.restBackendService.postResource(tagResource, body).subscribe(
+      (data) => {     
+        this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});    
+      },
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;        
+      });    
+
+  }
+
+  // OVERRIDE
+  public delData(tagResourse: string, body: object):void {
+
+    this.errorMessage = '';
+    this.restBackendService.delResource(tagResourse, body).subscribe(
+      (data) => {     
+        this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});  
+      },
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;        
+      });      
+
+  }  
  
+
+  openView(shirt: any) {
+
+    console.log(shirt);
+
+
+
+    this.openSnackBar(
+        'avanti: ' +' ' + shirt.avanti + ' | ' +
+        'colore: ' +' ' + shirt.colore + ' | ' +
+        'cuciture: ' +' ' + shirt.cuciture + ' | ' +
+        'idcamicie: ' +' ' + shirt.idcamicie + ' | ' +
+        'indietro: ' +' ' + shirt.indietro + ' | ' +
+        'iniziali: ' +' ' + shirt.iniziali + ' | ' +
+        'maiuscolo: ' +' ' + shirt.maiuscolo + ' | ' +
+        'modello collo: ' +' ' + shirt.modellocollo + ' | ' +
+        'modello polso: ' +' ' + shirt.modellopolso + ' | ' +
+        'note: ' +' ' + shirt.note + ' | ' +
+        'numero_capi: ' +' ' + shirt.numero_capi + ' | ' +
+        // 'ordini_idordini ' +' ' + shirt.idordini + ' | ' +
+        'presenza iniziali: ' +' ' + shirt.presenza_iniziali + ' | ' +
+        'posizione iniziali: ' +' ' + shirt.pos_iniziali + ' | ' +
+        
+        'stecche estraibili: ' +' ' + shirt.stecche_estraibili + ' | ' +
+        'corsivo: ' +' ' + shirt._stile_carattere + ' | ' +
+        'tasca: ' +' ' + shirt.tasca + ' | ' +
+        'tipo bottone: ' +' ' + shirt.tipo_bottone     
+    );
+  }
 
 }

@@ -2,7 +2,8 @@
     <!-- new bar -->
     <div class="toolbar">
         <div class="left-bar">
-            <h2>CAMICIE</h2>
+            <h2>CAMICIE (n° ord. {{ordini_idordini}})</h2>
+
         </div>
         <div class="right-bar">
             <button mat-raised-button matTooltip="Inserisci nuovo camicia" matTooltipPosition="left" (click)="openResourceDialog('inserimento')"><mat-icon>add</mat-icon></button>
@@ -35,6 +36,15 @@
             <ng-container matColumnDef="numero_capi">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero Capi </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.numero_capi}} </td>
+            </ng-container>
+
+            <!-- View Column -->
+            <ng-container matColumnDef="view">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let row" class="middle-row-button">
+                    <button mat-raised-button matTooltip="Modifica camicia" matTooltipPosition="right" (click)="openView(row)"><mat-icon>pageview</mat-icon></button>
+                </td>
             </ng-container>
 
             <!-- Update Column -->

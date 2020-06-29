@@ -28,6 +28,7 @@ export class BackendServer {
 
     //CAMICIE
     private apiResourceShirts: string = this.base + '/camicie';
+    private apiResourceShirtsQuery: string = this.base + '/camicieValues';
 
 
     constructor() {
@@ -105,7 +106,10 @@ export class BackendServer {
 
             case 'shirts':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceShirts;                   
-        
+
+            case 'shirtsQuery':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceShirtsQuery;   
+                    
             default:
                 break;
         }
