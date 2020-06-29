@@ -46,6 +46,9 @@ export class ShirtFormComponent implements OnInit {
         public restBackendService: RESTBackendService) {
     
     this.formModal = data.formModal;    
+    this.shirt = data.formModal;  
+    this.ordini_idordini = data.formModal;  
+
     console.log('inizio camicie');
     console.log(data);
 
@@ -62,7 +65,7 @@ export class ShirtFormComponent implements OnInit {
       cuciture: new FormControl(''),
       tipo_bottone: new FormControl(''),
       iniziali: new FormControl(''),
-      pos_iniziali: new FormControl(''),
+      switchIniziali: new FormControl(''),
       stile_carattere: new FormControl(''),
       posizione_iniziali: new FormControl(''),
       maiuscolo: new FormControl(''),
@@ -83,7 +86,18 @@ export class ShirtFormComponent implements OnInit {
 
     this.loadControlsForm();
 
-    this.reactiveForm.get('numero_capi').setValue('0'); 
+    alert(this.ordini_idordini);
+
+    if ( this.formModal == 'inserimento' ) {
+
+      this.reactiveForm.get('numero_capi').setValue('0'); 
+
+    } else if ( this.formModal == 'aggiornamento' ) {
+
+    }
+
+    
+
   }
 
   neckModelIndicators;

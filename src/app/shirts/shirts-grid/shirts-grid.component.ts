@@ -4,6 +4,7 @@ import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
+import { Shirt } from '../shirt.model';
 
 interface CamiciaElement {  
   idcamicie: number,
@@ -42,10 +43,11 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
   displayedColumns: string[] = [
     // 'idcamicie',
     'colore', 
-    'quantita',
+    'numero_capi',
     'update',
     'delete'
   ];
+
 
   constructor( restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog,
@@ -57,10 +59,11 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     this.getRemoteData('shirts');
   }
 
-  openResourceDialog(formModal: string) {
+  openResourceDialog(formModal: string, shirt?: Shirt) {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
+      shirt: shirt,
       indietro_idindietro: this.ordini_idordini, 
       formModal: formModal };
 
@@ -69,8 +72,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
 
-      if(result) {
-        console.log('insericso camicia');
+      if ( result ) { //INSERIMENTO DELLA NUOVA CAMICIA
 
         if(result.tasca)
           var tasca = 'SI';
@@ -85,32 +87,40 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
         if(result.stecche_estraibili)
           var stecche_estraibili = 'SI';
         else  
-          var stecche_estraibili = 'NO';           
+          var stecche_estraibili = 'NO';   
+          
+        if(result.switchIniziali)
+          var presenza_iniziali = 'SI';
+        else  
+          var presenza_iniziali = 'NO';   
+          
+        console.log('colore: ' + result.colore);
+        console.log('note: ' + result.note);
 
-     var obj = {    
-        'avanti_idavanti': result.avanti_idavanti,
-        "colore": result.colore,
-        "cuciture": cuciture,
-        // "idcamicie": result.idcamicie,
-        "indietro_idindietro": result.indietro_idindietro,
-        "iniziali": result.iniziali,
-        "maiuscolo": result.maiuscolo,
-        "modellocollo_idmodello": result.modellocollo_idmodello,
-        "modellopolso_idmodello": result.modellopolso_idmodello,
-        "note": result.note,
-        "numero_capi": result.numero_capi,
-        "ordini_idordini": 101, //result.ordini_idordini,
-        "posizione_iniziali": result.posizione_iniziali.descrizione,
-        "stecche_estraibili": stecche_estraibili,
-        "stile_carattere": result.stile_carattere,
-        "tasca": tasca,
-        "tipo_bottone": result.tipo_bottone
-      }
+        var obj = {    
+            'avanti_idavanti': result.avanti_idavanti,
+            "colore": result.colore,
+            "cuciture": cuciture,
+            // "idcamicie": result.idcamicie,
+            "indietro_idindietro": result.indietro_idindietro,
+            "iniziali": result.iniziali,
+            "maiuscolo": result.maiuscolo,
+            "modellocollo_idmodello": result.modellocollo_idmodello,
+            "modellopolso_idmodello": result.modellopolso_idmodello,
+            "note": result.note,
+            "numero_capi": parseInt(result.numero_capi),
+            "ordini_idordini": 101, //result.ordini_idordini,
+            "pos_iniziali": result.posizione_iniziali.descrizione,
+            "presenza_iniziali": presenza_iniziali,
+            "stecche_estraibili": stecche_estraibili,
+            "stile_carattere": result.stile_carattere,
+            "tasca": tasca,
+            "tipo_bottone": result.tipo_bottone
+          }
 
-      console.log(obj);
+        console.log(obj);
 
-      this.postData('shirts', obj); 
-
+        this.postData('shirts', obj); 
 
       }
 
@@ -118,7 +128,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     
   }   
 
-  public openDeleteDialog(model: any){
+  public openDeleteDialog(shirts: Shirt){
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -129,10 +139,12 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      
+      if( result ) {       
+
         this.delData('shirts',        
           {
-            "idcamicie": model.idcamicie
+            "idcamicie": shirts.idcamicie
           }
         );
 

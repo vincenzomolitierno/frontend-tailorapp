@@ -79,7 +79,7 @@ export class GridModel {
     this.restBackendService.getResource(tagResourse).subscribe(
       (data) => {
             this.resource = data;
-            this.dataSource = new MatTableDataSource(this.resource);   
+            this.dataSource = new MatTableDataSource(this.resource);
                        
             this.dataSource.paginator = this.paginatorTable;    
             this.dataSource.sort = this.sortTable;            

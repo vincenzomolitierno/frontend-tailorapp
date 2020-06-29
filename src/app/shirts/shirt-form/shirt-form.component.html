@@ -111,8 +111,8 @@
                     <mat-icon matSuffix>keyboard</mat-icon>
                 </mat-form-field>
             </div>
-            <div class="grid-item">
-                <mat-checkbox formControlName="stecche_estraibili" style="text-align: left; padding-left: 20px;">Stecche estraibili</mat-checkbox>
+            <div class="grid-item" style="text-align: left; padding-left: 20px;">
+                <mat-checkbox formControlName="stecche_estraibili">Stecche estraibili</mat-checkbox>
             </div>
 
         </div>
@@ -132,7 +132,7 @@
         <div class="grid-container" style="grid-template-columns: 100%;">
 
             <div class="grid-item" style="text-align: left; padding-left: 20px;">
-                <mat-checkbox formControlName="pos_iniziali" (click)="switchPanel()">Inserire iniziali</mat-checkbox>
+                <mat-checkbox formControlName="switchIniziali" (click)="switchPanel()">Inserire iniziali</mat-checkbox>
                 <div class="gap"></div>
             </div>
 
