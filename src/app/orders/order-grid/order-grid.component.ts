@@ -262,10 +262,10 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
   private generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], type?: string){
 
-    var obj: Object;
-    obj = [['dettaglio camicia 1', ' '],
-          ['dettaglio camicia 2', ' '],
-          ['dettaglio camicia 3', ' ']];
+    var obj: Array<any> = new Array();
+    // obj = [['dettaglio camicia 1', ' '],
+    //       ['dettaglio camicia 2', ' '],
+    //       ['dettaglio camicia 3', ' ']];
 
     for (let index = 0; index < shirts.length; index++) {
       const element = shirts[index];
@@ -280,34 +280,30 @@ export class OrderGridComponent extends GridModel implements OnInit {
       'modello collo: ' +' ' + element.modellocollo + ' | ' +
       'modello polso: ' +' ' + element.modellopolso + ' | ' +
       'note: ' +' ' + element.note + ' | ' +
-      'numero_capi: ' +' ' + element.numero_capi + ' | ' +
+      'numero capi: ' +' ' + element.numero_capi + ' | ' +
       // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
       'presenza iniziali: ' +' ' + element.presenza_iniziali + ' | ' +
       'posizione iniziali: ' +' ' + element.pos_iniziali + ' | ' +
       
       'stecche estraibili: ' +' ' + element.stecche_estraibili + ' | ' +
-      'corsivo: ' +' ' + element._stile_carattere + ' | ' +
+      'corsivo: ' +' ' + element.stile_carattere + ' | ' +
       'tasca: ' +' ' + element.tasca + ' | ' +
       'tipo bottone: ' +' ' + element.tipo_bottone;
 
       console.log(stringa);
 
-      obj[index] = [stringa,' '];
+      obj.push([stringa,' ']);
       
     }
-
-
-   
-
     // ###############
    
 
     var refSize:number = 14;
 
     if ( type == 'for_customer') {
-      var titolo: string = 'STAMPA ORDINE N° ' + order.idordini + ' PER CLIENTE';
+      var titolo: string = 'STAMPA PER CLIENTE \n ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine;
     } else if ( type == 'for_subcontractor' ) {
-      var titolo: string = 'STAMPA ORDINE N° ' + order.idordini + ' PER FASONISTA';
+      var titolo: string = 'STAMPA PER FASONISTA ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine;
     }
 
      const documentDefinition = {
@@ -320,11 +316,11 @@ export class OrderGridComponent extends GridModel implements OnInit {
           {
             columns: [
               {
-                text: 'Committente: ' + 'nome e cognome',
+                text: 'Committente: ' + customer.nominativo + ' ( ' + customer.telefono +' )',
                 style: 'subheader'
               },
               {
-                text: 'Misurometro:' + 'misurmetro scelto',
+                text: 'Misurometro: ' + measure.misurometro,
                 style: 'subheader'
               }
             ]
@@ -386,7 +382,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
             }
           },                                       
           {
-            text: 'Fasonista ' + 'nome fasonista',
+            text: 'Fasonista: ' + order.fasonatori_idfasonatori,
             style: 'subheader',
             alignment: 'left',
           },
@@ -396,44 +392,44 @@ export class OrderGridComponent extends GridModel implements OnInit {
             table: {
               widths: ['*'],
               body: [
-                [' '],
+                [order.note_x_fasonista],
               ]
             }
           },          
           {
             columns: [
               {
-                text: 'Data consegna: ' + 'gg/mm/aaaa',
+                text: 'Data consegna: ' + order.data_consegna,
                 style: 'subheader',
                 alignment: 'left'
               },
               {
-                text: 'Modalità consegna:' + 'modalità consegna',
+                text: 'Modalità consegna: ' + + order.mod_consegna,
                 style: 'subheader',
                 alignment: 'left'
               }
             ]
           },  
-          'Note per il cliente',
+          'Note per il cliente: ' ,
           {
             style: 'name',
             table: {
               widths: ['*'],
               body: [
-                [' '],
+                [+ order.note],
               ]
             }
           },
           {
             columns: [
               {
-                text: 'Totale: ' + '##,## €' + '\n'
-                    + 'Acconto: ' + '##,## €' + '\n'
-                    + 'Saldo: ' + '##,## €' + '\n',
+                text: 'Totale: ' +  + order.totale + '\n'
+                    + 'Acconto: ' + order.acconto + '\n'
+                    + 'Saldo: ' + order.saldo + '\n',
                 style: 'subheader'
               },
               {
-                text: 'Saldato' + 'SI/NO',
+                text: 'Saldato: ' + order.saldato,
                 style: 'subheader'
               }
             ]

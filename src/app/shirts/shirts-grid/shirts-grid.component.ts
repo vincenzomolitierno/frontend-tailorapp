@@ -218,13 +218,13 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
         'modello collo: ' +' ' + shirt.modellocollo + ' | ' +
         'modello polso: ' +' ' + shirt.modellopolso + ' | ' +
         'note: ' +' ' + shirt.note + ' | ' +
-        'numero_capi: ' +' ' + shirt.numero_capi + ' | ' +
+        'numero capi: ' +' ' + shirt.numero_capi + ' | ' +
         // 'ordini_idordini ' +' ' + shirt.idordini + ' | ' +
         'presenza iniziali: ' +' ' + shirt.presenza_iniziali + ' | ' +
         'posizione iniziali: ' +' ' + shirt.pos_iniziali + ' | ' +
         
         'stecche estraibili: ' +' ' + shirt.stecche_estraibili + ' | ' +
-        'corsivo: ' +' ' + shirt._stile_carattere + ' | ' +
+        'corsivo: ' +' ' + shirt.stile_carattere + ' | ' +
         'tasca: ' +' ' + shirt.tasca + ' | ' +
         'tipo bottone: ' +' ' + shirt.tipo_bottone     
     );
