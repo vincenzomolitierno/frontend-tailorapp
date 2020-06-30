@@ -39,7 +39,7 @@
         </div>
         <mat-form-field appearance="fill">
             <mat-label>Fasonista</mat-label>
-            <mat-select formControlName="fasonatori_idfasonatori" required (onchange)="saveIdSubcontractor()">
+            <mat-select formControlName="fasonatori_idfasonatori" required>
                 <mat-option>--</mat-option>
                 <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor.idfasonatori">
                     {{subcontractor.descrizione}}
