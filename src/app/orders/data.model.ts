@@ -13,4 +13,8 @@ export class Order {
     clienti_idclienti: number;
     fasonatori_idfasonatori: number;
     id_misure_ordinate: number
+    
+    //proprietà aggiunta ler la gestione della UI
+    nome_cliente: string = '';
+
   }

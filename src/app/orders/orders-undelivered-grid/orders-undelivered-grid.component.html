@@ -95,13 +95,20 @@
                         <mat-icon>more_vert</mat-icon>
                       </button>
                     <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="openViewOrder()" style="display: none;">
-                          <mat-icon>pageview</mat-icon>
-                          <span>Visualizza</span>
-                        </button>
+
                         <button mat-menu-item (click)="confirmDeliveryOrder(row.idordini)">
                           <mat-icon>domain_verification</mat-icon>
                           <span>Consegnato</span>
+                        </button>
+
+                        <button mat-menu-item (click)="generatePdfPrint(row,'for_customer')">
+                            <mat-icon>pageview</mat-icon>
+                            <span>Visualizza per cliente</span>
+                        </button>
+
+                        <button mat-menu-item (click)="generatePdfPrint(row,'for_subcontractor')">
+                            <mat-icon>preview</mat-icon>
+                            <span>Visualizza per fasonista</span>
                         </button>
                     </mat-menu>
                 </td>

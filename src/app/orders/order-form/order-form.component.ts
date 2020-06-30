@@ -208,13 +208,13 @@ export class OrderFormComponent implements OnInit {
 
   deliveryModes: DeliveryMode[] = [
     {
-      descrizione: 'Corriere Semplice'
+      descrizione: 'CORRIERE SEMPLICE'
     },
     {
-      descrizione: 'Corriere Espresso'
+      descrizione: 'CORRIERE ESPRESSO'
     },
     {
-      descrizione: 'Ritiro in sede'
+      descrizione: 'RITIRO IN SEDE'
     }    
   ]; 
 
@@ -348,7 +348,7 @@ export class OrderFormComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this._snackBar.open(message, 'Chiudi', {
+    this._snackBar.open(message.toUpperCase(), 'Chiudi', {
       duration: 4000,
       horizontalPosition: 'center',
       verticalPosition: 'top',

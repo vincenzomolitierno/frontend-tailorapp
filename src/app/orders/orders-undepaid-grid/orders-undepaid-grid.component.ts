@@ -6,6 +6,8 @@ import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Order } from '../data.model';
 import { OrderConfirmComponent } from '../order-confirm/order-confirm.component';
+import { PdfPrinterService } from 'src/app/utilities/pdf-printer.service';
+import { Customer } from 'src/app/customers/data.model';
 
 
 @Component({
@@ -54,61 +56,63 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
   }
 
   //OVERRIDE 
-  public recorSetCustomer: Array<any> = [];
+  public recorSetCustomer: Array<Customer> = [];
   public getRemoteData(tagResourse: string):any {
-
+ 
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResource(tagResourse).subscribe(
       (data) => {
-
-            //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
-            this.resource = data;
-            this.resource = this.resource.filter(ordine => ordine.saldato === 'NO');
-            // ###################################################
-            var recorSet: Array<any> = [];
-            recorSet = data;
-            
-            this.restBackendService.getResource('customers').subscribe(
-              (data) => {
-                    console.log(data);
-                    this.recorSetCustomer = data;   
-                    
-                    for(let i = 0; i < recorSet.length; i++) {
-            
-                      recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
-                      recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
-        
-                      var idClienti: number = recorSet[i].idCliente;
-                      var nomeCliente = this.recorSetCustomer.find(x => x.idClienti === idClienti).nominativo + 
-                      ' ( ' + this.recorSetCustomer.find(x => x.idClienti === idClienti).telefono + ' )';
-                      recorSet[i].nome_cliente = nomeCliente;
-                      console.log(nomeCliente);
-        
-                    }            
-        
-                    // ###################################################
-                    this.resource = recorSet;
-                    this.dataSource = new MatTableDataSource(this.resource.filter(ordine => ordine.consegnato === 'NO'));                           
-                    this.dataSource.paginator = this.paginatorTable;    
-                    this.dataSource.sort = this.sortTable;   
-                    
-                    
-                    },
-              (error) => {
-                  console.error(error);
-                  console.error('Message: ' + error.message);
-              }
-            );
+ 
+           //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
+           this.resource = data;
+           this.resource = this.resource.filter(ordine => ordine.saldato === 'NO');      
+           // ###################################################
+           var recorSet: Array<Order> = [];
+           recorSet = this.resource;
+           
+           this.restBackendService.getResource('customers').subscribe(
+             (data) => {
+                   // console.log(data);
+                   this.recorSetCustomer = data; 
+                   
+                   for(let i = 0; i < recorSet.length; i++) {
+           
+                     recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
+                     recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
+       
+                     var idClienti: number = recorSet[i].clienti_idclienti;
+                     var nomeCliente = this.recorSetCustomer.find(x => x.idclienti === idClienti).nominativo + 
+                     ' ( ' + this.recorSetCustomer.find(x => x.idclienti === idClienti).telefono + ' )';
+                     recorSet[i].nome_cliente = nomeCliente;
+                     
+                     console.log(recorSet[i]);
+       
+                   }            
+       
+                   // ###################################################
+                   recorSet.sort((a, b) => (a.idordini < b.idordini) ? 1 : -1);
+                   this.resource = recorSet;
+                   this.dataSource = new MatTableDataSource(this.resource);                           
+                   this.dataSource.paginator = this.paginatorTable;    
+                   this.dataSource.sort = this.sortTable;                      
+                   
+                   },
+             (error) => {
+                 console.error(error);
+                 console.error('Message: ' + error.message);
+             }
+           );
             
            },
       (error) => {
-
+ 
          this.errorHttpErrorResponse = error;
          this.errorMessage = error.message;
-
+ 
       }
     );
-  }
+  
+   } 
     
 
   openResourceDialog(formModal: string, idOrdine: string){
@@ -127,24 +131,11 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     
   }  
 
-  openViewOrder(){
 
-    this.openView(false);
+  generatePdfPrint(order: Order, key: string){
 
-  }
+    PdfPrinterService.generatePdfPrint(order, key, this.restBackendService);
 
-  openView(subcontractorView: boolean){
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      view: subcontractorView, 
-    };
-
-    const dialogRef = this.dialog.open(OrderViewComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
-    });  
   }
 
   confirmPaymentOrder(idOrdine: string){

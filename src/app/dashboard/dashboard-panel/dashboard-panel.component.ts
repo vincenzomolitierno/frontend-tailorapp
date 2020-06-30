@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
+import { ScriptService } from 'src/app/customers/customer-grid/script.service';
 
 @Component({
   selector: 'app-dashboard-panel',
@@ -11,8 +12,11 @@ export class DashboardPanelComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
-  ) { }
+    private authenticationService: AuthenticationService,
+    public scriptService: ScriptService
+  ) { 
+    this.scriptService.load('pdfMake', 'vfsFonts');
+  }
 
   ngOnInit() {
   }
@@ -23,3 +27,4 @@ export class DashboardPanelComponent implements OnInit {
   }
 
 }
+
