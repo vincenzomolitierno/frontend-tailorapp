@@ -11,6 +11,7 @@ import { Measure } from 'src/app/measurers/data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { Base64Utility } from 'src/app/measure/data.model';
 import { ScriptService } from 'src/app/customers/customer-grid/script.service';
+import { Subcontractor } from 'src/app/subcontractors/data.model';
 
 declare let pdfMake: any ;
 
@@ -68,7 +69,6 @@ export class OrderGridComponent extends GridModel implements OnInit {
         var customers: Customer[] = data;
         var customer: Customer = customers.find(x => x.idclienti === order.clienti_idclienti);
 
-
         this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
           (data) => {          
             
@@ -80,13 +80,21 @@ export class OrderGridComponent extends GridModel implements OnInit {
               measure: data[0],
               formModal: formModal, 
             };
+
+            dialogConfig.autoFocus = true;
+            dialogConfig.disableClose = true; 
         
             const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
         
             dialogRef.afterClosed().subscribe(result => {
       
-              if (result) {
-                var updatedOrder: Order = result;
+              if (result) {      
+                console.log('AGGIORNAMENTO ORDINE');
+                console.log(result);
+
+                var shirtsToAdd: Shirt[] = result.shirts;
+                var updatedOrder: Order = result.order;                
+                
                 //CHIAMATA REST PER L'AGGIORNAMENTO DELL'ORDINE
                 console.log('aggiorna');
 
@@ -110,16 +118,17 @@ export class OrderGridComponent extends GridModel implements OnInit {
                                       strMese + '/' +
                                       data_consegna.getFullYear().toFixed(0);
 
-                if( result.saldato )
+                if( updatedOrder.saldato )
                   var saldato = 'SI';
                 else
                   var saldato = 'NO';
 
-                if( result.consegnato )
+                if( updatedOrder.consegnato )
                   var consegnato = 'SI';
                 else
                   var consegnato = 'NO';   
                 // FINE formattazione della data di consegna
+
                this.putData('orders',                  
                 {
                   "idordini": updatedOrder.idordini, 
@@ -137,32 +146,77 @@ export class OrderGridComponent extends GridModel implements OnInit {
                   "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
                   "id_misure_ordinate": updatedOrder.id_misure_ordinate
                 });
-             
+
+                //AGGIORNAMENTO CAMICIE DELL'ORDINI
+                // si eliminano prima tutte le camicie preesistenti
+                // this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + updatedOrder.idordini ).subscribe(
+                //   (data) => {
+    
+                //     var shirtsToDelete: Shirt[] = data;            
+                //     console.log('CAMICIE DA CANCELLARE');   
+                //     console.log(shirtsToDelete);   
+                    
+                //     for (let index = 0; index < shirtsToDelete.length; index++) {
+                //       const shirtToDelete = shirtsToDelete[index];
+
+                //       this.restBackendService.delResource('shirts', {'idcamicie': shirtToDelete.idcamicie }).subscribe(
+                //         (data) => {     
+                             
+                //         },
+                //         (error) => {
+                //           this.errorHttpErrorResponse = error;
+                //           this.errorMessage = error.message;        
+                //         });                           
+                //     }                    
+                //   },
+                //   (error) => {},
+                // );
+
+                //si aggiungono le nuove camicie
+                console.log('CAMICIE DA INSERIRE');   
+                console.log(shirtsToAdd);   
+                for (let index = 0; index < shirtsToAdd.length; index++) {                  
+                  const shirtToAdd = shirtsToAdd[index];
+                  console.log('INSERIMENTO CAMICIA ' + index);   
+                  console.log(shirtToAdd);   
+                  this.restBackendService.postResource('shirts',shirtToAdd).subscribe(
+                    (data) => {},
+                    (error) => {
+                      console.error(error);
+                      console.error('Message: ' + error.message);
+                    },
+                  );
+                  
+                }
               }
 
-
               }); //FINE
-
           },
-          (error) => {}
+          (error) => {
+            this.errorHttpErrorResponse = error;
+            this.errorMessage = error.message;  
+          }
         );
       },
-      (error) => {}
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;  
+      }
     );
     
   }  
 
-  openViewOrder(){
+  // openViewOrder(){
 
-    this.openView(false);
+  //   this.openView(false);
 
-  }
+  // }
 
-  openViewOrderSubcontractor(){
+  // openViewOrderSubcontractor(){
      
-    this.openView(true);
+  //   this.openView(true);
 
-  }
+  // }
 
   openView(subcontractorView: boolean){
 
@@ -210,8 +264,8 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
         },
         (error) => {
-          console.error(error);
-          console.error('Message: ' + error.message);
+          this.errorHttpErrorResponse = error;
+          this.errorMessage = error.message;  
       });        
 
 
@@ -241,17 +295,40 @@ export class OrderGridComponent extends GridModel implements OnInit {
               (data) => {
 
                 var shirts: Shirt[] = data;            
-                // console.log(shirts);                
-                this.generatePdf(order, measure, customer, shirts, key);
+                // console.log(shirts);    
+                
+                this.restBackendService.getResource('subcontractors').subscribe(
+                  (data) => {
+
+                      var subcontractors: Subcontractor[] = data;
+                      var subcontractor: Subcontractor = subcontractors.find(x => x.idfasonatori === order.fasonatori_idfasonatori);
+
+
+                      this.generatePdf(order, measure, customer, shirts, subcontractor, key);
+                  },
+                  (error) => {
+                    this.errorHttpErrorResponse = error;
+                    this.errorMessage = error.message;       
+                  }
+                );
               },
-              (error) => {},
+              (error) => {
+                this.errorHttpErrorResponse = error;
+                this.errorMessage = error.message;                  
+              },
             );
             
           },
-          (error) => {}
+          (error) => {
+            this.errorHttpErrorResponse = error;
+            this.errorMessage = error.message;              
+          }
         );
       },
-      (error) => {}
+      (error) => {
+        this.errorHttpErrorResponse = error;
+        this.errorMessage = error.message;          
+      }
     );    
 
     
@@ -260,7 +337,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
 
 
-  private generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], type?: string){
+  private generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], subcontractor?: Subcontractor, type?: string){
 
     var obj: Array<any> = new Array();
     // obj = [['dettaglio camicia 1', ' '],
@@ -268,29 +345,54 @@ export class OrderGridComponent extends GridModel implements OnInit {
     //       ['dettaglio camicia 3', ' ']];
 
     for (let index = 0; index < shirts.length; index++) {
+      
       const element = shirts[index];
 
-      var stringa :string = 'avanti: ' + ' ' + element.avanti + ' | ' +
-      'colore: ' +' ' + element.colore + ' | ' +
-      'cuciture: ' +' ' + element.cuciture + ' | ' +
-      // 'idcamicie: ' +' ' + element.idcamicie + ' | ' +
-      'indietro: ' +' ' + element.indietro + ' | ' +
-      'iniziali: ' +' ' + element.iniziali + ' | ' +
-      'maiuscolo: ' +' ' + element.maiuscolo + ' | ' +
-      'modello collo: ' +' ' + element.modellocollo + ' | ' +
-      'modello polso: ' +' ' + element.modellopolso + ' | ' +
-      'note: ' +' ' + element.note + ' | ' +
-      'numero capi: ' +' ' + element.numero_capi + ' | ' +
-      // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
-      'presenza iniziali: ' +' ' + element.presenza_iniziali + ' | ' +
-      'posizione iniziali: ' +' ' + element.pos_iniziali + ' | ' +
-      
-      'stecche estraibili: ' +' ' + element.stecche_estraibili + ' | ' +
-      'corsivo: ' +' ' + element.stile_carattere + ' | ' +
-      'tasca: ' +' ' + element.tasca + ' | ' +
-      'tipo bottone: ' +' ' + element.tipo_bottone;
+      var stringa :string = '';
 
-      console.log(stringa);
+      console.log(element.iniziali);
+
+      if ( element.iniziali == 'SI' ) {
+        stringa = 
+        'colore: ' +' ' + element.colore + ' | ' +
+        'numero capi: ' +' ' + element.numero_capi + ' | ' +      
+        // 'idcamicie: ' +' ' + element.idcamicie + ' | ' +
+        'collo: ' +' ' + element.modellocollo + ' | ' +
+        'polso: ' +' ' + element.modellopolso + ' | ' +
+        'avanti: ' + ' ' + element.avanti + ' | ' +
+        'indietro: ' +' ' + element.indietro + ' | ' +             
+        'stecche: ' +' ' + element.stecche_estraibili + ' | ' +
+        'tipo bottone: ' +' ' + element.tipo_bottone + ' | ' +      
+        'tasca: ' +' ' + element.tasca + ' | ' +
+        'cuciture: ' +' ' + element.cuciture + ' | ' +
+        // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
+        'iniziali: ' +' ' + element.presenza_iniziali + ' | ' +      
+        'let. iniziali: ' +' ' + element.iniziali + ' | ' +
+        'pos. iniziali: ' +' ' + element.pos_iniziali + ' | ' +
+        'corsivo: ' +' ' + element.stile_carattere + ' | ' +
+        'maiuscolo: ' +' ' + element.maiuscolo + ' | ' +      
+        'note: ' +' ' + element.note;
+      } else if ( element.iniziali == 'NO' ) {
+        stringa = 
+        'colore: ' +' ' + element.colore + ' | ' +
+        'numero capi: ' +' ' + element.numero_capi + ' | ' +      
+        // 'idcamicie: ' +' ' + element.idcamicie + ' | ' +
+        'collo: ' +' ' + element.modellocollo + ' | ' +
+        'polso: ' +' ' + element.modellopolso + ' | ' +
+        'avanti: ' + ' ' + element.avanti + ' | ' +
+        'indietro: ' +' ' + element.indietro + ' | ' +             
+        'stecche: ' +' ' + element.stecche_estraibili + ' | ' +
+        'tipo bottone: ' +' ' + element.tipo_bottone + ' | ' +      
+        'tasca: ' +' ' + element.tasca + ' | ' +
+        'cuciture: ' +' ' + element.cuciture + ' | ' +
+        // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
+        'iniziali: ' +' ' + element.presenza_iniziali + ' | ' +      
+        // 'let. iniziali: ' +' ' + element.iniziali + ' | ' +
+        // 'pos. iniziali: ' +' ' + element.pos_iniziali + ' | ' +
+        // 'corsivo: ' +' ' + element.stile_carattere + ' | ' +
+        // 'maiuscolo: ' +' ' + element.maiuscolo + ' | ' +      
+        'note: ' +' ' + element.note;
+      }
 
       obj.push([stringa,' ']);
       
@@ -318,12 +420,21 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
     var refSize:number = 14;
 
+    if ( order.note == '' )
+      var noteCliente: string = 'nessuna';
+    else  
+      var noteCliente: string = order.note;
+
+    if ( order.note_x_fasonista == '' )
+      var noteFasonista: string = 'nessuna';
+    else  
+      var noteFasonista: string = order.note_x_fasonista;      
 
      const documentCustomerDefinition = {
        
         content: [
           {
-            text: 'STAMPA PER CLIENTE \n ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
+            text: 'STAMPA PER IL CLIENTE \n ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
             style: 'header'
           } ,
           {
@@ -399,14 +510,14 @@ export class OrderGridComponent extends GridModel implements OnInit {
           //   style: 'subheader',
           //   alignment: 'left',
           // },
-          // 'Note del fasonista',
+          // 'Note per il fasonista',
           // {
           //   style: 'name',
           //   alignment: 'left',
           //   table: {
           //     widths: ['*'],              
           //     body: [
-          //       [order.note_x_fasonista],
+          //       [noteFasonista],
           //     ]
           //   }
           // },          
@@ -431,7 +542,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
             table: {
               widths: ['*'],
               body: [
-                [order.note],
+                [noteCliente],
               ]
             }
           },
@@ -502,7 +613,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
        
         content: [
           {
-            text: 'STAMPA PER FASONISTA ' + order.fasonatori_idfasonatori + ' ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
+            text: 'STAMPA PER IL FASONISTA ' + subcontractor.nome + ' ( ' + subcontractor.telefono + ' )\nORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
             style: 'header'
           } ,
           {
@@ -578,14 +689,14 @@ export class OrderGridComponent extends GridModel implements OnInit {
           //   style: 'subheader',
           //   alignment: 'left',
           // },
-          'Note del fasonista',
+          'Note per il fasonista',
           {
             style: 'name',
             alignment: 'left',
             table: {
               widths: ['*'],              
               body: [
-                [order.note_x_fasonista],
+                [noteFasonista],
               ]
             }
           },          
@@ -610,7 +721,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
           //   table: {
           //     widths: ['*'],
           //     body: [
-          //       [order.note],
+          //       [noteClinte],
           //     ]
           //   }
           // },
@@ -752,6 +863,9 @@ export class OrderGridComponent extends GridModel implements OnInit {
       titolo: 'ATTENZIONE!', 
       messaggio: 'Eliminare l\'ordine n° ' + order.idordini + ' dall\'archivio degli ordini?',
     };
+
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true; 
 
     const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
 

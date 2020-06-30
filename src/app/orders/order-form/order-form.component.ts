@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ɵConsole } from '@angular/core';
 import { MAT_DIALOG_DATA, DateAdapter, MatSnackBar } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Order } from '../data.model';
 import { Measure } from 'src/app/measurers/data.model';
 import { Customer } from 'src/app/customers/data.model';
-import { isString } from 'util';
+import { Shirt } from 'src/app/shirts/shirt.model';
 
 interface Subcontractor {
   idfasonatori: number,
@@ -39,6 +39,9 @@ export class OrderFormComponent implements OnInit {
   public dataOrder: Order;
   public lastMeasure: Measure; ;
   public subcontractors: Subcontractor[];
+
+  public idOrdineAperto: number = 0;
+  public shirtsInOrder: Shirt[];
 
   constructor( @Inject(MAT_DIALOG_DATA) data,
     private _adapter: DateAdapter<any>,
@@ -102,12 +105,9 @@ export class OrderFormComponent implements OnInit {
       this.reactiveForm.get('acconto').setValue(Number(0).toFixed(2).replace('.',','));
       this.reactiveForm.get('saldo').setValue(Number(0).toFixed(2).replace('.',','));  
       
-      this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));
+      this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));    
 
-      this.reactiveForm.get('idordini').setValue(0);
-
-      //si crea un ordine vuoto per disporre di un id
-
+      // // SI CREA UN ORDINE VUOTO PER OTTENERE L'ID ORDINE
       // this.restBackendService.postResource('orders',                  
       // {
       //   "note": '',
@@ -125,20 +125,23 @@ export class OrderFormComponent implements OnInit {
       //   "id_misure_ordinate": 0
       // }).subscribe(
       //   (data) =>{
-      //     console.log('prova' + data);
+          
+      //     var order: any = data;          
+      //     this.reactiveForm.get('idordini').setValue(order.idordini);
+
+      //     //si cambia la modalità del dialog
+      //     this.formModal=='aggiornamento'
+
       //   },
       //   (error) =>{
       //     console.error(error);
       //     console.error('Message: ' + error.message);                      
       //   }
       // )        
-
-    
-
-      
     
     } else if ( this.formModal=='aggiornamento' ) {
 
+      this.idOrdineAperto = this.dataOrder.idordini;
       this.reactiveForm.get('idordini').setValue(this.dataOrder.idordini);
 
       this.reactiveForm.get('fasonatori_idfasonatori').setValue(this.dataOrder.fasonatori_idfasonatori);
@@ -215,18 +218,6 @@ export class OrderFormComponent implements OnInit {
     }    
   ]; 
 
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message, 'Chiudi', {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
-  }
-
-  saveIdSubcontractor() {
-
-  }
 
   getCurrentDateFormatted(): string {
     var today = new Date();
@@ -344,5 +335,24 @@ export class OrderFormComponent implements OnInit {
 
   }
 
-  
+  // METODO PER RICEVERE LA NOTIFICA DAL CHILD
+  getShirts(shirts: any) {
+    console.log('ELENCO CAMICIE RICEVUTO');
+    console.log(shirts);
+    this.shirtsInOrder = shirts;
+  }
+
+
+  ordineAnnullato() {
+    this.openSnackBar(this.formModal + ' Ordine Annullato');
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Chiudi', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+  }
+ 
 }

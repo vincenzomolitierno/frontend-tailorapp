@@ -47,6 +47,8 @@ export class BacksidemodelsGridComponent extends GridModel implements OnInit  {
 
     const dialogConfig = new MatDialogConfig();
 
+    dialogConfig.disableClose = true;
+
     dialogConfig.data = {
       idordini: idCatolog, 
       formModal: formModal, 

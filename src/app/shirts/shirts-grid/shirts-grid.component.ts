@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { Shirt } from '../shirt.model';
-import { isUndefined } from 'util';
+import { QueryParameter } from 'src/app/backend-service/data.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 
 
 @Component({
@@ -15,8 +17,11 @@ import { isUndefined } from 'util';
 })
 export class ShirtsGridComponent extends GridModel implements OnInit {
 
-  
   @Input() ordini_idordini: string;
+
+  shirtsAdded: Array<any> = new Array();
+  @Output() shirtsAddEvent = new EventEmitter<Array<any>>();
+  
 
   // Dati coinvolti nel binding
   dummy_data: string = "dummy_data"
@@ -27,10 +32,6 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     // 'idcamicie',
     'colore', 
     'numero_capi',
-
-
-
-
 
     // 'update',
     'view',
@@ -58,6 +59,43 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
   }
 
+  // OVERRIDE
+  public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
+
+    // this.resourceQuery = [];
+
+    var key = Object.keys(queryParameter);
+    var value = Object.values(queryParameter);
+
+    console.log(key);
+    console.log(value);
+    
+   // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
+   this.restBackendService.getResourceQuery(tagResourse,
+     key + '=' + value).subscribe(
+     (data) => {
+
+            console.log('CAMICIE ASSOCIATE ALL\'ORDINE');
+            console.log(data);
+
+            // this.resourceQuery = data;
+            this.shirtsAdded = data;
+
+            this.resource = data;
+            this.dataSource = new MatTableDataSource(this.resource);
+                      
+            this.dataSource.paginator = this.paginatorTable;    
+            this.dataSource.sort = this.sortTable; 
+
+           },
+     (error) => {
+         this.errorHttpErrorResponse = error;
+         this.errorMessage = error.message;
+     }
+   );
+  
+ }    
+
   openResourceDialog(formModal: string, shirt?: Shirt) {
 
     const dialogConfig = new MatDialogConfig();
@@ -66,7 +104,9 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
       ordini_idordini: this.ordini_idordini, 
       formModal: formModal };
 
-    const dialogRef = this.dialog.open(ShirtFormComponent, dialogConfig);
+    dialogConfig.disableClose = true;      
+
+    const dialogRef = this.dialog.open(ShirtFormComponent, dialogConfig);    
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
@@ -112,7 +152,6 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             'avanti_idavanti': result.avanti_idavanti,
             "colore": result.colore,
             "cuciture": cuciture,
-            // "idcamicie": result.idcamicie,
             "indietro_idindietro": result.indietro_idindietro,
             "iniziali": result.iniziali,
             "maiuscolo": maiuscolo,
@@ -129,12 +168,20 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             "tipo_bottone": result.tipo_bottone
           }
 
+        console.log('CAMICIA DA INSERIRE');
         console.log(obj);
+        // this.postData('shirts', obj);       
 
-        this.postData('shirts', obj); 
+        //SI AGGIUNGE L'OGGETTO CAMICIA ALLA RACCOLTA E LO SI NOTIFICA AL PARENT
+        this.shirtsAdded.push(obj);
+        this.shirtsAddEvent.emit(this.shirtsAdded);   
 
+        //si aggiornano i dati in tabella
+        this.dataSource = new MatTableDataSource(this.shirtsAdded);                 
+        this.dataSource.paginator = this.paginatorTable;    
+        this.dataSource.sort = this.sortTable;  
+        //
         
-
       }
 
     });    
@@ -146,22 +193,36 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       titolo: 'ATTENZIONE!', 
-      messaggio: 'Eliminare la camicia dall\'ordine corrente?',
+      messaggio: 'Eliminare la camicia dall\'ordine corrente? L\'operazione non potrà essere annullata',
     };
+
+    dialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       
-      if( result ) {       
+      if( result ) { 
 
-        this.delData('shirts',        
-          {
-            "idcamicie": shirts.idcamicie
-          }
-        );
+        console.log(result);
 
-        this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
+        const index = this.shirtsAdded.indexOf('idcamicie', shirts.idcamicie);
+        if (index > -1) {
+          this.shirtsAdded.splice(index, 1);
+        }  
+        this.shirtsAddEvent.emit(this.shirtsAdded);      
+       
+        this.restBackendService.delResource('shirts',
+        {
+          "idcamicie": shirts.idcamicie
+        }).subscribe(
+          (data) => {                 
+            this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});  
+          },
+          (error) => {
+            this.errorHttpErrorResponse = error;
+            this.errorMessage = error.message;        
+          });         
 
       }
       
@@ -175,7 +236,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     this.errorMessage = '';
 
     this.restBackendService.postResource(tagResource, body).subscribe(
-      (data) => {     
+      (data) => {  
         this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});    
       },
       (error) => {
@@ -185,21 +246,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
   }
 
-  // OVERRIDE
-  public delData(tagResourse: string, body: object):void {
 
-    this.errorMessage = '';
-    this.restBackendService.delResource(tagResourse, body).subscribe(
-      (data) => {     
-        this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});  
-      },
-      (error) => {
-        this.errorHttpErrorResponse = error;
-        this.errorMessage = error.message;        
-      });      
-
-  }  
- 
 
   openView(shirt: any) {
 
@@ -229,5 +276,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
         'tipo bottone: ' +' ' + shirt.tipo_bottone     
     );
   }
+
+
 
 }

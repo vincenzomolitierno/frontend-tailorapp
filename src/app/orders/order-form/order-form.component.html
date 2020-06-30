@@ -51,7 +51,7 @@
 
         <!-- elenco camice -->
         <mat-divider></mat-divider>
-        <app-shirts-grid [ordini_idordini]="reactiveForm.controls.idordini.value"></app-shirts-grid>
+        <app-shirts-grid [ordini_idordini]="idOrdineAperto" (shirtsAddEvent)="getShirts($event)"></app-shirts-grid>
 
         <div class="left-side">
             <mat-form-field appearance="fill">
@@ -124,8 +124,8 @@
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-raised-button matTooltip="Annulla {{formModal}} ordini" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
-        <button mat-raised-button matTooltip="Conferma {{formModal}} ordini" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.value" [disabled]="reactiveForm.invalid">Conferma</button>
+        <button mat-raised-button matTooltip="Annulla {{formModal}} ordini" matTooltipPosition="above" [mat-dialog-close]="false" (click)="ordineAnnullato()" cdkFocusInitial>Annulla</button>
+        <button mat-raised-button matTooltip="Conferma {{formModal}} ordini" matTooltipPosition="above" [mat-dialog-close]="{'order': reactiveForm.value, 'shirts': shirtsInOrder}" [disabled]="reactiveForm.invalid">Conferma</button>
     </mat-dialog-actions>
 
 </form>

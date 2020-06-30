@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, AfterContentInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, AfterContentInit, Output, ViewChild, ɵConsole } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { I18nInterface, ImageDrawingComponent } from 'ngx-image-drawing';
@@ -145,7 +145,7 @@ export class MeasureFormComponent implements OnInit  {
     this.restBackendService.getResource('measurers').subscribe(
       (data) => {
             this.shirtIndicators = data; 
-            console.log(data);
+            // console.log(data);
             //Si cercano le ultime misure se presenti per popolare gli input  
             this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})
 
@@ -161,6 +161,7 @@ export class MeasureFormComponent implements OnInit  {
 
   }
 
+  // OVERRIDE
 
   public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
 
@@ -185,7 +186,7 @@ export class MeasureFormComponent implements OnInit  {
               this.formModal = 'aggiornamento';
   
               //si inizializzano i campi del form
-              
+              console.log('MISUROMETRO: ' + this.measure.misurometro);
               this.reactiveForm.get('shirtIndicatorControl').setValue(this.measure.misurometro);              
               this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);   
   

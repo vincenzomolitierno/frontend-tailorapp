@@ -97,22 +97,13 @@ export class GridModel {
 
      var key = Object.keys(queryParameter);
      var value = Object.values(queryParameter);
-
+     
     // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResourceQuery(tagResourse,
       key + '=' + value).subscribe(
       (data) => {
 
             this.resourceQuery = data;
-
-            //per la griglia camicie
-            if(tagResourse=='shirtsQuery') {
-              this.resource = data;
-              this.dataSource = new MatTableDataSource(this.resource);
-                        
-              this.dataSource.paginator = this.paginatorTable;    
-              this.dataSource.sort = this.sortTable;  
-            }
 
             },
       (error) => {

@@ -34,25 +34,25 @@ export class ShirtFormComponent implements OnInit {
 
   pannello_iniziali: boolean = false;
 
-  ordini_idordini: number;
+  // ordini_idordini: number;
 
   colour: string = '';
   tipo_bottone: string = '';
 
   // attributi della camicia
-  shirt: Shirt;
+  // shirt: Shirt;
 
   constructor(@Inject(MAT_DIALOG_DATA) data,
         public restBackendService: RESTBackendService) {
     
     this.formModal = data.formModal;    
-    this.shirt = data.formModal;  
-    this.ordini_idordini = data.formModal;  
+    // this.shirt = data.formModal;  
+    // this.ordini_idordini = data.formModal;  
 
     console.log('inizio camicie');
-    console.log(data);
+    // console.log(data);
 
-    this.ordini_idordini = data.ordini_idordini;
+    // this.ordini_idordini = data.ordini_idordini;
 
     //costruzione del reactive form
     this.reactiveForm = new FormGroup({
@@ -64,7 +64,7 @@ export class ShirtFormComponent implements OnInit {
       tasca: new FormControl(''),
       cuciture: new FormControl(''),
       tipo_bottone: new FormControl(''),
-      iniziali: new FormControl(''),
+      iniziali: new FormControl('NO'),
       switchIniziali: new FormControl(''),
       stile_carattere: new FormControl(''),
       posizione_iniziali: new FormControl(''),

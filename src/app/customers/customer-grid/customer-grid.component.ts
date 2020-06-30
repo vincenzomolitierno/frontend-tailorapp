@@ -13,6 +13,8 @@ import { isUndefined } from 'util';
 import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
+import { Order } from 'src/app/orders/data.model';
+import { Shirt } from 'src/app/shirts/shirt.model';
 
 @Component({
   selector: 'app-customer-grid',
@@ -93,6 +95,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = false;
 
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true; 
 
     var customer: Customer;
 
@@ -181,7 +185,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       titolo: 'ATTENZIONE!', 
       messaggio: 'Eliminare il cliente ' + customer.nominativo + ' (' + customer.telefono + ') dall\'archivio dei clienti?',
     };
-
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true; 
     const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -319,12 +324,14 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       customer: _customer,
     };
     dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true; 
 
     //Apertura del form dialog
     const dialogRef = this.dialog.open(MeasureFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log(result);
+      // console.log(result);
 
       if( result ) {
 
@@ -346,6 +353,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         if(result.formModal == 'inserimento')  {
           console.log('inserimento');
+          console.log('MISUROMETRO: ' + result.shirtIndicatorControl);
 
           //chiamata REST
           this.postDataLess('measures',        
@@ -429,6 +437,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                 measure: data[0],
                 formModal: formModal, 
               };
+
+              dialogConfig.autoFocus = true;
+              dialogConfig.disableClose = true;   
           
               const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
           
@@ -436,9 +447,14 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                 // azioni dopo la chiusura della dialog
                 if (result) {
                   //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE
+                  
+                  console.log('SALVATAGGIO ORDINE NUOVO');
                   console.log(result);
 
-                  var data_consegna = new Date(result.data_consegna);
+                  var shirts: Shirt[] = result.shirts;
+                  var order: Order = result.order;
+
+                  var data_consegna = new Date(order.data_consegna);
                   // INIZIO formattazione della data di consegna
                   var giorno: number = data_consegna.getDate() ;
                   var strGiorno: string;
@@ -459,57 +475,72 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                                         data_consegna.getFullYear().toFixed(0);
                   // FINE formattazione della data di consegna
 
-                  if( result.saldato )
+                  if( order.saldato )
                     var saldato = 'SI';
                   else
                     var saldato = 'NO';
 
-                  if( result.consegnato )
+                  if( order.consegnato )
                     var consegnato = 'SI';
                   else
                     var consegnato = 'NO';    
                     
                   console.log({
-                    "note": result.note,
-                    "acconto": result.acconto,
-                    "saldo": result.saldo,
-                    "totale": result.totale,
+                    "note": order.note,
+                    "acconto": order.acconto,
+                    "saldo": order.saldo,
+                    "totale": order.totale,
                     "data_consegna": strDataConsegna,
                     "consegnato": consegnato,
                     "saldato": saldato,
-                    "note_x_fasonista": result.note_x_fasonista,
-                    "mod_consegna": result.mod_consegna,
-                    "data_ordine": result.data_ordine,
-                    "clienti_idclienti": result.clienti_idclienti,
-                    "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
-                    "id_misure_ordinate": result.id_misure_ordinate
+                    "note_x_fasonista": order.note_x_fasonista,
+                    "mod_consegna": order.mod_consegna,
+                    "data_ordine": order.data_ordine,
+                    "clienti_idclienti": order.clienti_idclienti,
+                    "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
+                    "id_misure_ordinate": order.id_misure_ordinate
                   });
               
-                  // SI REALIZZA UNA PUT PERCHE' LO SCHEMA DI UTILIZZO E' DIFFERENTE NEL SOLO 
-                  // CASO DELL'ORDINE, CHE AVENDO UN SOTTOCOMPONENTE PER LE CAMICIE C'E' 
-                  // BISOGNO DI CREALO PRIMA
+
                   this.restBackendService.postResource('orders',                  
                   {
-                    "note": result.note,
-                    "acconto": result.acconto,
-                    "saldo": result.saldo,
-                    "totale": result.totale,
+                    "note": order.note,
+                    "acconto": order.acconto,
+                    "saldo": order.saldo,
+                    "totale": order.totale,
                     "data_consegna": strDataConsegna,
                     "consegnato": consegnato,
                     "saldato": saldato,
-                    "note_x_fasonista": result.note_x_fasonista,
-                    "mod_consegna": result.mod_consegna,
-                    "data_ordine": result.data_ordine,
-                    "clienti_idclienti": result.clienti_idclienti,
-                    "fasonatori_idfasonatori": result.fasonatori_idfasonatori,
-                    "id_misure_ordinate": result.id_misure_ordinate
+                    "note_x_fasonista": order.note_x_fasonista,
+                    "mod_consegna": order.mod_consegna,
+                    "data_ordine": order.data_ordine,
+                    "clienti_idclienti": order.clienti_idclienti,
+                    "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
+                    "id_misure_ordinate": order.id_misure_ordinate
                   }).subscribe(
-                    (data) =>{},
+                    (data) =>{
+
+                        var orderAdded: Order = new Order();
+                        orderAdded = data;
+                        // si provvede ad inserire le camicie
+                        var idordine = orderAdded.idordini;
+                        console.log('ID ORDINE: ' + idordine);
+
+                        for (let index = 0; index < shirts.length; index++) {
+                         
+                          const shirt = shirts[index];
+                          console.log('INSERIMENTO CAMICIA')
+                          console.log(shirt);
+                          shirt.ordini_idordini = orderAdded.idordini;
+                          this.postData('shirts', shirt);       
+                          
+                        }
+                    },
                     (error) =>{
                       console.error(error);
                       console.error('Message: ' + error.message);                      
                     }
-                  )
+                  );
                
                 }
 
@@ -549,15 +580,6 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = false;
 
   } 
-
-    openSnackBar() {
-      this.snackBar.open('Misure assenti, inserire una misura per il cliente', 'End now', {
-        duration: 5000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-    }
-
-    
+   
 
 }
