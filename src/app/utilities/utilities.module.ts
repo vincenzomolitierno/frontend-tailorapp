@@ -5,10 +5,12 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { MessageNotificationDummyComponent } from './message-notification-dummy/message-notification-dummy.component';
 
 @NgModule({
   declarations: [
-    ActionConfirmDummyComponent
+    ActionConfirmDummyComponent,
+    MessageNotificationDummyComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
   ],
   entryComponents: [
-    ActionConfirmDummyComponent    
+    ActionConfirmDummyComponent,
+    MessageNotificationDummyComponent    
   ],
 })
 export class UtilitiesModule { }

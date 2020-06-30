@@ -354,44 +354,61 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
       if ( element.iniziali == 'SI' ) {
         stringa = 
-        'colore: ' +' ' + element.colore + ' | ' +
-        'numero capi: ' +' ' + element.numero_capi + ' | ' +      
-        // 'idcamicie: ' +' ' + element.idcamicie + ' | ' +
-        'collo: ' +' ' + element.modellocollo + ' | ' +
-        'polso: ' +' ' + element.modellopolso + ' | ' +
-        'avanti: ' + ' ' + element.avanti + ' | ' +
-        'indietro: ' +' ' + element.indietro + ' | ' +             
-        'stecche: ' +' ' + element.stecche_estraibili + ' | ' +
-        'tipo bottone: ' +' ' + element.tipo_bottone + ' | ' +      
-        'tasca: ' +' ' + element.tasca + ' | ' +
-        'cuciture: ' +' ' + element.cuciture + ' | ' +
-        // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
-        'iniziali: ' +' ' + element.presenza_iniziali + ' | ' +      
-        'let. iniziali: ' +' ' + element.iniziali + ' | ' +
-        'pos. iniziali: ' +' ' + element.pos_iniziali + ' | ' +
-        'corsivo: ' +' ' + element.stile_carattere + ' | ' +
-        'maiuscolo: ' +' ' + element.maiuscolo + ' | ' +      
-        'note: ' +' ' + element.note;
-      } else if ( element.iniziali == 'NO' ) {
-        stringa = 
-        'colore: ' +' ' + element.colore + ' | ' +
-        'numero capi: ' +' ' + element.numero_capi + ' | ' +      
-        // 'idcamicie: ' +' ' + element.idcamicie + ' | ' +
-        'collo: ' +' ' + element.modellocollo + ' | ' +
-        'polso: ' +' ' + element.modellopolso + ' | ' +
-        'avanti: ' + ' ' + element.avanti + ' | ' +
-        'indietro: ' +' ' + element.indietro + ' | ' +             
-        'stecche: ' +' ' + element.stecche_estraibili + ' | ' +
-        'tipo bottone: ' +' ' + element.tipo_bottone + ' | ' +      
-        'tasca: ' +' ' + element.tasca + ' | ' +
-        'cuciture: ' +' ' + element.cuciture + ' | ' +
-        // 'ordini_idordini ' +' ' + element.idordini + ' | ' +
-        'iniziali: ' +' ' + element.presenza_iniziali + ' | ' +      
-        // 'let. iniziali: ' +' ' + element.iniziali + ' | ' +
-        // 'pos. iniziali: ' +' ' + element.pos_iniziali + ' | ' +
-        // 'corsivo: ' +' ' + element.stile_carattere + ' | ' +
-        // 'maiuscolo: ' +' ' + element.maiuscolo + ' | ' +      
-        'note: ' +' ' + element.note;
+        'colore: ' + element.colore + ' | ' +
+        'numero capi: ' + element.numero_capi + ' | ' +      
+        // 'idcamicie: ' + element.idcamicie + ' | ' +
+        'collo: ' + element.modellocollo + ' | ' +
+        'polso: ' + element.modellopolso + ' | ' +
+        'avanti: ' + element.avanti + ' | ' +
+        'indietro: ' + element.indietro + ' | ' +             
+        'stecche: ' + element.stecche_estraibili;
+        
+        
+        if ( element.tipo_bottone != '' )
+          stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
+                
+        stringa = stringa + ' | ' +      
+        'tasca: ' + element.tasca + ' | ' +
+        'cuciture: ' + element.cuciture + ' | ' +
+        // 'ordini_idordini ' + element.idordini + ' | ' +
+        'iniziali: ' + element.presenza_iniziali + ' | ' +      
+        'let. iniziali: ' + element.iniziali + ' | ' +
+        'pos. iniziali: ' + element.pos_iniziali + ' | ' +
+        'corsivo: ' + element.stile_carattere + ' | ' +
+        'maiuscolo: ' + element.maiuscolo;
+        
+        if ( element.note != '' )
+          stringa = stringa + ' | ' + 'note: ' + element.note;        
+        
+      } else if ( element.iniziali == 'NO' || element.iniziali == ''  ) {
+
+          stringa = 
+          'colore: ' + element.colore + ' | ' +
+          'numero capi: ' + element.numero_capi + ' | ' +      
+          // 'idcamicie: ' + element.idcamicie + ' | ' +
+          'collo: ' + element.modellocollo + ' | ' +
+          'polso: ' + element.modellopolso + ' | ' +
+          'avanti: ' + element.avanti + ' | ' +
+          'indietro: ' + element.indietro + ' | ' +             
+          'stecche: ' + element.stecche_estraibili;
+          
+          
+          if ( element.tipo_bottone != '' )
+            stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
+                  
+          stringa = stringa + ' | ' +      
+          'tasca: ' + element.tasca + ' | ' +
+          'cuciture: ' + element.cuciture + ' | ' +
+          // 'ordini_idordini ' + element.idordini + ' | ' +
+          'iniziali: ' + element.presenza_iniziali;    
+          // 'let. iniziali: ' + element.iniziali + ' | ' +
+          // 'pos. iniziali: ' + element.pos_iniziali + ' | ' +
+          // 'corsivo: ' + element.stile_carattere + ' | ' +
+          // 'maiuscolo: ' + element.maiuscolo;
+          
+          if ( element.note != '' )
+            stringa = stringa + ' | ' + 'note: ' + element.note;  
+
       }
 
       obj.push([stringa,' ']);
@@ -499,6 +516,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
           },
           {
             style: 'name',
+            alignment: 'left',
             table: {
               heights: '*',
               widths: ['*', 100],
@@ -678,6 +696,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
           },
           {
             style: 'name',
+            alignment: 'left',
             table: {
               heights: '*',
               widths: ['*', 100],

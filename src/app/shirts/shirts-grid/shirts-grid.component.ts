@@ -33,6 +33,12 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     'colore', 
     'numero_capi',
 
+    'modellocollo',
+    'modellopolso',
+    'avanti',
+    'indietro',
+
+    'presenza_iniziali',
     // 'update',
     'view',
     'delete'
@@ -252,29 +258,73 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
     console.log(shirt);
 
+    this.openSnackBar(this.creaStringaCamicia(shirt));
+  }
 
+  creaStringaCamicia(shirt: any): string {
+    var element = shirt;
+    var stringa: string;
 
-    this.openSnackBar(
-        'avanti: ' +' ' + shirt.avanti + ' | ' + '\r' +
-        'colore: ' +' ' + shirt.colore + ' | ' +
-        'cuciture: ' +' ' + shirt.cuciture + ' | ' +
-        'idcamicie: ' +' ' + shirt.idcamicie + ' | ' +
-        'indietro: ' +' ' + shirt.indietro + ' | ' +
-        'iniziali: ' +' ' + shirt.iniziali + ' | ' +
-        'maiuscolo: ' +' ' + shirt.maiuscolo + ' | ' +
-        'modello collo: ' +' ' + shirt.modellocollo + ' | ' +
-        'modello polso: ' +' ' + shirt.modellopolso + ' | ' +
-        'note: ' +' ' + shirt.note + ' | ' +
-        'numero capi: ' +' ' + shirt.numero_capi + ' | ' +
-        // 'ordini_idordini ' +' ' + shirt.idordini + ' | ' +
-        'presenza iniziali: ' +' ' + shirt.presenza_iniziali + ' | ' +
-        'posizione iniziali: ' +' ' + shirt.pos_iniziali + ' | ' +
+    if ( element.iniziali == 'SI' ) {
+      stringa = 
+      // 'colore: ' + element.colore + ' | ' +
+      // 'numero capi: ' + element.numero_capi + ' | ' +      
+      // // 'idcamicie: ' + element.idcamicie + ' | ' +
+      // 'collo: ' + element.modellocollo + ' | ' +
+      // 'polso: ' + element.modellopolso + ' | ' +
+      // 'avanti: ' + element.avanti + ' | ' +
+      // 'indietro: ' + element.indietro + ' | ' +             
+      'stecche: ' + element.stecche_estraibili;
+      
+      
+      if ( element.tipo_bottone != '' )
+        stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
+              
+      stringa = stringa + ' | ' +      
+      'tasca: ' + element.tasca + ' | ' +
+      'cuciture: ' + element.cuciture + ' | ' +
+      // 'ordini_idordini ' + element.idordini + ' | ' +
+      'iniziali: ' + element.presenza_iniziali + ' | ' +      
+      'let. iniziali: ' + element.iniziali + ' | ' +
+      'pos. iniziali: ' + element.pos_iniziali + ' | ' +
+      'corsivo: ' + element.stile_carattere + ' | ' +
+      'maiuscolo: ' + element.maiuscolo;
+      
+      if ( element.note != '' )
+        stringa = stringa + ' | ' + 'note: ' + element.note;        
+      
+    } else if ( element.iniziali == 'NO' || element.iniziali == ''  ) {
+
+        stringa = 
+        // 'colore: ' + element.colore + ' | ' +
+        // 'numero capi: ' + element.numero_capi + ' | ' +      
+        // // 'idcamicie: ' + element.idcamicie + ' | ' +
+        // 'collo: ' + element.modellocollo + ' | ' +
+        // 'polso: ' + element.modellopolso + ' | ' +
+        // 'avanti: ' + element.avanti + ' | ' +
+        // 'indietro: ' + element.indietro + ' | ' +             
+        'stecche: ' + element.stecche_estraibili;
         
-        'stecche estraibili: ' +' ' + shirt.stecche_estraibili + ' | ' +
-        'corsivo: ' +' ' + shirt.stile_carattere + ' | ' +
-        'tasca: ' +' ' + shirt.tasca + ' | ' +
-        'tipo bottone: ' +' ' + shirt.tipo_bottone     
-    );
+        
+        if ( element.tipo_bottone != '' )
+          stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
+                
+        stringa = stringa + ' | ' +      
+        'tasca: ' + element.tasca + ' | ' +
+        'cuciture: ' + element.cuciture + ' | ' +
+        // 'ordini_idordini ' + element.idordini + ' | ' +
+        'iniziali: ' + element.presenza_iniziali;    
+        // 'let. iniziali: ' + element.iniziali + ' | ' +
+        // 'pos. iniziali: ' + element.pos_iniziali + ' | ' +
+        // 'corsivo: ' + element.stile_carattere + ' | ' +
+        // 'maiuscolo: ' + element.maiuscolo;
+        
+        if ( element.note != '' )
+          stringa = stringa + ' | ' + 'note: ' + element.note;  
+
+    }   
+
+    return stringa;
   }
 
 

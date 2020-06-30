@@ -15,6 +15,7 @@ import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
 import { Order } from 'src/app/orders/data.model';
 import { Shirt } from 'src/app/shirts/shirt.model';
+import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
 
 @Component({
   selector: 'app-customer-grid',
@@ -549,11 +550,13 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           } else {
 
               const dialogConfig = new MatDialogConfig();
+              dialogConfig.autoFocus = true;
+              dialogConfig.disableClose = true;
               dialogConfig.data = {
                 messaggio: 'Il cliente non ha alcuna misura in archivio. \rCreazione dell\'ordine annullata!!', 
                 titolo: 'NOTA BENE', 
               };          
-              const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);
+              const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);
               dialogRef.afterClosed().subscribe(result => {
                 console.log(result);
               });             

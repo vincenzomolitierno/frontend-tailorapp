@@ -1,0 +1,12 @@
+.mat-dialog-content {
+    width: 40vw;
+    text-align: left;
+}
+
+.confirm-dialog {
+    text-align: left;
+}
+
+.mat-dialog-actions {
+    text-align: right;
+}

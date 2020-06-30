@@ -34,8 +34,33 @@
 
             <!-- Colore Column -->
             <ng-container matColumnDef="numero_capi">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero Capi </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> N° Capi </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{element.numero_capi}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="presenza_iniziali">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Iniziali </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.presenza_iniziali}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modellocollo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Collo </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.modellocollo}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modellopolso">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Polso </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.modellopolso}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="avanti">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Avanti </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.avanti}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="indietro">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Indietro </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{element.indietro}} </td>
             </ng-container>
 
             <!-- View Column -->
