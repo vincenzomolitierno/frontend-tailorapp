@@ -144,15 +144,30 @@ export class OrdersUndeliveredGridComponent extends GridModel implements OnInit 
       message: 'Contrassegnare l\'ordine come consegnato?',
       idOrdine: idOrdine
     };
-
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true;
     const dialogRef = this.dialog.open(OrderConfirmComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
 
       if(result){
         // si invia la chiamata REST
-        console.log(result);
-        // /OrdiniValues/?idordini=102&operazione=C&negato=false
+        this.restBackendService.putResourceParams('ordersValues','/?idordini=' + idOrdine + '&operazione=C&negato=false').subscribe(
+          (data) => {
+                console.log('consegnato');
+
+                this.getRemoteData('orders'); 
+                            
+                },
+          (error) => {
+              // aggiornamento della tabella gestito nel ramo error per via della scorretta parserizzazione 
+              // della risposta del put
+              // console.error(error);
+              // console.error('Message: ' + error.message);
+              this.getRemoteData('orders'); 
+          }
+        );
+
       }
 
     });    

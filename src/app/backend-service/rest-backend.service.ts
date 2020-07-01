@@ -147,6 +147,24 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
   }  
 
+  public putResourceParams(tagResource: string, param: string): Observable<any> {
+
+    console.log(this.server.getApiResource(tagResource) + param);
+
+    var localHttpOptions = { 
+         headers: new HttpHeaders({ 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.token,
+        'responseType': 'text' })};  
+
+    return this._http.put<HttpErrorResponse>(
+      this.server.getApiResource(tagResource) + param,
+      {}, 
+      localHttpOptions
+      ).pipe(catchError(this.handleError)); 
+
+  }    
+
   //
 
   // ####################### UTILITY METHODS #######################
