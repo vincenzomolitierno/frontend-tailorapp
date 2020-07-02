@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileSubpanelComponent implements OnInit {
 
+  username: string = '';
+
   vecchia_password: string = '';
   nuova_password: string = '';
   nuova_password_2: string = '';
