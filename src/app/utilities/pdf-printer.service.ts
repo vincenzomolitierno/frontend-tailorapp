@@ -204,7 +204,8 @@ export class PdfPrinterService {
                
     var base64: string = Base64Utility.base64ShirtEmpty;
     
-    if ( !isUndefined(measure.note_grafiche) )
+    // if ( !isUndefined(measure.note_grafiche) )
+    if ( measure.note_grafiche != '' )
       base64 = 'data:image/png;base64,' + measure.note_grafiche;
 
      const documentCustomerDefinition = {
