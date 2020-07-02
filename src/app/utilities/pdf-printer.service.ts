@@ -7,6 +7,8 @@ import { RESTBackendService } from '../backend-service/rest-backend.service';
 import { Shirt } from '../shirts/shirt.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ScriptService } from '../customers/customer-grid/script.service';
+import { Base64Utility } from '../measure/data.model';
+import { isUndefined } from 'util';
 
 declare let pdfMake: any ;
 
@@ -103,7 +105,7 @@ export class PdfPrinterService {
 
       var stringa :string = '';
 
-      console.log(element.iniziali);
+      // console.log('camicie', element.iniziali);
 
       if ( element.iniziali == 'SI' ) {
         stringa = 
@@ -198,7 +200,12 @@ export class PdfPrinterService {
     if ( order.note_x_fasonista == '' )
       var noteFasonista: string = 'nessuna';
     else  
-      var noteFasonista: string = order.note_x_fasonista;      
+      var noteFasonista: string = order.note_x_fasonista;   
+               
+    var base64: string = Base64Utility.base64ShirtEmpty;
+    
+    if ( !isUndefined(measure.note_grafiche) )
+      base64 = 'data:image/png;base64,' + measure.note_grafiche;
 
      const documentCustomerDefinition = {
        
@@ -222,41 +229,41 @@ export class PdfPrinterService {
           {
             columns: [
               {
-                text: 'Collo: '        + measure.collo + '\n' +
-                      'Spalla: '       + measure.spalla + '\n' +
-                      'Lun. Manica: '  + measure.lung_bicipite + '\n' +
-                      'Bicipite Tot x Braccio: '     + measure.bicipite + '\n' +
-                      'Avamb Tot x Braccio: '  + measure.avambraccio + '\n' ,
+                text: 'Collo: '        + this.convertipositivi(measure.collo) + '\n' +
+                      'Spalla: '       + this.convertipositivi(measure.spalla) + '\n' +
+                      'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n' +
+                      'Bicipite Tot x Braccio: '     + this.convertipositivi(measure.bicipite) + '\n' +
+                      'Avamb Tot x Braccio: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
                 style: 'name'
               },
               {
-                text: 'Lun Camicia: '           + measure.lung_camicia + '\n' +
-                      'Centro Schiena: '     + measure.lung_avambraccio + '\n' +
-                      'Vita Dietro: '      + measure.vita_dietro + '\n' +
-                      'Bacino Dietro: ' + measure.bacino_dietro + '\n' +
-                      'Polso: '    + measure.polso + '\n',
+                text: 'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n' +
+                      'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n' +
+                      'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n' +
+                      'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n' +
+                      'Polso: '    + this.convertipositivi(measure.polso) + '\n',
                 style: 'name'
               },
               {
                 text: 'TORACE AVANTI' + '\n' +
-                      '1° Bottone: '     + measure.torace.split(';')[0] + '\n' +
-                      '2° Bottone: '     + measure.torace.split(';')[1] + '\n' +
-                      '3° Bottone: '     + measure.torace.split(';')[2] + '\n',
+                      '1° Bottone: '     + this.convertipositivi(measure.torace.split(';')[0]) + '\n' +
+                      '2° Bottone: '     + this.convertipositivi(measure.torace.split(';')[1]) + '\n' +
+                      '3° Bottone: '     + this.convertipositivi(measure.torace.split(';')[2]) + '\n',
                 style: 'name'
               },
               {
-                text: '4° Bottone: '     + measure.torace.split(';')[3] + '\n' +
-                      '5° Bottone: '     + measure.torace.split(';')[4] + '\n' +
-                      '6° Bottone: '     + measure.torace.split(';')[5] + '\n' +
-                      '7° Bottone: '     + measure.torace.split(';')[6] + '\n' +
-                      '8° Bottone: '     + measure.torace.split(';')[7] + '\n',
+                text: '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n' +
+                      '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n' +
+                      '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n' +
+                      '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n' +
+                      '8° Bottone: '     + this.convertipositivi(measure.torace.split(';')[7]) + '\n',
                 style: 'name'
-              }                                        
+              }                                       
             ]
           },
           '\n',
           {
-            image: 'data:image/png;base64,' + measure.note_grafiche,
+            image: base64,
             width: 250,
             alignment: 'center'
           },
@@ -407,41 +414,41 @@ export class PdfPrinterService {
           {
             columns: [
               {
-                text: 'Collo: '        + measure.collo + '\n' +
-                      'Spalla: '       + measure.spalla + '\n' +
-                      'Lun. Manica: '  + measure.lung_bicipite + '\n' +
-                      'Bicipite Tot x Braccio: '     + measure.bicipite + '\n' +
-                      'Avamb Tot x Braccio: '  + measure.avambraccio + '\n' ,
+                text: 'Collo: '        + this.convertipositivi(measure.collo) + '\n' +
+                      'Spalla: '       + this.convertipositivi(measure.spalla) + '\n' +
+                      'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n' +
+                      'Bicipite Tot x Braccio: '     + this.convertipositivi(measure.bicipite) + '\n' +
+                      'Avamb Tot x Braccio: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
                 style: 'name'
               },
               {
-                text: 'Lun Camicia: '           + measure.lung_camicia + '\n' +
-                      'Centro Schiena: '     + measure.lung_avambraccio + '\n' +
-                      'Vita Dietro: '      + measure.vita_dietro + '\n' +
-                      'Bacino Dietro: ' + measure.bacino_dietro + '\n' +
-                      'Polso: '    + measure.polso + '\n',
+                text: 'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n' +
+                      'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n' +
+                      'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n' +
+                      'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n' +
+                      'Polso: '    + this.convertipositivi(measure.polso) + '\n',
                 style: 'name'
               },
               {
                 text: 'TORACE AVANTI' + '\n' +
-                      '1° Bottone: '     + measure.torace.split(';')[0] + '\n' +
-                      '2° Bottone: '     + measure.torace.split(';')[1] + '\n' +
-                      '3° Bottone: '     + measure.torace.split(';')[2] + '\n',
+                      '1° Bottone: '     + this.convertipositivi(measure.torace.split(';')[0]) + '\n' +
+                      '2° Bottone: '     + this.convertipositivi(measure.torace.split(';')[1]) + '\n' +
+                      '3° Bottone: '     + this.convertipositivi(measure.torace.split(';')[2]) + '\n',
                 style: 'name'
               },
               {
-                text: '4° Bottone: '     + measure.torace.split(';')[3] + '\n' +
-                      '5° Bottone: '     + measure.torace.split(';')[4] + '\n' +
-                      '6° Bottone: '     + measure.torace.split(';')[5] + '\n' +
-                      '7° Bottone: '     + measure.torace.split(';')[6] + '\n' +
-                      '8° Bottone: '     + measure.torace.split(';')[7] + '\n',
+                text: '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n' +
+                      '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n' +
+                      '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n' +
+                      '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n' +
+                      '8° Bottone: '     + this.convertipositivi(measure.torace.split(';')[7]) + '\n',
                 style: 'name'
               }                                        
             ]
           },
           '\n',
           {
-            image: 'data:image/png;base64,' + measure.note_grafiche,
+            image: base64,
             width: 250,
             alignment: 'center'
           },
@@ -579,4 +586,19 @@ export class PdfPrinterService {
       }    
      
     }  
+
+  public static generateEmptyOrderSheetPdf() {
+    // NAZARO
+  }
+
+  public static convertipositivi(s: string): string
+  {
+	  if(s.substr(0, 1) != "-")
+		{  
+    	s = "+" + s;
+	  }
+	  return (s);
+	  
+  }
+
 }

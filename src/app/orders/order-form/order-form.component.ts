@@ -6,6 +6,7 @@ import { Order } from '../data.model';
 import { Measure } from 'src/app/measurers/data.model';
 import { Customer } from 'src/app/customers/data.model';
 import { Shirt } from 'src/app/shirts/shirt.model';
+import { isUndefined } from 'util';
 
 interface Subcontractor {
   idfasonatori: number,
@@ -29,7 +30,11 @@ export class OrderFormComponent implements OnInit {
   nominativo: string = 'nome cognome';
   data_misura = 'gg/mm/yyyy';
   misure_misurometro = '#,# - ##,#'
-  data_consegna = '01/01/2020';
+  data_consegna = 'gg/mm/yyyy';
+
+  public dataOrdineAperto: string = 'gg/mm/yyyy';
+  public idOrdineAperto: number = 0;
+  public shirtsInOrder: Shirt[];  
 
   editable: boolean = true; // per disabilitare l'inserimento nei campi totale ed acconto
   disableDeliveryControls: boolean = false; // per disabilitare l'inserimento nei campi modalità di consegna e data consegna
@@ -40,8 +45,7 @@ export class OrderFormComponent implements OnInit {
   public lastMeasure: Measure; ;
   public subcontractors: Subcontractor[];
 
-  public idOrdineAperto: number = 0;
-  public shirtsInOrder: Shirt[];
+
 
   constructor( @Inject(MAT_DIALOG_DATA) data,
     private _adapter: DateAdapter<any>,
@@ -57,6 +61,7 @@ export class OrderFormComponent implements OnInit {
       this.reactiveForm = new FormGroup({
         
         idordini: new FormControl(''),
+        data_ordine: new FormControl(''),          
 
         clienti_idclienti: new FormControl(''),
         id_misure_ordinate: new FormControl(''),
@@ -72,7 +77,7 @@ export class OrderFormComponent implements OnInit {
         consegnato: new FormControl(''),
         saldato: new FormControl(''),
 
-        data_ordine: new FormControl(''),
+        data_consegna: new FormControl(''),
         
         note: new FormControl(''),
         note_x_fasonista: new FormControl(''),
@@ -85,7 +90,7 @@ export class OrderFormComponent implements OnInit {
 
     this._adapter.setLocale('it');
 
-    this.loadSubcontractor();
+    this.loadSubcontractor(); // si caricano i fasonisti
 
     this.nominativo = this.dataCustomer.nominativo + ' ( ' + this.dataCustomer.telefono + ' )' ;
 
@@ -97,52 +102,58 @@ export class OrderFormComponent implements OnInit {
     this.reactiveForm.get('clienti_idclienti').setValue(this.dataCustomer.idclienti);          
     this.reactiveForm.get('id_misure_ordinate').setValue(this.lastMeasure.idmisure); 
 
-    if ( this.formModal=='inserimento' ){
+    if ( this.formModal=='inserimento' ){      
     
-      this.reactiveForm.get('data_ordine').setValue(this.getCurrentDateFormatted());  
+      // SI CREA UN ORDINE VUOTO PER OTTENERE L'ID ORDINE
+      this.restBackendService.postResource('orders',                  
+      {
+        "note": '',
+        "acconto": '',
+        "saldo": '',
+        "totale": '',
+        "data_consegna": '',
+        "consegnato": '',
+        "saldato": '',
+        "note_x_fasonista": '',
+        "mod_consegna": '',
+        "data_ordine": this.getCurrentDateFormatted() ,
+        "clienti_idclienti": this.dataCustomer.idclienti,
+        "fasonatori_idfasonatori": 0,
+        "id_misure_ordinate": this.lastMeasure.idmisure
+      }).subscribe(
+        (data) =>{
 
-      this.reactiveForm.get('totale').setValue(Number(0).toFixed(2).replace('.',','));
-      this.reactiveForm.get('acconto').setValue(Number(0).toFixed(2).replace('.',','));
-      this.reactiveForm.get('saldo').setValue(Number(0).toFixed(2).replace('.',','));  
-      
-      this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));    
+          this.dataOrder = data;
 
-      // // SI CREA UN ORDINE VUOTO PER OTTENERE L'ID ORDINE
-      // this.restBackendService.postResource('orders',                  
-      // {
-      //   "note": '',
-      //   "acconto": '',
-      //   "saldo": '',
-      //   "totale": '',
-      //   "data_consegna": '',
-      //   "consegnato": '',
-      //   "saldato": '',
-      //   "note_x_fasonista": '',
-      //   "mod_consegna": '',
-      //   "data_ordine": '',
-      //   "clienti_idclienti": 0,
-      //   "fasonatori_idfasonatori": 0,
-      //   "id_misure_ordinate": 0
-      // }).subscribe(
-      //   (data) =>{
+          this.reactiveForm.get('data_ordine').setValue(this.getCurrentDateFormatted());  
+
+          this.reactiveForm.get('totale').setValue(Number(0).toFixed(2).replace('.',','));
+          this.reactiveForm.get('acconto').setValue(Number(0).toFixed(2).replace('.',','));
+          this.reactiveForm.get('saldo').setValue(Number(0).toFixed(2).replace('.',','));  
           
-      //     var order: any = data;          
-      //     this.reactiveForm.get('idordini').setValue(order.idordini);
+          this.reactiveForm.addControl('data_consegna',new FormControl('',Validators.required));    
+    
+          this.reactiveForm.get('mod_consegna').setValue('RITIRO IN SEDE');
+          
+          var order: Order = data;          
+          this.reactiveForm.get('idordini').setValue(order.idordini);
 
-      //     //si cambia la modalità del dialog
-      //     this.formModal=='aggiornamento'
+          //si cambia la modalità del dialog
+          // this.formModal=='aggiornamento'
 
-      //   },
-      //   (error) =>{
-      //     console.error(error);
-      //     console.error('Message: ' + error.message);                      
-      //   }
-      // )        
+          this.reactiveForm.get('idordini').setValue(this.dataOrder.idordini);
+          this.idOrdineAperto = this.dataOrder.idordini;
+          this.reactiveForm.get('data_ordine').setValue(this.dataOrder.data_ordine);
+          this.dataOrdineAperto = this.dataOrder.data_ordine;          
+
+        },
+        (error) =>{
+          console.error(error);
+          console.error('Message: ' + error.message);                      
+        }
+      )        
     
     } else if ( this.formModal=='aggiornamento' ) {
-
-      this.idOrdineAperto = this.dataOrder.idordini;
-      this.reactiveForm.get('idordini').setValue(this.dataOrder.idordini);
 
       this.reactiveForm.get('fasonatori_idfasonatori').setValue(this.dataOrder.fasonatori_idfasonatori);
 
@@ -161,23 +172,22 @@ export class OrderFormComponent implements OnInit {
         this.reactiveForm.get('saldato').setValue(true);
       else
         this.reactiveForm.get('saldato').setValue(false);        
-      
-
-      this.reactiveForm.get('data_ordine').setValue(this.dataOrder.data_ordine);
 
       // SI INIZIALIZZA LA DATA DI CONSEGNA
       var dataConsegna: string[] = this.dataOrder.data_consegna.split('/');
-      this.reactiveForm.addControl('data_consegna',new FormControl(
-        new Date(parseInt(dataConsegna[2]),parseInt(dataConsegna[1])-1,parseInt(dataConsegna[0])),
-        Validators.required));
+      // this.reactiveForm.get('data_consegna').setValue(dataConsegna[1]+'/'+dataConsegna[0]+'/'+dataConsegna[2]);
+      this.reactiveForm.get('data_consegna').setValue(new Date(parseInt(dataConsegna[2]),parseInt(dataConsegna[1])-1,parseInt(dataConsegna[0])));
 
       this.reactiveForm.get('note').setValue(this.dataOrder.note);
       this.reactiveForm.get('note_x_fasonista').setValue(this.dataOrder.note_x_fasonista);
 
-      // SI INIZIALIZZANO LE CAMICE
-      
+      this.reactiveForm.get('idordini').setValue(this.dataOrder.idordini);
+      this.idOrdineAperto = this.dataOrder.idordini;
+      this.reactiveForm.get('data_ordine').setValue(this.dataOrder.data_ordine);
+      this.dataOrdineAperto = this.dataOrder.data_ordine;      
 
     }
+  
 
   } // ngOnInit fine
 
@@ -267,11 +277,11 @@ export class OrderFormComponent implements OnInit {
 
       switch (totale > acconto) {
         case false:
-          this.reactiveForm.get('totale').setValue('');
-          this.reactiveForm.get('acconto').setValue('');
-          this.reactiveForm.get('saldo').setValue('');
+          this.reactiveForm.get('totale').setValue('0,00');
+          this.reactiveForm.get('acconto').setValue('0,00');
+          // this.reactiveForm.get('saldo').setValue('');
 
-          this.openSnackBar('Inserimento annullato, totale inferiore all\'acconto. I campi sono azzerati');
+          this.openSnackBar('Errore, il totale è inferiore all\'acconto. Dati inseriti annullati');
 
           break;      
         default:
@@ -344,12 +354,29 @@ export class OrderFormComponent implements OnInit {
 
 
   ordineAnnullato() {
-    this.openSnackBar(this.formModal + ' Ordine Annullato');
+    this.openSnackBar(this.formModal + ' Ordine Annullato', 2500);
+
+    if ( this.formModal == 'inserimento' )
+      this.restBackendService.delResource('orders',{'idordini': this.dataOrder.idordini}).subscribe(
+        (data) => {
+          console.log('ins ordine annullato', data);
+        },
+        (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);  
+        }
+      );
+
   }
 
-  openSnackBar(message: string) {
+  openSnackBar(message: string, duration?: number) {
+
+    if(isUndefined(duration)) duration = 3500;
+
+    console.log(duration);
+
     this._snackBar.open(message.toUpperCase(), 'Chiudi', {
-      duration: 4000,
+      duration: duration,
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });

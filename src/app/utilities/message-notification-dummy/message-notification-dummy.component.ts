@@ -21,5 +21,6 @@ export class MessageNotificationDummyComponent implements OnInit {
    }
 
   ngOnInit() {
+    document.getElementById('message').innerText = this.messaggio;
   }
 }

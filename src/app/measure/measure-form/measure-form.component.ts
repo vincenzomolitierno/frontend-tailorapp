@@ -243,12 +243,14 @@ export class MeasureFormComponent implements OnInit  {
               else
                 this.reactiveForm.get('torace_8_bottone').setValue(parseFloat(this.measure.torace.split(';')[7]).toFixed(1)); 
                                                            
-              // COMPONENTE DISEGNO
-              this.AppuntiBase64 = 'data:image/png;base64,' + this.measure.note_grafiche;
-              this.Appunti = this.AppuntiBase64;
-              
-              // COMPONENTE DISEGNO
-              
+              // INIZIO COMPONENTE DISEGNO
+              if ( this.measure.note_grafiche == '' ) {
+                this.Appunti = "../../assets/images/CamiciaCompleta.jpg";
+              } else { 
+                this.AppuntiBase64 = 'data:image/png;base64,' + this.measure.note_grafiche;
+                this.Appunti = this.AppuntiBase64;
+              }
+              // FINE COMPONENTE DISEGNO
 
               this.reactiveForm.get('formModal').setValue(this.formModal); 
                 
@@ -414,7 +416,7 @@ export class MeasureFormComponent implements OnInit  {
 
     this.reactiveForm.get('shirtIndicatorControlSize').setValue('');   
 
-    this.reactiveForm.get('collo').setValue(Number(0).toFixed(1));   
+    this.reactiveForm.get('collo').setValue(Number(45).toFixed(1));   
     this.reactiveForm.get('spalla').setValue(Number(0).toFixed(1));   
     this.reactiveForm.get('lunghezza_manica').setValue(Number(0).toFixed(1));   
     this.reactiveForm.get('bicipite').setValue(Number(0).toFixed(1));   
@@ -424,7 +426,7 @@ export class MeasureFormComponent implements OnInit  {
     this.reactiveForm.get('centro_schiena').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('vita_dietro').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('bacino_dietro').setValue(Number(0).toFixed(1));  
-    this.reactiveForm.get('polso').setValue(Number(0).toFixed(1));  
+    this.reactiveForm.get('polso').setValue(Number(20).toFixed(1));  
 
     this.reactiveForm.get('torace_1_bottone').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('torace_2_bottone').setValue(Number(0).toFixed(1));                

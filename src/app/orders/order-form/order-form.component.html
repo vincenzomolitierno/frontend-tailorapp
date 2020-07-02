@@ -1,6 +1,6 @@
 <form novalidate [formGroup]="reactiveForm">
 
-    <h2 mat-dialog-title>Modulo {{formModal}} ORDINE</h2>
+    <h2 mat-dialog-title>Modulo {{formModal}} ORDINE N° {{idOrdineAperto}} DEL {{dataOrdineAperto}}</h2>
     <p style="text-transform: uppercase;">Committente: <b>{{nominativo}}</b></p>
     <p style="text-transform: uppercase;">Ultime misure prese in data: <b>{{data_misura}}</b> </p>
     <mat-dialog-content class="mat-typography">
@@ -22,16 +22,16 @@
         </div>
 
         <!-- informazioni generali -->
-        <div class="left-side">
-            <mat-form-field appearance="fill">
+        <div class="left-side" style="display: none;">
+            <mat-form-field>
                 <mat-label>Numero Ordine</mat-label>
                 <input matInput placeholder="numero dell'ordine" formControlName="idordini" [readonly]="true">
                 <mat-icon matSuffix>keyboard</mat-icon>
             </mat-form-field>
         </div>
 
-        <div class="right-side">
-            <mat-form-field appearance="fill">
+        <div class="right-side" style="display: none;">
+            <mat-form-field>
                 <mat-label>Data Ordine</mat-label>
                 <input matInput placeholder="data dell'ordine" formControlName="data_ordine" [readonly]="true">
                 <mat-icon matSuffix>event</mat-icon>
@@ -97,7 +97,7 @@
         <div class="right-side">
             <mat-form-field appearance="fill">
                 <mat-label>Data di Consegna</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="data_consegna" required (dateChange)="controllaDataConsegna($event)" [readonly]="true">
+                <input matInput [matDatepicker]="picker" formControlName="data_consegna" required [readonly]="true">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>

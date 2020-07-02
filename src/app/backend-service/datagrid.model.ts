@@ -219,7 +219,7 @@ export class GridModel {
   }
 
   openSnackBar(message: string) {
-    this.snackBar.open(message, 'Chiudi', {
+    this.snackBar.open(message.toUpperCase(), 'Chiudi', {
       duration: 4000,
       horizontalPosition: 'center',
       verticalPosition: 'top',

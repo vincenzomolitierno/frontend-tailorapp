@@ -1,4 +1,12 @@
 @import url('../../../assets/style/grid.style.css');
 .table-panel {
     width: 98%;
+    background-color: #F5F5F5;
+    padding: 10px;
+}
+
+.toolbar {
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 10px;
 }

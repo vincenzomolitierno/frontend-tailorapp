@@ -158,6 +158,7 @@ export class ShirtFormComponent implements OnInit {
   
   
   buttonIncreaseQty(){
+    
     this.reactiveForm.get('numero_capi').setValue(  (parseFloat(this.reactiveForm.get('numero_capi').value) + 1).toFixed(0) ); 
   }
 

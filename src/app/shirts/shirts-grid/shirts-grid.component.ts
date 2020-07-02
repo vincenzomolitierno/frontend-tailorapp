@@ -6,7 +6,7 @@ import { RESTBackendService } from 'src/app/backend-service/rest-backend.service
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { Shirt } from '../shirt.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
 
 
 
@@ -19,8 +19,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
   @Input() ordini_idordini: string;
 
-  shirtsAdded: Array<any> = new Array();
-  @Output() shirtsAddEvent = new EventEmitter<Array<any>>();
+  // shirtsAdded: Array<any> = new Array();
+  // @Output() shirtsAddEvent = new EventEmitter<Array<any>>();
   
 
   // Dati coinvolti nel binding
@@ -30,9 +30,9 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
   // Colonne visualizzate in tabella
   displayedColumns: string[] = [
     // 'idcamicie',
-    'colore', 
     'numero_capi',
-
+    'colore', 
+    
     'modellocollo',
     'modellopolso',
     'avanti',
@@ -85,9 +85,11 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             console.log(data);
 
             // this.resourceQuery = data;
-            this.shirtsAdded = data;
+            // this.shirtsAdded = data;
+            var shirts: Shirt[] = data;
+            shirts.sort((a, b) => (a.idcamicie < b.idcamicie) ? 1 : -1);
 
-            this.resource = data;
+            this.resource = shirts;
             this.dataSource = new MatTableDataSource(this.resource);
                       
             this.dataSource.paginator = this.paginatorTable;    
@@ -176,17 +178,17 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
         console.log('CAMICIA DA INSERIRE');
         console.log(obj);
-        // this.postData('shirts', obj);       
+        this.postData('shirts', obj);       
 
-        //SI AGGIUNGE L'OGGETTO CAMICIA ALLA RACCOLTA E LO SI NOTIFICA AL PARENT
-        this.shirtsAdded.push(obj);
-        this.shirtsAddEvent.emit(this.shirtsAdded);   
+        // //SI AGGIUNGE L'OGGETTO CAMICIA ALLA RACCOLTA E LO SI NOTIFICA AL PARENT
+        // this.shirtsAdded.push(obj);
+        // this.shirtsAddEvent.emit(this.shirtsAdded);   
 
-        //si aggiornano i dati in tabella
-        this.dataSource = new MatTableDataSource(this.shirtsAdded);                 
-        this.dataSource.paginator = this.paginatorTable;    
-        this.dataSource.sort = this.sortTable;  
-        //
+        // //si aggiornano i dati in tabella
+        // this.dataSource = new MatTableDataSource(this.shirtsAdded);                 
+        // this.dataSource.paginator = this.paginatorTable;    
+        // this.dataSource.sort = this.sortTable;  
+        // //
         
       }
 
@@ -212,11 +214,11 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
         console.log(result);
 
-        const index = this.shirtsAdded.indexOf('idcamicie', shirts.idcamicie);
-        if (index > -1) {
-          this.shirtsAdded.splice(index, 1);
-        }  
-        this.shirtsAddEvent.emit(this.shirtsAdded);      
+        // const index = this.shirtsAdded.indexOf('idcamicie', shirts.idcamicie);
+        // if (index > -1) {
+        //   this.shirtsAdded.splice(index, 1);
+        // }  
+        // this.shirtsAddEvent.emit(this.shirtsAdded);      
        
         this.restBackendService.delResource('shirts',
         {
@@ -256,77 +258,99 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
   openView(shirt: any) {
 
-    console.log(shirt);
+    // this.openSnackBar(this.creaStringaCamicia(shirt));
+    
 
-    this.openSnackBar(this.creaStringaCamicia(shirt));
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true;
+    dialogConfig.data = {
+      messaggio: this.creaStringaCamicia(shirt).toUpperCase(), 
+      titolo: 'DETTAGLI CAMICIA', 
+    };          
+    const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });  
+
+
   }
 
   creaStringaCamicia(shirt: any): string {
     var element = shirt;
-    var stringa: string;
+    var stringa: string = '';
 
-    if ( element.iniziali == 'SI' ) {
-      stringa = 
-      // 'colore: ' + element.colore + ' | ' +
-      // 'numero capi: ' + element.numero_capi + ' | ' +      
-      // // 'idcamicie: ' + element.idcamicie + ' | ' +
-      // 'collo: ' + element.modellocollo + ' | ' +
-      // 'polso: ' + element.modellopolso + ' | ' +
-      // 'avanti: ' + element.avanti + ' | ' +
-      // 'indietro: ' + element.indietro + ' | ' +             
-      'stecche: ' + element.stecche_estraibili;
-      
-      
+    if ( element.presenza_iniziali == 'SI' ) {
+
+      stringa =      
+      'numero capi: ' + element.numero_capi + '\n' +   
+      'colore: ' + element.colore + '\n' +   
+      // 'idcamicie: ' + element.idcamicie + '\n' +
+      'modello collo: ' + element.modellocollo + '\n' +
+      'modello polso: ' + element.modellopolso + '\n' +
+      'modello avanti: ' + element.avanti + '\n' +
+      'modello indietro: ' + element.indietro;             
+
+      if ( element.stecche_estraibili == 'SI' )
+        stringa = stringa + '\n' + 'stecche estraibili';
+      else if ( element.stecche_estraibili == 'NO' )
+        stringa = stringa + '\n' + 'stecche non estraibili';
+            
       if ( element.tipo_bottone != '' )
-        stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
+        stringa = stringa + '\n' + 'tipo bottone: ' + element.tipo_bottone;
               
-      stringa = stringa + ' | ' +      
-      'tasca: ' + element.tasca + ' | ' +
-      'cuciture: ' + element.cuciture + ' | ' +
-      // 'ordini_idordini ' + element.idordini + ' | ' +
-      'iniziali: ' + element.presenza_iniziali + ' | ' +      
-      'let. iniziali: ' + element.iniziali + ' | ' +
-      'pos. iniziali: ' + element.pos_iniziali + ' | ' +
-      'corsivo: ' + element.stile_carattere + ' | ' +
-      'maiuscolo: ' + element.maiuscolo;
+      stringa = stringa + '\n' + 'tasca: ' + element.tasca;
+       
+      if ( element.cuciture == 'SI' )
+        stringa = stringa + '\n' + 'cuciture a mano';
+      else if ( element.cuciture == 'NO' )
+        stringa = stringa + '\n' + 'cuciture a macchina';
+
+      stringa = stringa + '\n' +
+      // 'ordini_idordini ' + element.idordini + '\n' +
+      'iniziali: ' + element.presenza_iniziali + '\n' +      
+      'lettere iniziali: ' + element.iniziali + '\n' +
+      'posizioni iniziali: ' + element.pos_iniziali + '\n' +
+      'carattere corsivo: ' + element.stile_carattere + '\n' +
+      'carattere in maiuscolo: ' + element.maiuscolo;
       
       if ( element.note != '' )
-        stringa = stringa + ' | ' + 'note: ' + element.note;        
+        stringa = stringa + '\n' + 'note: ' + element.note;        
       
-    } else if ( element.iniziali == 'NO' || element.iniziali == ''  ) {
+    } else if ( element.presenza_iniziali == 'NO'  ) {
 
-        stringa = 
-        // 'colore: ' + element.colore + ' | ' +
-        // 'numero capi: ' + element.numero_capi + ' | ' +      
-        // // 'idcamicie: ' + element.idcamicie + ' | ' +
-        // 'collo: ' + element.modellocollo + ' | ' +
-        // 'polso: ' + element.modellopolso + ' | ' +
-        // 'avanti: ' + element.avanti + ' | ' +
-        // 'indietro: ' + element.indietro + ' | ' +             
-        'stecche: ' + element.stecche_estraibili;
-        
-        
-        if ( element.tipo_bottone != '' )
-          stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
-                
-        stringa = stringa + ' | ' +      
-        'tasca: ' + element.tasca + ' | ' +
-        'cuciture: ' + element.cuciture + ' | ' +
-        // 'ordini_idordini ' + element.idordini + ' | ' +
-        'iniziali: ' + element.presenza_iniziali;    
-        // 'let. iniziali: ' + element.iniziali + ' | ' +
-        // 'pos. iniziali: ' + element.pos_iniziali + ' | ' +
-        // 'corsivo: ' + element.stile_carattere + ' | ' +
-        // 'maiuscolo: ' + element.maiuscolo;
+      stringa =      
+      'numero capi: ' + element.numero_capi + '\n' +   
+      'colore: ' + element.colore + '\n' +   
+      // 'idcamicie: ' + element.idcamicie + '\n' +
+      'modello collo: ' + element.modellocollo + '\n' +
+      'modello polso: ' + element.modellopolso + '\n' +
+      'modello avanti: ' + element.avanti + '\n' +
+      'modello indietro: ' + element.indietro;             
+
+      if ( element.stecche_estraibili == 'SI' )
+        stringa = stringa + '\n' + 'stecche estraibili';
+      else if ( element.stecche_estraibili == 'NO' )
+        stringa = stringa + '\n' + 'stecche non estraibili';
+            
+      if ( element.tipo_bottone != '' )
+        stringa = stringa + '\n' + 'tipo bottone: ' + element.tipo_bottone;
+              
+      stringa = stringa + '\n' + 'tasca: ' + element.tasca;
+       
+      if ( element.cuciture == 'SI' )
+        stringa = stringa + '\n' + 'cuciture a mano';
+      else if ( element.cuciture == 'NO' )
+        stringa = stringa + '\n' + 'cuciture a macchina';
         
         if ( element.note != '' )
-          stringa = stringa + ' | ' + 'note: ' + element.note;  
+          stringa = stringa + '\n' + 'note: ' + element.note;  
 
     }   
 
+    // console.log('dettagli camicia', stringa);
     return stringa;
   }
-
 
 
 }

@@ -7,15 +7,6 @@
         <div class="grid-container">
 
             <div class="grid-item">
-                <mat-form-field appearance="fill">
-                    <mat-label>Colore Camicia</mat-label>
-                    <input matInput placeholder="inserire colore" formControlName="colore" required>
-                    <mat-icon matSuffix>keyboard</mat-icon>
-                </mat-form-field>
-
-            </div>
-
-            <div class="grid-item">
                 <div class="control-measure">
                     <div class="minus-button">
                         <button mat-mini-fab color="primary" (click)="buttonDecreaseQty()"><mat-icon>remove</mat-icon></button>
@@ -34,13 +25,21 @@
                 </div>
             </div>
 
+            <div class="grid-item">
+                <mat-form-field appearance="outline">
+                    <mat-label>Colore Camicia</mat-label>
+                    <input matInput placeholder="inserire colore" formControlName="colore" required>
+                    <mat-icon matSuffix>keyboard</mat-icon>
+                </mat-form-field>
+            </div>
+
         </div>
 
         <div class="grid-container">
 
 
             <div class="grid-item">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Modello Collo</mat-label>
                     <mat-select formControlName="modellocollo_idmodello" required>
                         <mat-option>--</mat-option>
@@ -54,7 +53,7 @@
             </div>
 
             <div class="grid-item">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Modello Polso</mat-label>
                     <mat-select formControlName="modellopolso_idmodello" required>
                         <mat-option>--</mat-option>
@@ -72,7 +71,7 @@
         <div class="grid-container">
 
             <div class="grid-item">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Avanti</mat-label>
                     <mat-select formControlName="avanti_idavanti" required>
                         <mat-option>--</mat-option>
@@ -86,7 +85,7 @@
             </div>
 
             <div class="grid-item">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Dietro</mat-label>
                     <mat-select formControlName="indietro_idindietro" required>
                         <mat-option>--</mat-option>
@@ -104,10 +103,11 @@
 
         <div class="grid-container">
             <div class="grid-item">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Tipo Bottone</mat-label>
-                    <input matInput placeholder="inserire il tipo di bottone" formControlName="tipo_bottone">
+                    <input matInput placeholder="inserire il tipo di bottone" formControlName="tipo_bottone" required>
                     <mat-icon matSuffix>keyboard</mat-icon>
+                    <mat-error *ngIf="reactiveForm.controls.tipo_bottone.hasError('required')">Selezionare un tipo bottone</mat-error>
                 </mat-form-field>
             </div>
             <div class="grid-item" style="text-align: left; padding-left: 20px;">
@@ -141,7 +141,7 @@
 
             <div class="grid-item">
                 <div class="gap"></div>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Iniziali</mat-label>
                     <input matInput placeholder="inserire le iniziali" formControlName="iniziali">
                     <mat-icon matSuffix>keyboard</mat-icon>
@@ -150,7 +150,7 @@
 
             <div class="grid-item">
                 <div class="gap"></div>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Posizione iniziali</mat-label>
                     <mat-select formControlName="posizione_iniziali">
                         <mat-option>--</mat-option>
@@ -179,7 +179,7 @@
 
             <!-- <div class="grid-item">
                         <div class="gap"></div>
-                        <mat-form-field appearance="fill">
+                        <mat-form-field  appearance="outline">
                             <mat-label>Colore iniziali</mat-label>
                             <input matInput placeholder="inserire il colore delle iniziali" formControlName="maiuscolo">
                             <mat-icon matSuffix>keyboard</mat-icon>
@@ -191,7 +191,7 @@
         <div class="grid-container" style="grid-template-columns: 100%;">
 
             <div class="grid-item">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Note</mat-label>
                     <textarea matInput placeholder="inserisre nota..." formControlName="note"></textarea>
                     <mat-icon matSuffix>keyboard</mat-icon>

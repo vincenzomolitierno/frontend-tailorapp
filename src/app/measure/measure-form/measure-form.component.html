@@ -3,7 +3,7 @@
     <mat-dialog-content class="mat-typography">
 
         <h3 *ngIf="formModal=='aggiornamento'">Data ultima misura: <b>{{measure.data_misure | removeStringTime}}</b></h3>
-        <h3>Committente <b>{{customer.nominativo}}</b></h3>
+        <h3>Committente <b>{{customer.nominativo}}</b> ( {{customer.telefono}} )</h3>
 
         <!-- controllo necessario a contenere l'idcliente per inserirlo all'interno dell'oggetto reactiveForm
         e gestirlo on tutti gli altri cmapi in modalità reactive form -->

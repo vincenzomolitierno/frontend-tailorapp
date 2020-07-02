@@ -9,7 +9,7 @@ import { Customer } from '../data.model';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
 import { MeasureFormComponent } from 'src/app/measure/measure-form/measure-form.component';
 // import { OrderViewComponent } from 'src/app/orders/order-view/order-view.component';
-import { isUndefined } from 'util';
+import { isUndefined, isNull } from 'util';
 import { Measure } from 'src/app/measurers/data.model';
 import { Observable, Observer } from 'rxjs';
 import { ScriptService } from './script.service';
@@ -126,7 +126,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         if(formModal=='inserimento'){
 
-          console.log({
+          var CF: string = ''
+          if (result.cf) CF = String(result.cf);
+
+          console.log('cliente', {
             "nominativo": result.nominativo,
             "telefono": result.telefono,
             "email": result.email,
@@ -143,7 +146,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "nominativo": result.nominativo,
             "telefono": result.telefono,
             "email": result.email,
-            "cf": result.cf,
+            "cf": CF,
             "partita_iva": result.partita_iva,
             "indirizzo": result.indirizzo,
             "int_fattura": result.int_fattura,
@@ -336,10 +339,13 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
       if( result ) {
 
-        var base64: string = result.base64;
-        base64 = base64.replace('data:image/png;base64,','');
-        // console.log(base64);
-
+        var base64: string = '';
+        
+        if(result.base64) {
+          var base64: string = result.base64;
+          base64 = base64.replace('data:image/png;base64,','');
+        }
+        
         result = result.controls;
         var torace: string = result.torace_1_bottone + ";"
                              + result.torace_2_bottone + ";" 
@@ -413,13 +419,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     
   }
 
-  /**
-   *
-   *
-   * @param {string} formModal
-   * @param {string} idOrdine
-   * @memberof CustomerGridComponent
-   */
+
   openOrderDialog(formModal: string, customer: Customer){
 
     this.viewDetails = false;
@@ -428,15 +428,15 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     'idclienti' + '=' + customer.idclienti).subscribe(
         (data) => {
           var array: Array<Measure> = data;
-          if ( array.length > 0 ) {
+          if ( array.length > 0 ) { // se c'è la misura si procede all'inserimento dell'ordine
 
-              // c'è almento una misura
+              var measure: Measure = array[0];
               const dialogConfig = new MatDialogConfig();
               dialogConfig.data = {
                 customer: customer, 
-                order: '',
-                measure: data[0],
-                formModal: formModal, 
+                order: {},
+                measure: measure,
+                formModal: formModal, //inserimento
               };
 
               dialogConfig.autoFocus = true;
@@ -447,10 +447,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
               dialogRef.afterClosed().subscribe(result => {
                 // azioni dopo la chiusura della dialog
                 if (result) {
-                  //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE
-                  
-                  console.log('SALVATAGGIO ORDINE NUOVO');
-                  console.log(result);
+                  //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE                 
+                  console.log('SALVATAGGIO ORDINE');
 
                   var shirts: Shirt[] = result.shirts;
                   var order: Order = result.order;
@@ -486,7 +484,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                   else
                     var consegnato = 'NO';    
                     
-                  console.log({
+                  console.log('ordine',{
                     "note": order.note,
                     "acconto": order.acconto,
                     "saldo": order.saldo,
@@ -503,8 +501,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                   });
               
 
-                  this.restBackendService.postResource('orders',                  
+                  // this.restBackendService.postResource('orders',                  
+                  this.restBackendService.putResource('orders',                  
                   {
+                    "idordini": order.idordini,
                     "note": order.note,
                     "acconto": order.acconto,
                     "saldo": order.saldo,
@@ -521,33 +521,35 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                   }).subscribe(
                     (data) =>{
 
-                        var orderAdded: Order = new Order();
-                        orderAdded = data;
-                        // si provvede ad inserire le camicie
-                        var idordine = orderAdded.idordini;
-                        console.log('ID ORDINE: ' + idordine);
-
-                        for (let index = 0; index < shirts.length; index++) {
-                         
-                          const shirt = shirts[index];
-                          console.log('INSERIMENTO CAMICIA')
-                          console.log(shirt);
-                          shirt.ordini_idordini = orderAdded.idordini;
-                          this.postData('shirts', shirt);       
+                      //   var orderAdded: Order = new Order();
+                      //   orderAdded = data;
+                      //   // si provvede ad inserire le camicie
+                      //   var idordine = orderAdded.idordini;
+                      //   console.log('ID ORDINE: ' + idordine);
+                      // if(shirts){
+                      //   for (let index = 0; index < shirts.length; index++) {
                           
-                        }
+                      //     const shirt = shirts[index];
+                      //     console.log('INSERIMENTO CAMICIA')
+                      //     console.log(shirt);
+                      //     shirt.ordini_idordini = orderAdded.idordini;
+                      //     this.postData('shirts', shirt);       
+                          
+                      //   }
+                      // }
+
+                        this.getRemoteData('customers');
                     },
                     (error) =>{
                       console.error(error);
                       console.error('Message: ' + error.message);                      
                     }
                   );
-               
+                
                 }
+              });                    
 
-              });                           
-
-          } else {
+          } else { // non c'è una misura per il cliente
 
               const dialogConfig = new MatDialogConfig();
               dialogConfig.autoFocus = true;

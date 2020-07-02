@@ -13,9 +13,13 @@ mat-divider {
     clear: left;
 }
 
-h2,
+h2 {
+    text-transform: uppercase;
+}
+
 h3 {
     text-transform: uppercase;
+    font-weight: bold;
 }
 
 .shift-indicator.bar {
