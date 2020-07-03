@@ -16,6 +16,7 @@ import { ScriptService } from './script.service';
 import { Order } from 'src/app/orders/data.model';
 import { Shirt } from 'src/app/shirts/shirt.model';
 import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-grid',
@@ -64,7 +65,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     restBackendService: RESTBackendService, // si inietta il servizio
     public dialog: MatDialog,
     public scriptService: ScriptService,
-    _snackBar: MatSnackBar
+    _snackBar: MatSnackBar,
+    private router: Router
   ) { 
     super(restBackendService,_snackBar); // si innesca il costruttore della classe padre
     this.resource = Array<Customer>();
@@ -539,6 +541,11 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                       // }
 
                         this.getRemoteData('customers');
+
+                        this.openSnackBar('Ordine inserito con successo', 1500);
+
+                        // routing verso il form ordini
+                        this.router.navigateByUrl('/dashboard/orders');
                     },
                     (error) =>{
                       console.error(error);
@@ -585,6 +592,14 @@ export class CustomerGridComponent extends GridModel implements OnInit {
     this.viewDetails = false;
 
   } 
+
+  openSnackBar(message: string, duration?: number) {
+    this.snackBar.open(message.toUpperCase(), 'Chiudi', {
+      duration: duration,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+  }
    
 
 }
