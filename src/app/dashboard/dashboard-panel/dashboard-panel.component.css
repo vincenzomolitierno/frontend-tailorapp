@@ -17,3 +17,9 @@
     height: 50px;
     /* z-index: 100; */
 }
+
+.version-stamp {
+    padding-left: 16px;
+    text-align: left;
+    font-size: 11pt;
+}

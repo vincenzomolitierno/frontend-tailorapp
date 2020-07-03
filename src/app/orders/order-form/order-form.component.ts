@@ -255,14 +255,45 @@ export class OrderFormComponent implements OnInit {
 
 
 
-  calcoloTotale() {
+  calcoloTotaleBlurTotale() {
+
+    var totale = this.getValueTotaleAcconto().totale;
+    var acconto = this.getValueTotaleAcconto().acconto;
+
+    if( isNaN(totale) ){
+      this.reactiveForm.get('totale').setValue('0,00');
+    } else if ( totale < acconto) {              
+      this.reactiveForm.get('totale').setValue('0,00');     
+      this.reactiveForm.get('saldo').setValue( (totale - acconto).toFixed(2).replace('.',',') );     
+      this.openSnackBar('Errore, il totale è inferiore all\'acconto. Dato inserito annullato.\n Inserire un valore valido',1000);
+      document.getElementById('totale').focus();
+    }    
+
+  }
+
+  calcoloTotaleBlurAcconto() {
+
+    var totale = this.getValueTotaleAcconto().totale;
+    var acconto = this.getValueTotaleAcconto().acconto;
+
+    if( isNaN(acconto) ){
+      this.reactiveForm.get('acconto').setValue('0,00');
+    } else if ( totale < acconto) {              
+      this.reactiveForm.get('acconto').setValue('0,00');      
+      this.reactiveForm.get('saldo').setValue( (totale - acconto).toFixed(2).replace('.',',') );    
+      this.openSnackBar('Errore, l\'acconto inserito è maggiore. Dato inserito annullato.\n Inserire un valore valido',1000);
+      document.getElementById('acconto').focus();
+    }        
+
+  }
+
+  getValueTotaleAcconto() {
     
     var totale: number = parseFloat(this.reactiveForm.get('totale').value.replace('.',','));
     if( !isNaN(totale) )
       this.reactiveForm.get('totale').setValue(totale.toFixed(2).toString().replace('.',','));
     else
       this.reactiveForm.get('totale').setValue(Number(0).toFixed(2).toString().replace('.',','));
-
 
     var acconto: number = parseFloat(this.reactiveForm.get('acconto').value.replace(',','.'));
     if( !isNaN(acconto) )
@@ -272,23 +303,8 @@ export class OrderFormComponent implements OnInit {
       this.reactiveForm.get('saldo').setValue( (totale).toFixed(2).replace('.',',') ); 
     }
 
-
-    if( !(isNaN(totale) || isNaN(acconto)) ) {
-
-      switch (totale > acconto) {
-        case false:
-          this.reactiveForm.get('totale').setValue('0,00');
-          this.reactiveForm.get('acconto').setValue('0,00');
-          // this.reactiveForm.get('saldo').setValue('');
-
-          this.openSnackBar('Errore, il totale è inferiore all\'acconto. Dati inseriti annullati');
-
-          break;      
-        default:
-          this.reactiveForm.get('saldo').setValue( (totale - acconto).toFixed(2).replace('.',',') );  
-          break;
-      }      
-    }      
+    return {'totale' : totale, 'acconto': acconto};
+       
   }  
 
   setOrdineSaldato( event: any ) {
@@ -373,9 +389,7 @@ export class OrderFormComponent implements OnInit {
 
     if(isUndefined(duration)) duration = 3500;
 
-    console.log(duration);
-
-    this._snackBar.open(message.toUpperCase(), 'Chiudi', {
+    this._snackBar.open(message.toUpperCase(), '', {
       duration: duration,
       horizontalPosition: 'center',
       verticalPosition: 'top',

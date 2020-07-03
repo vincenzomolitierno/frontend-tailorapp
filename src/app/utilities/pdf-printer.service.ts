@@ -99,15 +99,20 @@ export class PdfPrinterService {
 
     var obj: Array<any> = new Array();
 
+    console.log('camicie da stampare', shirts);
+
+    var stringa :string = '';
+
     for (let index = 0; index < shirts.length; index++) {
       
+      console.log('camicia ' + index, shirts[index]);
       const element = shirts[index];
-
-      var stringa :string = '';
 
       // console.log('camicie', element.iniziali);
 
-      if ( element.iniziali == 'SI' ) {
+      console.log('element.iniziali index ' + index, element.iniziali);
+
+      if ( element.presenza_iniziali == 'SI' ) {
         stringa = 
         'colore: ' + element.colore + ' | ' +
         'numero capi: ' + element.numero_capi + ' | ' +      
@@ -135,7 +140,7 @@ export class PdfPrinterService {
         if ( element.note != '' )
           stringa = stringa + ' | ' + 'note: ' + element.note;        
         
-      } else if ( element.iniziali == 'NO' || element.iniziali == ''  ) {
+      } else if ( element.presenza_iniziali == 'NO') {
 
           stringa = 
           'colore: ' + element.colore + ' | ' +
@@ -166,29 +171,10 @@ export class PdfPrinterService {
 
       }
 
+      console.log('stringa formattata '+ index, stringa )
       obj.push([stringa.toUpperCase(),' ']);
       
-    }
-    // ###############
-    // var fasonatore: string;
-    // //SI popola il combobox con l'elenco dei fasonatori
-    // restBackendService.getResource('subcontractors').subscribe(
-    //   (data) => {
-    //     console.log(data);
-            
-            
-    //         var result = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
-    //         fasonatore = result;   
-
-    //         },
-    //   (error) => {
-    //       console.error(error);
-    //       console.error('Message: ' + error.message);
-    //   }
-    // );
-
-    // ################
-   
+    } // fine ciclo for per le camicie
 
     var refSize:number = 14;
 
