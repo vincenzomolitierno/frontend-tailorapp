@@ -65,18 +65,26 @@ export class MeasureFormComponent implements OnInit  {
   shirtIndicators: ShirtIndicator[] = [];
 
   //Dati cablati non recuperati con chiamata REST
+  // 14.5, 15, 15.5, 16 ... 23
   shirtIndicatorSizes: ShirtIndicatorSize[] = [
-    {taglia: '37'},
-    {taglia: '38'},
-    {taglia: '39'},
-    {taglia: '40'},
-    {taglia: '41'},
-    {taglia: '42'},
-    {taglia: '43'},
-    {taglia: '44'},                
-    {taglia: '45'},                
-    {taglia: '46'},                
-    {taglia: '47'},                
+    {taglia: '14,5'},
+    {taglia: '15'},
+    {taglia: '15,5'},
+    {taglia: '16'},
+    {taglia: '16,5'},
+    {taglia: '17'},
+    {taglia: '17,5'},
+    {taglia: '18'},
+    {taglia: '18,5'},
+    {taglia: '19'},
+    {taglia: '19,5'},
+    {taglia: '20'},
+    {taglia: '20,5'},
+    {taglia: '21'},
+    {taglia: '21,5'},
+    {taglia: '22'},
+    {taglia: '22,5'},
+    {taglia: '23'}              
   ];  
 
   reactiveForm: FormGroup;

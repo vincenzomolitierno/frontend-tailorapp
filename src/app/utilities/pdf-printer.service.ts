@@ -265,7 +265,7 @@ export class PdfPrinterService {
             style: 'name',
             alignment: 'left',
             table: {
-              heights: '*',
+              heights: 70,
               widths: ['*', 100],
               body: obj
             }
@@ -450,7 +450,7 @@ export class PdfPrinterService {
             style: 'name',
             alignment: 'left',
             table: {
-              heights: '*',
+              heights: 70,
               widths: ['*', 100],
               body: obj
             }
