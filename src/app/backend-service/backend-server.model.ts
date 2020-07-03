@@ -30,6 +30,8 @@ export class BackendServer {
     private apiResourceShirts: string = this.base + '/camicie';
     private apiResourceShirtsQuery: string = this.base + '/camicieValues';
 
+    private apiResourceUsers: string = this.base + '/users';
+
 
     constructor() {
         //si recuperano host e porta del backend dal file di configurazione
@@ -109,6 +111,9 @@ export class BackendServer {
 
             case 'shirtsQuery':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceShirtsQuery;   
+
+            case 'users':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceUsers;                
                     
             default:
                 break;

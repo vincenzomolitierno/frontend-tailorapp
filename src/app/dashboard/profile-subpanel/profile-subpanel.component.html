@@ -1,9 +1,9 @@
-<form (ngSubmit)="onSubmit()" #changePasswordForm="ngForm">
+<form novalidate [formGroup]="reactiveForm">
     <div class="form-panel">
         <p>
             <mat-form-field appearance="fill">
                 <mat-label>Username</mat-label>
-                <input matInput placeholder="digitare la tua username" [(ngModel)]="username" name="username" required>
+                <input matInput placeholder="digitare la tua username" formControlName="username" name="username" required>
                 <mat-icon matSuffix>keyboard</mat-icon>
                 <!-- <mat-hint>Hint</mat-hint> -->
             </mat-form-field>
@@ -11,45 +11,45 @@
         <p>
             <mat-form-field appearance="fill">
                 <mat-label>Vecchia Password</mat-label>
-                <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="vecchia_password" name="vecchia_password" required>
+                <input matInput [type]="hide ? 'password' : 'text'" formControlName="vecchia_password" name="vecchia_password" required>
                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             </mat-form-field>
         </p>
         <p>
-            La nuova password deve contenere almeno sei caratteri, inclusi lettere maiuscole e minuscole e numeri.
-        </p>
-        <p>
             <mat-form-field appearance="fill">
                 <mat-label>Nuova Password</mat-label>
-                <!-- <input matInput [type]="hide1 ? 'password' : 'text'" [(ngModel)]="nuova_password" name="nuova_password" required> -->
-                <input matInput [type]="'password'" [(ngModel)]="nuova_password" name="nuova_password" required pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;">
-                <!-- <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide1">
-            <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button> -->
-
-                <button mat-icon-button matSuffix>
-                <mat-icon>visibility_off</mat-icon>
+                <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="nuova_password" name="nuova_password" (keyup)="checkNuovaPassword($event)" required [pattern]="passwordPattern">
+                <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide1">
+                    <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error *ngIf="nuova_password.errors?.pattern">
+                    password non conforme
+                </mat-error>
+
             </mat-form-field>
         </p>
         <p>
             <mat-form-field appearance="fill">
                 <mat-label>Conferma Nuova Password</mat-label>
-                <!-- <input matInput [type]="hide2 ? 'password' : 'text'" [(ngModel)]="nuova_password_2" name="nuova_password_2" required (ngModelChange)="checkPassword($event)"> -->
-                <input matInput [type]="'password'" [(ngModel)]="nuova_password_2" name="nuova_password_2" required (blur)="checkTwoPassword()" pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;">
-                <!-- <button mat-icon-button matSuffix (click)="hide2=! hide2 " [attr.aria-label]=" 'Nascondi password' " [attr.aria-pressed]="hide2 ">
-            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button> -->
-                <button mat-icon-button matSuffix>
-                <mat-icon>visibility_off</mat-icon>
+                <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="nuova_password_2" name="nuova_password_2" id="nuova_password_2" required (keyup)="checkNuovaPassword2($event)" [pattern]="passwordPattern">
+                <button mat-icon-button matSuffix (click)="hide2=! hide2 " [attr.aria-label]=" 'Nascondi password' " [attr.aria-pressed]="hide2 ">
+                     <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>            
                 </button>
+                <mat-error *ngIf="nuova_password_2.errors?.pattern">
+                    password non conforme
+                </mat-error>
             </mat-form-field>
         </p>
-        <p>
-            <button mat-raised-button matTooltip="Conferma cambio password " matTooltipPosition="above " type="submit " [disabled]="!changePasswordForm.form.valid||newPasswordDifferent">Cambia PASSWORD</button>
+        <mat-error *ngIf="nuova_password.errors?.pattern||nuova_password_2.errors?.pattern" style="color: red; margin-bottom: 20px; border: 0.75px solid red; padding: 2.5px;">
+            La nuova password deve contenere almeno sei caratteri inclusi lettere maiuscole, minuscole e numeri.
+        </mat-error>
+        <mat-error *ngIf="newPasswordsDifferent" style="background-color: red; color: white;padding: 2.5px;">
+            le nuove password non coincidono
+        </mat-error>
+        <p style="margin-top: 15px;">
+            <button mat-raised-button matTooltip="Conferma cambio password " matTooltipPosition="above" [disabled]="(reactiveForm.invalid||newPasswordsDifferent)" (click)="onSubmit()" style="width: 100%;height: 50px;">CAMBIA PASSWORD</button>
         </p>
     </div>
-
 </form>

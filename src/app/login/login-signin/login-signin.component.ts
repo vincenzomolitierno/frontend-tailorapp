@@ -15,7 +15,6 @@ export class LoginSigninComponent implements OnInit {
   hide = true;
 
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
   returnUrl: string;
   error: string;
@@ -63,7 +62,6 @@ export class LoginSigninComponent implements OnInit {
         return;
     }
 
-    this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value)
         .pipe(first())
         .subscribe(
@@ -73,7 +71,6 @@ export class LoginSigninComponent implements OnInit {
             error => {
               console.log(error);
                 this.error = error;
-                this.loading = false;
             });  
 
     this.router.navigate(['/dashboard']);
