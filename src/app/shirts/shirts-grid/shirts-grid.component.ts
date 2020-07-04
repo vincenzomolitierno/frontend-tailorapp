@@ -7,6 +7,7 @@ import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-du
 import { Shirt } from '../shirt.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
 import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
+import { stringify } from 'querystring';
 
 
 
@@ -117,44 +118,55 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(ShirtFormComponent, dialogConfig);    
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      console.log('shirt', result);
 
       if ( result ) { //INSERIMENTO DELLA NUOVA CAMICIA
 
+        var tasca: string;
         if(result.tasca)
-          var tasca = 'SI';
+          tasca = 'SI';
         else  
-          var tasca = 'NO';
+          tasca = 'NO';
 
+        var cuciture: string;
         if(result.cuciture)
-          var cuciture = 'SI';
+          cuciture = 'SI';
         else  
-          var cuciture = 'NO';    
-          
+          cuciture = 'NO';    
+         
+        var stecche_estraibili: string;
         if(result.stecche_estraibili)
-          var stecche_estraibili = 'SI';
+          stecche_estraibili = 'SI';
         else  
-          var stecche_estraibili = 'NO';   
-          
+          stecche_estraibili = 'NO';   
+        
+        var presenza_iniziali: string;
         if(result.switchIniziali)
-          var presenza_iniziali = 'SI';
+          presenza_iniziali = 'SI';
         else  
-          var presenza_iniziali = 'NO';   
+          presenza_iniziali = 'NO';   
 
-        if(result.maiuscolo)
-          var maiuscolo = 'SI';
-        else  
-          var maiuscolo = 'NO';    
+        // var maiuscolo: string;          
+        // if(result.maiuscolo)
+        //   maiuscolo = 'SI';
+        // else  
+        //   maiuscolo = 'NO'; 
+        // console.log('maiuscolo',result.maiuscolo);   
+        // console.log('maiuscolo var',maiuscolo);   
           
-        if(result.stile_carattere)
-          var stile_carattere = 'SI';
-        else  
-          var stile_carattere = 'NO';             
+        // var stile_carattere: string;
+        // if( result.stile_carattere )
+        //   stile_carattere = 'SI';
+        // else  
+        //   stile_carattere = 'NO';    
+        // console.log('stile_carattere',result.stile_carattere);         
+        // console.log('stile_carattere var',stile_carattere); 
 
+        var posizione_iniziali: string;
         if(result.posizione_iniziali.descrizione)
-          var posizione_iniziali: string = result.posizione_iniziali.descrizione;
+          posizione_iniziali = result.posizione_iniziali.descrizione;
         else  
-          var posizione_iniziali: string = '';            
+          posizione_iniziali = '';            
           
         var obj = {    
             'avanti_idavanti': result.avanti_idavanti,
@@ -162,7 +174,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             "cuciture": cuciture,
             "indietro_idindietro": result.indietro_idindietro,
             "iniziali": result.iniziali,
-            "maiuscolo": maiuscolo,
+            "maiuscolo": result.maiuscolo,
             "modellocollo_idmodello": result.modellocollo_idmodello,
             "modellopolso_idmodello": result.modellopolso_idmodello,
             "note": result.note,
@@ -171,7 +183,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             "pos_iniziali": posizione_iniziali,
             "presenza_iniziali": presenza_iniziali,
             "stecche_estraibili": stecche_estraibili,
-            "stile_carattere": stile_carattere,
+            "stile_carattere": result.stile_carattere,
             "tasca": tasca,
             "tipo_bottone": result.tipo_bottone
           }
@@ -280,6 +292,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     var element = shirt;
     var stringa: string = '';
 
+    console.log('shirt',shirt);
+
     if ( element.presenza_iniziali == 'SI' ) {
 
       stringa =      
@@ -310,9 +324,19 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
       // 'ordini_idordini ' + element.idordini + '\n' +
       'iniziali: ' + element.presenza_iniziali + '\n' +      
       'lettere iniziali: ' + element.iniziali + '\n' +
-      'posizioni iniziali: ' + element.pos_iniziali + '\n' +
-      'carattere corsivo: ' + element.stile_carattere + '\n' +
-      'carattere in maiuscolo: ' + element.maiuscolo;
+      'posizioni iniziali: ' + element.pos_iniziali;
+      
+      console.log('stile_carattere',element.stile_carattere);
+      if ( element.stile_carattere == 'SI' )
+        stringa = stringa + '\n' + 'corsivo';
+      else if ( element.stile_carattere == 'NO' )
+        stringa = stringa + '\n' + 'stampato';      
+      
+        console.log('maiuscolo',element.maiuscolo);
+      if ( element.maiuscolo == 'SI' )
+        stringa = stringa + '\n' + 'maiuscolo';
+      else if ( element.maiuscolo == 'NO' )
+        stringa = stringa + '\n' + 'minuscolo';              
       
       if ( element.note != '' )
         stringa = stringa + '\n' + 'note: ' + element.note;        

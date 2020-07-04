@@ -66,9 +66,9 @@ export class ShirtFormComponent implements OnInit {
       tipo_bottone: new FormControl(''),
       iniziali: new FormControl(''),
       switchIniziali: new FormControl(''),
-      stile_carattere: new FormControl(''),
+      stile_carattere: new FormControl('SI'),
       posizione_iniziali: new FormControl(''),
-      maiuscolo: new FormControl(''),
+      maiuscolo: new FormControl('SI'),
       presenza_iniziali: new FormControl('NO'),
       note: new FormControl(''),
       numero_capi: new FormControl('',[Validators.required, Validators.min(1)]),
@@ -169,7 +169,20 @@ export class ShirtFormComponent implements OnInit {
 
   switchPanel(){
     this.pannello_iniziali = !this.pannello_iniziali;
+
+    if( this.pannello_iniziali ) {
+      this.reactiveForm.get('posizione_iniziali').setValidators([Validators.required]);
+      this.reactiveForm.get('posizione_iniziali').updateValueAndValidity();
+    } else {
+      this.reactiveForm.get('posizione_iniziali').clearValidators();
+      this.reactiveForm.get('posizione_iniziali').updateValueAndValidity();
+    }
+
   }
+
+  // changeMaiuscolo(){
+  //   this.reactiveForm.get('maiuscolo').setValue(this.reactiveForm.get('maiuscolo').value);
+  // }
 
 
 }

@@ -17,6 +17,7 @@ import { Order } from 'src/app/orders/data.model';
 import { Shirt } from 'src/app/shirts/shirt.model';
 import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
 import { Router } from '@angular/router';
+import { Base64Utility } from 'src/app/measure/data.model';
 
 @Component({
   selector: 'app-customer-grid',
@@ -251,38 +252,49 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
           if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[7])))
                   this.torace_8_bottone = this.measureCustomerDetailView.torace.split(';')[7];          
+              
           
-          // //si inizializzano i campi del form
-          // this.measureCustomerDetailView.misurometro;              
-          // this.measureCustomerDetailView.taglia_misurometro;   
+          if ( this.measureCustomerDetailView.note_grafiche != '' ){
+            this.dataURItoBlob(this.measureCustomerDetailView.note_grafiche).subscribe(
+              blob => {
 
-          // this.measureCustomerDetailView.collo;   
-          // this.measureCustomerDetailView.spalla;   
-          // this.measureCustomerDetailView.lung_bicipite;   
-          // this.measureCustomerDetailView.bicipite;   
-          // this.measureCustomerDetailView.vita_dietro;   
+              var blobUrl = URL.createObjectURL(blob);
 
-          // this.measureCustomerDetailView.polso;  
-          // this.measureCustomerDetailView.lung_camicia;  
-          // this.measureCustomerDetailView.avambraccio;  
-          // this.measureCustomerDetailView.lung_avambraccio;  
-          // this.measureCustomerDetailView.bacino_dietro;    
-          
-          this.dataURItoBlob(this.measureCustomerDetailView.note_grafiche).subscribe(blob => {
-            
-            var blobUrl = URL.createObjectURL(blob);
-            var img = document.createElement('img');
-            var divBase64 = document.getElementById('base64')
-            
-            while (divBase64.hasChildNodes()) {
-              divBase64.removeChild(divBase64.lastChild);
-            }
+              var img = document.createElement('img');
+              var divBase64 = document.getElementById('base64')
+              
+              while (divBase64.hasChildNodes()) {
+                divBase64.removeChild(divBase64.lastChild);
+              }
 
-            img.src = blobUrl;
-            divBase64.appendChild(img);
-            // document.body.appendChild(img);
+              img.src = blobUrl;
+              divBase64.appendChild(img);
 
-          });  
+            },
+            (error) => {
+
+            });  
+        } else {
+            this.dataURItoBlob(Base64Utility.base64ShirtEmpty.replace('data:image/png;base64,','')).subscribe(
+              blob => {
+
+              var blobUrl = URL.createObjectURL(blob);
+
+              var img = document.createElement('img');
+              var divBase64 = document.getElementById('base64')
+              
+              while (divBase64.hasChildNodes()) {
+                divBase64.removeChild(divBase64.lastChild);
+              }
+
+              img.src = blobUrl;
+              divBase64.appendChild(img);
+
+            },
+            (error) => {
+
+            });
+        }
 
           //se c'è almeno una misura si visualizza il pannello 
           this.customerNameFocused = customer.nominativo;
@@ -291,7 +303,6 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
         } else {
           this.viewDetails = false;
-          window.alert('Il cliente non ha misure in archivio!!')
         }   
 
       });
