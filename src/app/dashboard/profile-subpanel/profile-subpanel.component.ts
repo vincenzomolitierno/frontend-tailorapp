@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
 import { User } from 'src/app/authentication/data.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-subpanel',
@@ -23,14 +24,16 @@ export class ProfileSubpanelComponent implements OnInit {
   hide2: boolean = true;
 
   newPasswordsDifferent:boolean = false;
-  passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,}$";
+  // passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,}$";
+  passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[?@#-_])([a-zA-Z0-9?@#-_]+){6,}$";
   
 
   submitted = false;
 
   constructor(public restBackendService: RESTBackendService,
     public dialog: MatDialog,
-    private authenticationService: AuthenticationService ) {
+    private authenticationService: AuthenticationService,
+    private router: Router ) {
 
     this.reactiveForm = new FormGroup({
         
@@ -86,7 +89,12 @@ export class ProfileSubpanelComponent implements OnInit {
                     titolo: 'INFO', 
                   };          
                   const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);
-                  dialogRef.afterClosed();  
+                  dialogRef.afterClosed().subscribe(
+                    (result) => {
+                      this.authenticationService.logout();
+                      this.router.navigate(['/login']);
+                    }
+                  );  
 
                 },
                 (error) => {
@@ -103,7 +111,7 @@ export class ProfileSubpanelComponent implements OnInit {
             (error) => {
 
               dialogConfig.data = {
-                messaggio: 'L\'account inserito NON E\' VALIDO. Operazione di cambio password annullata. ' + error, 
+                messaggio: 'L\'account inserito NON E\' VALIDO. Operazione di cambio password annullata.', 
                 titolo: 'NOTA BENE', 
               };          
               const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);

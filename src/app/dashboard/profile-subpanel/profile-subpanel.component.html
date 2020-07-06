@@ -12,18 +12,14 @@
             <mat-form-field appearance="fill">
                 <mat-label>Vecchia Password</mat-label>
                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="vecchia_password" name="vecchia_password" required>
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
         </p>
         <p>
             <mat-form-field appearance="fill">
                 <mat-label>Nuova Password</mat-label>
                 <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="nuova_password" name="nuova_password" (keyup)="checkNuovaPassword($event)" required [pattern]="passwordPattern">
-                <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide1">
-                    <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
+                <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                 <mat-error *ngIf="nuova_password.errors?.pattern">
                     password non conforme
                 </mat-error>
@@ -34,9 +30,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Conferma Nuova Password</mat-label>
                 <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="nuova_password_2" name="nuova_password_2" id="nuova_password_2" required (keyup)="checkNuovaPassword2($event)" [pattern]="passwordPattern">
-                <button mat-icon-button matSuffix (click)="hide2=! hide2 " [attr.aria-label]=" 'Nascondi password' " [attr.aria-pressed]="hide2 ">
-                     <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>            
-                </button>
+                <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                 <mat-error *ngIf="nuova_password_2.errors?.pattern">
                     password non conforme
                 </mat-error>

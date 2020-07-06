@@ -110,14 +110,14 @@
             <mat-checkbox formControlName="consegnato" (change)="setOrdineConsegnato($event)">Consegnato</mat-checkbox>
         </div>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" style="display: none;">
             <mat-label>Note (per il cliente)</mat-label>
             <textarea matInput placeholder="inserisre nota..." formControlName="note"></textarea>
             <mat-icon matSuffix>keyboard</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Note (per il fasonista)</mat-label>
+            <mat-label>Nota</mat-label>
             <textarea matInput placeholder="inserisre nota..." formControlName="note_x_fasonista"></textarea>
             <mat-icon matSuffix>keyboard</mat-icon>
         </mat-form-field>

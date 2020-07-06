@@ -76,8 +76,4 @@ export class LoginSigninComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
-  // @Input() error: string | null;
-
-  // @Output() submitEM = new EventEmitter();  
-
 }

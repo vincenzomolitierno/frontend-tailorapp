@@ -21,32 +21,28 @@
                 <p>
                     <mat-form-field appearance="fill">
                         <mat-label>Password</mat-label>
-
                         <input matInput [type]="hide ? 'password' : 'text'" placeholder="password dell'utente" formControlName="password">
-
-                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Nascondi password'" [attr.aria-pressed]="hide">
-                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button>
-                        <!-- <mat-hint>Hint</mat-hint> -->
+                        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <!-- <mat-hint>Inserire la password</mat-hint> -->
                     </mat-form-field>
                 </p>
 
-                <p *ngIf="error" class="error">
+                <p *ngIf="error " class="error ">
                     {{ error.message }}
                 </p>
 
                 <div class="button" matTooltip="Accedi a Tailor APP" matTooltipPosition="above">
-                    <button type="submit" mat-raised-button (click)="submit()">LOGIN</button>
+                    <button type="submit" mat-raised-button (click)="submit() ">LOGIN</button>
                 </div>
 
             </form>
 
         </mat-card-content>
 
-        <div class="footer">
+        <div class="footer ">
             Powered by
-            <a target="_blank" rel="noopener" href="http://idealprogetti.com/">
-                <img height="30px" alt="idealprogetti.com Logo" src="../assets/images/logo_idelprogetti.png">
+            <a target="_blank " rel="noopener " href="http://idealprogetti.com/ ">
+                <img height="30px " alt="idealprogetti.com Logo " src="../assets/images/logo_idelprogetti.png ">
             </a>
             &copy; 2020
         </div>
