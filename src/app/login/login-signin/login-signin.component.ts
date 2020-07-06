@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { first } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
 
 
 @Component({
@@ -17,12 +20,12 @@ export class LoginSigninComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   returnUrl: string;
-  error: string;
+  errorMessage: string;
 
   constructor( 
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
+    public dialog: MatDialog,
     private authenticationService: AuthenticationService
     ) {
         // redirect to home if already logged in
@@ -53,6 +56,8 @@ export class LoginSigninComponent implements OnInit {
   }  
 
   submit() {
+
+    this.errorMessage = '';
     
     this.submitted = true;
 
@@ -65,12 +70,30 @@ export class LoginSigninComponent implements OnInit {
     this.authenticationService.login(this.f.username.value, this.f.password.value)
         .pipe(first())
         .subscribe(
-            data => {
+            (data) => {
                 this.router.navigate([this.returnUrl]);
             },
-            error => {
-              console.log(error);
-                this.error = error;
+            (error) => {
+              var errorCatch: HttpErrorResponse = error;
+              if( errorCatch.status == 400) {
+                this.errorMessage = 'Account non Valido!!'.toUpperCase();
+              } else {
+                this.errorMessage = errorCatch.message;
+              }
+
+              const dialogConfig = new MatDialogConfig();
+              dialogConfig.autoFocus = true;
+              dialogConfig.disableClose = true;
+              dialogConfig.data = {
+                messaggio: 'Account non Valido!! Reinserire username e password'.toUpperCase(), 
+                titolo: 'ERRORE', 
+              };          
+              const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);
+              dialogRef.afterClosed().subscribe(result => {
+                console.log(result);
+                this.errorMessage = '';
+              });                
+              
             });  
 
     this.router.navigate(['/dashboard']);

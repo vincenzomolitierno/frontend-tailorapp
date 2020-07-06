@@ -1,42 +1,35 @@
 <div class="center">
     <mat-card>
-
         <mat-card-title>
             <img width="200" alt="idealprogetti.com Logo" src="../assets/images/logo_tailor.png">
         </mat-card-title>
 
-
-
         <mat-card-content>
             <form [formGroup]="loginForm">
                 <p>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="outline">
                         <mat-label>Username</mat-label>
                         <input matInput placeholder="inserisci la username utente" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
                         <mat-icon matSuffix>keyboard</mat-icon>
+                        <mat-error>CIAO</mat-error>
                         <!-- <mat-hint>Hint</mat-hint> -->
                     </mat-form-field>
                 </p>
-
                 <p>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="outline">
                         <mat-label>Password</mat-label>
                         <input matInput [type]="hide ? 'password' : 'text'" placeholder="password dell'utente" formControlName="password">
                         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         <!-- <mat-hint>Inserire la password</mat-hint> -->
                     </mat-form-field>
                 </p>
-
-                <p *ngIf="error " class="error ">
-                    {{ error.message }}
-                </p>
-
+                <!-- <p *ngIf="errorMessage" class="error">
+                    {{ errorMessage }}
+                </p> -->
                 <div class="button" matTooltip="Accedi a Tailor APP" matTooltipPosition="above">
                     <button type="submit" mat-raised-button (click)="submit() ">LOGIN</button>
                 </div>
-
             </form>
-
         </mat-card-content>
 
         <div class="footer ">
