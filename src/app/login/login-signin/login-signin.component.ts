@@ -92,6 +92,8 @@ export class LoginSigninComponent implements OnInit {
               dialogRef.afterClosed().subscribe(result => {
                 console.log(result);
                 this.errorMessage = '';
+                this.loginForm.get('username').setValue('');
+                this.loginForm.get('password').setValue('');
               });                
               
             });  

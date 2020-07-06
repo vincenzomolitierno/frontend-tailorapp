@@ -366,23 +366,29 @@ export class OrderGridComponent extends GridModel implements OnInit {
            // ###################################################
            var recorSet: Array<Order> = [];
            recorSet = data;
+           console.log('ordini esistenti',recorSet);
            
            this.restBackendService.getResource('customers').subscribe(
              (data) => {
-                   // console.log(data);
-                   this.recorSetCustomer = data; 
-                   
+
+                   this.recorSetCustomer = data;                    
+                   console.log('clienti',this.recorSetCustomer);
+
                    for(let i = 0; i < recorSet.length; i++) {
            
                      recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
                      recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
        
                      var idClienti: number = recorSet[i].clienti_idclienti;
-                     var nomeCliente = this.recorSetCustomer.find(x => x.idclienti === idClienti).nominativo + 
-                     ' ( ' + this.recorSetCustomer.find(x => x.idclienti === idClienti).telefono + ' )';
-                     recorSet[i].nome_cliente = nomeCliente;
+                     console.log('idClienti', idClienti);
                      
-                     console.log(recorSet[i]);
+                    var nomeCliente: string;
+
+                    var nomeCliente = this.recorSetCustomer.find(x => x.idclienti === idClienti).nominativo + 
+                     ' ( ' + this.recorSetCustomer.find(x => x.idclienti === idClienti).telefono + ' )';
+                    
+                    recorSet[i].nome_cliente = nomeCliente;                     
+                    console.log(recorSet[i]);
        
                    }            
        
