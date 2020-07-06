@@ -58,7 +58,7 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
     //si invoca il metodo ereditato per caricare i dati dal backend, passando come
     //parametro in ingresso il tag che identifica la risorsa da recuperare
-    this.getRemoteData('orders');     
+    this.getRemoteData('ordersValues');     
 
   }
 
@@ -142,23 +142,26 @@ export class OrderGridComponent extends GridModel implements OnInit {
                     "id_misure_ordinate": order.id_misure_ordinate
                   });
 
-               this.putData('orders',                  
-                {
-                  "idordini": updatedOrder.idordini, 
-                  "note": updatedOrder.note,
-                  "acconto": updatedOrder.acconto,
-                  "saldo": updatedOrder.saldo,
-                  "totale": updatedOrder.totale,
-                  "data_consegna": strDataConsegna,
-                  "consegnato": consegnato,
-                  "saldato": saldato,
-                  "note_x_fasonista": updatedOrder.note_x_fasonista,
-                  "mod_consegna": updatedOrder.mod_consegna,
-                  "data_ordine": updatedOrder.data_ordine,
-                  "clienti_idclienti": updatedOrder.clienti_idclienti,
-                  "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
-                  "id_misure_ordinate": updatedOrder.id_misure_ordinate
-                });
+                  this.restBackendService.putResource('orders', {
+                    "idordini": updatedOrder.idordini, 
+                    "note": updatedOrder.note,
+                    "acconto": updatedOrder.acconto,
+                    "saldo": updatedOrder.saldo,
+                    "totale": updatedOrder.totale,
+                    "data_consegna": strDataConsegna,
+                    "consegnato": consegnato,
+                    "saldato": saldato,
+                    "note_x_fasonista": updatedOrder.note_x_fasonista,
+                    "mod_consegna": updatedOrder.mod_consegna,
+                    "data_ordine": updatedOrder.data_ordine,
+                    "clienti_idclienti": updatedOrder.clienti_idclienti,
+                    "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
+                    "id_misure_ordinate": updatedOrder.id_misure_ordinate
+                  }).subscribe(
+                    (data)=>{
+                      this.getRemoteData('ordersValues');   
+                    },
+                  );
 
                 //AGGIORNAMENTO CAMICIE DELL'ORDINI
                 // si eliminano prima tutte le camicie preesistenti
@@ -363,10 +366,14 @@ export class OrderGridComponent extends GridModel implements OnInit {
      (data) => {
 
            this.resource = data;
+           console.log('ordini esistenti',this.resource);
+           console.log('numero ordini esistenti',this.resource.length);
            // ###################################################
-           var recorSet: Array<Order> = [];
-           recorSet = data;
-           console.log('ordini esistenti',recorSet);
+           var recorSetOrders: Array<Order> = new Array<Order>();
+           for (let index = 0; index < this.resource.length; index++) {
+            recorSetOrders.push( this.resource[index].ordine );             
+           }
+           console.log('ordini esistenti',recorSetOrders);
            
            this.restBackendService.getResource('customers').subscribe(
              (data) => {
@@ -374,12 +381,14 @@ export class OrderGridComponent extends GridModel implements OnInit {
                    this.recorSetCustomer = data;                    
                    console.log('clienti',this.recorSetCustomer);
 
-                   for(let i = 0; i < recorSet.length; i++) {
+                   for(let i = 0; i < recorSetOrders.length; i++) {
+
+                    console.log('ordine '+i,recorSetOrders[i]);
            
-                     recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
-                     recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
+                    recorSetOrders[i].data_consegna = recorSetOrders[i].data_consegna.split(' ')[0];  //formattazione data consegna
+                    recorSetOrders[i].data_ordine = recorSetOrders[i].data_ordine.split(' ')[0];      //formattazione data ordine
        
-                     var idClienti: number = recorSet[i].clienti_idclienti;
+                     var idClienti: number = recorSetOrders[i].clienti_idclienti;
                      console.log('idClienti', idClienti);
                      
                     var nomeCliente: string;
@@ -387,14 +396,14 @@ export class OrderGridComponent extends GridModel implements OnInit {
                     var nomeCliente = this.recorSetCustomer.find(x => x.idclienti === idClienti).nominativo + 
                      ' ( ' + this.recorSetCustomer.find(x => x.idclienti === idClienti).telefono + ' )';
                     
-                    recorSet[i].nome_cliente = nomeCliente;                     
-                    console.log(recorSet[i]);
+                     recorSetOrders[i].nome_cliente = nomeCliente;                     
+                    console.log(recorSetOrders[i]);
        
                    }            
        
                    // ###################################################
-                   recorSet.sort((a, b) => (a.idordini < b.idordini) ? 1 : -1);
-                   this.resource = recorSet;
+                   recorSetOrders.sort((a, b) => (a.idordini < b.idordini) ? 1 : -1);
+                   this.resource = recorSetOrders;
                    //ordinamento in base a id decrescente
                    this.dataSource = new MatTableDataSource(this.resource);                           
                    this.dataSource.paginator = this.paginatorTable;    

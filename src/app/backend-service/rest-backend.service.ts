@@ -145,7 +145,7 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
 
   public putResourceParams(tagResource: string, param: string): Observable<any> {
 
-    console.log(this.server.getApiResource(tagResource) + param);
+    // console.log(this.server.getApiResource(tagResource) + param);
 
     var localHttpOptions = { 
          headers: new HttpHeaders({ 

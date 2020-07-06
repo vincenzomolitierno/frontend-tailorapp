@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { OrderFormComponent } from '../order-form/order-form.component';
-import { OrderViewComponent } from '../order-view/order-view.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Order } from '../data.model';
@@ -30,7 +29,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     'data_consegna',
     'mod_consegna',
     'totale',   
-    'consegnato',
+    // 'consegnato',
     // 'saldato',  
     'menu_button', //aggiunti
    //  'view', 'confirm',
@@ -50,7 +49,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
 
     //si invoca il metodo ereditato per caricare i dati dal backend, passando come
     //parametro in ingresso il tag che identifica la risorsa da recuperare
-    this.getRemoteData('orders');    
+    this.getRemoteData('ordersValues');    
      
 
   }
@@ -62,48 +61,59 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     //chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
     this.restBackendService.getResource(tagResourse).subscribe(
       (data) => {
- 
-           //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
-           this.resource = data;
-           this.resource = this.resource.filter(ordine => ordine.saldato === 'NO');      
-           // ###################################################
-           var recorSet: Array<Order> = [];
-           recorSet = this.resource;
-           
-           this.restBackendService.getResource('customers').subscribe(
-             (data) => {
-                   // console.log(data);
-                   this.recorSetCustomer = data; 
-                   
-                   for(let i = 0; i < recorSet.length; i++) {
-           
-                     recorSet[i].data_consegna = recorSet[i].data_consegna.split(' ')[0];  //formattazione data consegna
-                     recorSet[i].data_ordine = recorSet[i].data_ordine.split(' ')[0];      //formattazione data ordine
-       
-                     var idClienti: number = recorSet[i].clienti_idclienti;
-                     var nomeCliente = this.recorSetCustomer.find(x => x.idclienti === idClienti).nominativo + 
-                     ' ( ' + this.recorSetCustomer.find(x => x.idclienti === idClienti).telefono + ' )';
-                     recorSet[i].nome_cliente = nomeCliente;
-                     
-                     console.log(recorSet[i]);
-       
-                   }            
-       
-                   // ###################################################
-                   recorSet.sort((a, b) => (a.idordini < b.idordini) ? 1 : -1);
-                   this.resource = recorSet;
-                   this.dataSource = new MatTableDataSource(this.resource);                           
-                   this.dataSource.paginator = this.paginatorTable;    
-                   this.dataSource.sort = this.sortTable;                      
-                   
-                   },
-             (error) => {
-                 console.error(error);
-                 console.error('Message: ' + error.message);
-             }
-           );
-            
-           },
+
+        this.resource = data;
+        console.log('ordini esistenti',this.resource);
+        console.log('numero ordini esistenti',this.resource.length);        
+        // ###################################################
+        var recorSetOrders: Array<Order> = new Array<Order>();
+        for (let index = 0; index < this.resource.length; index++) {
+         recorSetOrders.push( this.resource[index].ordine );             
+        }
+        //SI FILTRANO SOLO GLI ORDINI NON CONSEGNATI
+        recorSetOrders = recorSetOrders.filter(ordine => ordine.saldato === 'NO');        
+        console.log('ordini non saldati esistenti',recorSetOrders);
+        
+        this.restBackendService.getResource('customers').subscribe(
+          (data) => {
+  
+                this.recorSetCustomer = data;                    
+                console.log('clienti',this.recorSetCustomer);
+  
+                for(let i = 0; i < recorSetOrders.length; i++) {
+        
+                 recorSetOrders[i].data_consegna = recorSetOrders[i].data_consegna.split(' ')[0];  //formattazione data consegna
+                 recorSetOrders[i].data_ordine = recorSetOrders[i].data_ordine.split(' ')[0];      //formattazione data ordine
+    
+                  var idClienti: number = recorSetOrders[i].clienti_idclienti;
+                  console.log('idClienti', idClienti);
+                  
+                 var nomeCliente: string;
+  
+                 var nomeCliente = this.recorSetCustomer.find(x => x.idclienti === idClienti).nominativo + 
+                  ' ( ' + this.recorSetCustomer.find(x => x.idclienti === idClienti).telefono + ' )';
+                 
+                  recorSetOrders[i].nome_cliente = nomeCliente;                     
+                 console.log(recorSetOrders[i]);
+    
+                }            
+    
+                // ###################################################
+                recorSetOrders.sort((a, b) => (a.idordini < b.idordini) ? 1 : -1);
+                this.resource = recorSetOrders;
+                //ordinamento in base a id decrescente
+                this.dataSource = new MatTableDataSource(this.resource);                           
+                this.dataSource.paginator = this.paginatorTable;    
+                this.dataSource.sort = this.sortTable;                      
+                
+                },
+          (error) => {
+              console.error(error);
+              console.error('Message: ' + error.message);
+          }
+        );
+        
+       },
       (error) => {
  
          this.errorHttpErrorResponse = error;
@@ -157,7 +167,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
             (data) => {
                   console.log('saldato');
 
-                  this.getRemoteData('orders'); 
+                  this.getRemoteData('ordersValues'); 
                               
                   },
             (error) => {
@@ -165,7 +175,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
               // della risposta del put
               // console.error(error);
               // console.error('Message: ' + error.message);
-                this.getRemoteData('orders'); 
+                this.getRemoteData('ordersValues'); 
             }
           );
         //###################
@@ -174,5 +184,7 @@ export class OrdersUndepaidGridComponent extends GridModel implements OnInit {
     });    
        
   }
+
+
 
 }

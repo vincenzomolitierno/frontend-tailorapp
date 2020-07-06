@@ -200,33 +200,40 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       if(result){
         // step 1 - si cancellano tutti gli ordini del cliente
         var ordersToDelete: Array<any>;
-        this.restBackendService.getResourceQuery('ordersValues','idclienti=' + customer.idclienti).subscribe(
-          (data) =>{
-            ordersToDelete = data;
-            console.log('ordini da cancellare',ordersToDelete);
+        // this.restBackendService.getResourceQuery('ordersValues','idclienti=' + customer.idclienti).subscribe(
+        //   (data) =>{
+        //     ordersToDelete = data;
+        //     console.log('ordini da cancellare',ordersToDelete);
 
-            ordersToDelete.forEach(orderToDelete => {
+        //     ordersToDelete.forEach(orderToDelete => {
 
-              console.log('ordine da cancellare id: ' + orderToDelete.idordini);
-              this.restBackendService.delResource('orders',{
-                "idordini": orderToDelete.ordine.idordini
-              }).subscribe(
-                (data)=>{
-                  console.log('ordine '+ orderToDelete.ordine.idordini +' cancellato');
-                },
-                (error)=>{
-                  console.log('ordine non cancellato, errore '+ error);
-                });              
-            });
-            // SI CANCELLA IL CLIENTE
-            this.delData('customers',        
-              {
-                "idclienti": customer.idclienti
-              }
-            );
+        //       console.log('ordine da cancellare id: ' + orderToDelete.idordini);
+        //       this.restBackendService.delResource('orders',{
+        //         "idordini": orderToDelete.ordine.idordini
+        //       }).subscribe(
+        //         (data)=>{
+        //           console.log('ordine '+ orderToDelete.ordine.idordini +' cancellato');
+        //         },
+        //         (error)=>{
+        //           console.log('ordine non cancellato, errore '+ error);
+        //         });              
+        //     });
+        //     // SI CANCELLA IL CLIENTE
+        //     this.delData('customers',        
+        //       {
+        //         "idclienti": customer.idclienti
+        //       }
+        //     );
             
-          },
-          (error)=>{}
+        //   },
+        //   (error)=>{}
+        // );
+
+        // SI CANCELLA IL CLIENTE
+        this.delData('customers',        
+          {
+            "idclienti": customer.idclienti
+          }
         );
 
         this.viewDetails = false;

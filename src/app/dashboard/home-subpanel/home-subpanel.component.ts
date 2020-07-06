@@ -13,4 +13,8 @@ export class HomeSubpanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  aggiorna(){
+    alert('ciao');
+  }
+
 }

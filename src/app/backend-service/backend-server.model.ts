@@ -18,7 +18,7 @@ export class BackendServer {
 
     // ORDINI
     private apiResourceOrders: string = this.base + '/ordini';
-    private apiResourceOrdersQuery: string = this.base + '/ordiniValues';
+    private apiResourceOrdersQuery: string = this.base + '/OrdiniValues';
 
     // CATALOGHI
     private apiResourceNeckModels: string = this.base + '/modellocollo';
