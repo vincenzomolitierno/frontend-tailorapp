@@ -443,9 +443,15 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.delData('orders',        
-          {
-            "idordini": order.idordini
+        this.restBackendService.delResource('orders',{
+          "idordini": order.idordini
+        }).subscribe(
+          (data) => {
+            this.getRemoteData('ordersValues');
+          },
+          (error) => {
+            this.errorHttpErrorResponse = error;
+            this.errorMessage = error.message;
           }
         );
 
