@@ -51,10 +51,6 @@ export class RESTBackendService {
  */
 public getResource(tagResource: string): Observable<any> {
 
-  // console.log(this.server.getApiResource(tagResource));
-
-  // console.log('Using Token: ' + this.token);  
-
   this.httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

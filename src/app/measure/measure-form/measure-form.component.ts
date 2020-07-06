@@ -5,15 +5,15 @@ import { I18nInterface, ImageDrawingComponent } from 'ngx-image-drawing';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Customer } from 'src/app/customers/data.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
-import { Measure } from 'src/app/measurers/data.model';
+import { Measure, Measurer } from 'src/app/measurers/data.model';
 import { isUndefined } from 'util';
 import { Base64Utility } from '../data.model';
 
-interface ShirtIndicator {
-  idmisurometri: string,
-  descrizione: string,
-  fasonatori_idfasonatori: string
-}
+// interface ShirtIndicator {
+//   idmisurometri: string,
+//   descrizione: string,
+//   fasonatori_idfasonatori: string
+// }
 
 interface ShirtIndicatorSize {
   taglia: string,
@@ -62,7 +62,7 @@ export class MeasureFormComponent implements OnInit  {
   // ##############################
 
   //Struttura dati per contenere i dati dei recuperati tramite chiamata REST
-  shirtIndicators: ShirtIndicator[] = [];
+  shirtIndicators: Measurer[];
 
   //Dati cablati non recuperati con chiamata REST
   // 14.5, 15, 15.5, 16 ... 23
@@ -152,7 +152,19 @@ export class MeasureFormComponent implements OnInit  {
 
     this.restBackendService.getResource('measurers').subscribe(
       (data) => {
-            this.shirtIndicators = data; 
+            // INIZIO - si eliminano i duplicati
+            var measurers: Measurer[] = data;
+            measurers.sort((a, b) => (a.descrizione > b.descrizione) ? 1 : -1);
+            console.log('misurometri ordinati',measurers);
+
+            var measurersDistinct = [measurers[0]];
+            for (var i=1; i<measurers.length; i++) {
+               if (measurers[i].descrizione!=measurers[i-1].descrizione) measurersDistinct.push(measurers[i]);
+            }
+            console.log('misurometri selezionati',measurersDistinct);
+            // FINE
+
+            this.shirtIndicators = measurersDistinct; 
             // console.log(data);
             //Si cercano le ultime misure se presenti per popolare gli input  
             this.getRemoteDataQuery('measuresQuery',{idclienti: String(this.customer.idclienti)})

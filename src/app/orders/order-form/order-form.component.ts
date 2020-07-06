@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, DateAdapter, MatSnackBar } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Order } from '../data.model';
-import { Measure } from 'src/app/measurers/data.model';
+import { Measure, Measurer } from 'src/app/measurers/data.model';
 import { Customer } from 'src/app/customers/data.model';
 import { Shirt } from 'src/app/shirts/shirt.model';
 import { isUndefined } from 'util';
@@ -197,19 +197,53 @@ export class OrderFormComponent implements OnInit {
     this.restBackendService.getResource('subcontractors').subscribe(
       (data) => {
 
-            var descrizione = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
-            for (let index = 0; index < data.length; index++) {
-              data[index].descrizione = descrizione[index];              
-            }
-            var result = data;
-            // console.log(result);
+          var subcontractorsFromDB: Subcontractor[] = data; // tutti i fasonisti presenti in archivio
 
-            this.subcontractors = result;   
+          var descrizione = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
+          for (let index = 0; index < data.length; index++) {
+            data[index].descrizione = descrizione[index];              
+          }
+          // var result = data;
+          // console.log('fasonisti', result);
 
+          // this.subcontractors = result;
+
+          this.restBackendService.getResource('measurers').subscribe(
+            (data) => {
+              var measures: Measurer[] = data;
+              console.log('misurometri',measures);
+              console.log('misurometro',this.lastMeasure.misurometro);
+              
+              var measurersFiltered: Measurer[] = measures.filter(x => x.descrizione === this.lastMeasure.misurometro);
+
+              console.log('misurometri filtrati',measurersFiltered);
+
+              //si filtrano i fasonisti
+              var subcontractorsFromDBFiltered = new Array<Subcontractor>();
+              subcontractorsFromDB.forEach(subcontractor => {
+
+                measurersFiltered.forEach(measurer => {                  
+                  if ( subcontractor.idfasonatori === measurer.idfasonatori ) {
+                    subcontractorsFromDBFiltered.push(subcontractor);
+                  }                  
+                });                
+              });
+
+              console.log('fasonisti filtrati', subcontractorsFromDBFiltered);
+              this.subcontractors = subcontractorsFromDBFiltered; // si assegnano i fasonisti
+              
             },
+            (error) => {
+
+            }
+          );
+
+          },
       (error) => {
+
           console.error(error);
           console.error('Message: ' + error.message);
+
       }
     );    
   }
