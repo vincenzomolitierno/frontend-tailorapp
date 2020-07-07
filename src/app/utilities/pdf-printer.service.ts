@@ -1105,15 +1105,13 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
           }   // fine style 
         
         };
-
-    //  pdfMake.createPdf(documentDefinition).download();
-      
+     
       if ( type == 'for_customer') {
-        // pdfMake.createPdf(documentCustomerDefinition).open();
-        pdfMake.createPdf(documentCustomerDefinition).download('STAMPA ORDINE PER CLIENTE N° ' + order.idordini + ' DEL ' + order.data_ordine);
+        pdfMake.createPdf(documentCustomerDefinition).open();
+        // pdfMake.createPdf(documentCustomerDefinition).download('STAMPA ORDINE PER CLIENTE N° ' + order.idordini + ' DEL ' + order.data_ordine);
       } else if ( type == 'for_subcontractor' ) {
-        // pdfMake.createPdf(documentSubcontractorDefinition).open();
-        pdfMake.createPdf(documentSubcontractorDefinition).download('STAMPA ORDINE PER FASONISTA N° ' + order.idordini + ' DEL ' + order.data_ordine);
+        pdfMake.createPdf(documentSubcontractorDefinition).open();
+        // pdfMake.createPdf(documentSubcontractorDefinition).download('STAMPA ORDINE PER FASONISTA N° ' + order.idordini + ' DEL ' + order.data_ordine);
       }    
      
     }  
@@ -1298,8 +1296,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
         
         };
     
-        // pdfMake.createPdf(documentEmptyDefinition).open();
-        pdfMake.createPdf(documentEmptyDefinition).download('STAMPA MODELLO ORDINE VUOTO');
+        pdfMake.createPdf(documentEmptyDefinition).open();
+        // pdfMake.createPdf(documentEmptyDefinition).download('STAMPA MODELLO ORDINE VUOTO');
         
 
       }
