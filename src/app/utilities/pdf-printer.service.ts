@@ -347,8 +347,8 @@ export class PdfPrinterService {
   //         author: 'idealprogetti.com',
   //         subject: 'Riepilogo Lavorazioni',
   //         keywords: 'RESUME, ONLINE RESUME', 
-  //         producer: 'vincenzo',
-  //         creator: 'molitierno'         
+  //         producer: 'porfidiacamicie.com',
+  //         creator: 'porfidiacamicie.com'         
   //       },
         
   //       styles: {
@@ -532,8 +532,8 @@ export class PdfPrinterService {
   //         author: 'idealprogetti.com',
   //         subject: 'Riepilogo Lavorazioni',
   //         keywords: 'RESUME, ONLINE RESUME', 
-  //         producer: 'vincenzo',
-  //         creator: 'molitierno'         
+  //         producer: 'porfidiacamicie.com',
+  //         creator: 'porfidiacamicie.com'         
   //       },
         
   //       styles: {
@@ -865,8 +865,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
           author: 'idealprogetti.com',
           subject: 'Riepilogo Lavorazioni',
           keywords: 'RESUME, ONLINE RESUME', 
-          producer: 'vincenzo',
-          creator: 'molitierno'         
+          producer: 'porfidiacamicie.com',
+          creator: 'porfidiacamicie.com'         
         },
         
         styles: {
@@ -1063,8 +1063,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
             author: 'idealprogetti.com',
             subject: 'Riepilogo Lavorazioni',
             keywords: 'RESUME, ONLINE RESUME', 
-            producer: 'vincenzo',
-            creator: 'molitierno'         
+            producer: 'porfidiacamicie.com',
+            creator: 'porfidiacamicie.com'         
           },
           
           styles: {
@@ -1109,9 +1109,11 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
     //  pdfMake.createPdf(documentDefinition).download();
       
       if ( type == 'for_customer') {
-        pdfMake.createPdf(documentCustomerDefinition).open();
+        // pdfMake.createPdf(documentCustomerDefinition).open();
+        pdfMake.createPdf(documentCustomerDefinition).download('STAMPA ORDINE PER CLIENTE N° ' + order.idordini + ' DEL ' + order.data_ordine);
       } else if ( type == 'for_subcontractor' ) {
-        pdfMake.createPdf(documentSubcontractorDefinition).open();
+        // pdfMake.createPdf(documentSubcontractorDefinition).open();
+        pdfMake.createPdf(documentSubcontractorDefinition).download('STAMPA ORDINE PER FASONISTA N° ' + order.idordini + ' DEL ' + order.data_ordine);
       }    
      
     }  
@@ -1253,8 +1255,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
             author: 'idealprogetti.com',
             subject: 'Riepilogo Lavorazioni',
             keywords: 'RESUME, ONLINE RESUME', 
-            producer: 'vincenzo',
-            creator: 'molitierno'         
+            producer: 'profidiacamicie.com',
+            creator: 'profidiacamicie.com'         
           },
           
           styles: {
@@ -1296,7 +1298,10 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
         
         };
     
-        pdfMake.createPdf(documentEmptyDefinition).open();
+        // pdfMake.createPdf(documentEmptyDefinition).open();
+        pdfMake.createPdf(documentEmptyDefinition).download('STAMPA MODELLO ORDINE VUOTO');
+        
+
       }
   
     public static convertipositivi(s: string): string
