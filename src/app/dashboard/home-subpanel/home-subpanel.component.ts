@@ -1,20 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, } from '@angular/core';
 
 @Component({
   selector: 'app-home-subpanel',
   templateUrl: './home-subpanel.component.html',
   styleUrls: ['./home-subpanel.component.css']
 })
-export class HomeSubpanelComponent implements OnInit {
+export class HomeSubpanelComponent {
 
   constructor() { 
    }
-
-  ngOnInit() {
-  }
-
-  aggiorna(){
-    alert('ciao');
-  }
 
 }

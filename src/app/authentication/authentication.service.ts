@@ -17,7 +17,10 @@ export class AuthenticationService {
     constructor(private http: HttpClient,
         restBackendService: RESTBackendService
         ) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        // this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+         
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(sessionStorage.getItem('currentUser')));
+
         this.currentUser = this.currentUserSubject.asObservable();
 
         this.handlerBackendServer = new BackendServer();
@@ -42,7 +45,10 @@ export class AuthenticationService {
                 // console.log('Token: ' + user.token);                
                 this.handlerRestBackendService.setToken(user.token);
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
+
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                // localStorage.setItem('currentUser', JSON.stringify(user));
+                
                 this.currentUserSubject.next(user);
                 return user;
             }));
@@ -50,7 +56,10 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
+        
+        // localStorage.removeItem('currentUser');
+
         this.currentUserSubject.next(null);
     }
 
