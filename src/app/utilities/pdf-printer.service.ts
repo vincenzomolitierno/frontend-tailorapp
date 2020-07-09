@@ -227,7 +227,7 @@ export class PdfPrinterService {
   //         {
   //           columns: [
   //             {
-  //               text: 'Collo: '        + this.convertipositivi(measure.collo) + '\n' +
+  //               text: 'Collo: '        + measure.collo + '\n' +
   //                     'Spalla: '       + this.convertipositivi(measure.spalla) + '\n' +
   //                     'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n' +
   //                     'Bicipite Tot x Braccio: '     + this.convertipositivi(measure.bicipite) + '\n' +
@@ -239,7 +239,7 @@ export class PdfPrinterService {
   //                     'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n' +
   //                     'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n' +
   //                     'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n' +
-  //                     'Polso: '    + this.convertipositivi(measure.polso) + '\n',
+  //                     'Polso: '    + measure.polso + '\n',
   //               style: 'name'
   //             },
   //             {
@@ -412,7 +412,7 @@ export class PdfPrinterService {
   //         {
   //           columns: [
   //             {
-  //               text: 'Collo: '        + this.convertipositivi(measure.collo) + '\n' +
+  //               text: 'Collo: '        + measure.collo + '\n' +
   //                     'Spalla: '       + this.convertipositivi(measure.spalla) + '\n' +
   //                     'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n' +
   //                     'Bicipite Tot x Braccio: '     + this.convertipositivi(measure.bicipite) + '\n' +
@@ -424,7 +424,7 @@ export class PdfPrinterService {
   //                     'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n' +
   //                     'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n' +
   //                     'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n' +
-  //                     'Polso: '    + this.convertipositivi(measure.polso) + '\n',
+  //                     'Polso: '    + measure.polso + '\n',
   //               style: 'name'
   //             },
   //             {
@@ -722,7 +722,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
             {  margin: [-12, 0, -30, 0],
               columns: [
                 {
-                  text: 'Collo: '        + this.convertipositivi(measure.collo) + '\n\n' +
+                  text: 'Collo: '        + measure.collo + '\n\n' +
                         'Spalla: '       + this.convertipositivi(measure.spalla) + '\n\n' +
                         'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n\n' +
                         'Bicipite Tot x B.: '     + this.convertipositivi(measure.bicipite) + '\n\n' +
@@ -734,7 +734,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                         'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
                         'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
                         'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
-                        'Polso: '    + this.convertipositivi(measure.polso) + '\n',
+                        'Polso: '    + measure.polso + '\n',
                   style: 'name'
                 },
                 {
@@ -940,7 +940,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
               {  margin: [-12, 0, -30, 0],
                 columns: [
                   {
-                    text: 'Collo: '        + this.convertipositivi(measure.collo) + '\n\n' +
+                    text: 'Collo: '        + measure.collo + '\n\n' +
                           'Spalla: '       + this.convertipositivi(measure.spalla) + '\n\n' +
                           'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n\n' +
                           'Bicipite Tot x B.: '     + this.convertipositivi(measure.bicipite) + '\n\n' +
@@ -952,7 +952,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                           'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
                           'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
                           'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
-                          'Polso: '    + this.convertipositivi(measure.polso) + '\n',
+                          'Polso: '    + measure.polso + '\n',
                     style: 'name'
                   },
                   {
@@ -1230,23 +1230,21 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                
               ]
             },  
-            {  
-              text: 'NOTE',
-              style: 'subheader',
-              alignment: 'left',
-              margin: [0,0, 0, 0]
-            },          
-            {
-              style: 'name',
-              alignment: 'left',
-             
-              
-              table: {
-                widths: ['*'],
-                body: [''],
+            // {  
+            //   text: 'NOTE',
+            //   style: 'subheader',
+            //   alignment: 'left',
+            //   margin: [0,0, 0, 0]
+            // },          
+            // {
+            //   style: 'name',
+            //   alignment: 'left',                           
+            //   table: {
+            //     widths: ['*'],
+            //     body: [''],
                 
-              }
-            }         
+            //   }
+            // }         
           ],       
           info: {
             title: 'STAMPA MODULO',
@@ -1311,6 +1309,187 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
       return (s);
       
     }
+
+    public static generateMeasureSheetPdf(measure: Measure, nomeCliente: string, telefonoCliente: string) {
+      // NAZARO
+  
+      var refSize:number = 14;
+      var base64:string = 'data:image/jpeg;base64,' + measure.note_grafiche;
+      
+      const documentEmptyDefinition  = {
+         
+        content: [
+          { margin: [-20, -20, -30, 0],
+                columns: [ 
+                  {
+                        text: 'PORFIDIA CAMICIE',
+                        style: 'header',
+                  alignment: 'left',
+                  fontSize: 20
+                      } ,
+          
+                      {
+                        text: 'MODULO MISURE ' ,
+                        style: 'header'
+                      } 
+            ]} , {
+              text: 'Cliente: ' + nomeCliente + ' ( ' + telefonoCliente + ' )' ,
+              style: 'subheader',
+              alignment: 'left'
+            } ,
+              { margin: [0, 10, 0, 0],
+                columns: [
+                  {
+                    text: 'Misurometro: ' + measure.misurometro ,
+                    style: 'subheader',
+                    alignment: 'left'
+                  },
+                  {
+                    text: 'Taglia Misurometro: ' + measure.taglia_misurometro ,
+                    style: 'subheader',
+                    alignment: 'left'
+                  }
+                ]
+              },  
+              {  margin: [-12, 0, -30, 0],
+                columns: [
+                  {
+                    text: 'Collo: '   +  measure.collo      + '\n\n' +
+                          'Spalla: '  + this.convertipositivi(measure.spalla)     + '\n\n' +
+                          'Lun. Manica: ' + this.convertipositivi(measure.lung_bicipite)   + '\n\n' +
+                          'Bicipite Tot x B.: ' + this.convertipositivi(measure.bicipite)   + '\n\n' +
+                          'Avamb Tot x B.: ' + this.convertipositivi(measure.avambraccio)  + '\n' ,
+                    style: 'name'
+                  },
+                  {
+                    text: 'Lun Camicia: '   + this.convertipositivi(measure.lung_camicia)       + '\n\n' +
+                          'Centro Schiena: ' + this.convertipositivi(measure.lung_avambraccio)    + '\n\n' +
+                          'Vita Dietro: '  + this.convertipositivi(measure.vita_dietro)     + '\n\n' +
+                          'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro)  + '\n\n' +
+                          'Polso: ' + measure.polso + '\n',
+                    style: 'name'
+                  }] },
+  
+                  {  margin: [-12, 20, -30,0],
+                    columns: [
+                  {
+                    text:  'TORACE AVANTI',
+                    style: 'name'
+                  },
+                  {
+                    text: '',
+                    style: 'name'
+                  }                                       
+                ]
+            },
+                  {  margin: [-12, 0, -30,20],
+                    columns: [
+                  {
+                    text:  '1° Bottone: ' + this.convertipositivi(measure.torace.split(';')[0])    + '\n\n' +
+                          '2° Bottone: ' + this.convertipositivi(measure.torace.split(';')[1])   + '\n\n' +
+                          '3° Bottone: '  + this.convertipositivi(measure.torace.split(';')[2])   + '\n',
+                    style: 'name'
+                  },
+                  {
+                    text: '4° Bottone: ' + this.convertipositivi(measure.torace.split(';')[3])    + '\n\n' +
+                          '5° Bottone: '  + this.convertipositivi(measure.torace.split(';')[4])    + '\n\n' +
+                          '6° Bottone: '   + this.convertipositivi(measure.torace.split(';')[5])   + '\n\n' +
+                          '7° Bottone: '   + this.convertipositivi(measure.torace.split(';')[6])   + '\n\n' +
+                          '8° Bottone: '  + this.convertipositivi(measure.torace.split(';')[7])    + '\n',
+                    style: 'name'
+                  }                                       
+                ]
+            },
+            ,
+            {
+              image: base64,
+              width: 500,
+              alignment: 'center'
+            },
+            
+            
+                                                  
+                  
+            {
+              margin: [-12, 20, -30, 0],
+              columns: [
+                {
+                  text: 'Data Misura: ' + measure.data_misure ,
+                  style: 'subheader',
+                  alignment: 'left'
+                }
+               
+              ]
+            },  
+            // {  
+            //   text: 'NOTE',
+            //   style: 'subheader',
+            //   alignment: 'left',
+            //   margin: [0,0, 0, 0]
+            // },          
+            // {
+            //   style: 'name',
+            //   alignment: 'left',                        
+            //   table: {
+            //     widths: ['*'],
+            //     body: [''],
+                
+            //   }
+            // }         
+          ],       
+          info: {
+            title: 'STAMPA MODULO',
+            author: 'idealprogetti.com',
+            subject: 'Riepilogo Lavorazioni',
+            keywords: 'RESUME, ONLINE RESUME', 
+            producer: 'profidiacamicie.com',
+            creator: 'profidiacamicie.com'         
+          },
+          
+          styles: {
+            header: {
+              fontSize: refSize,
+              bold: true,
+              alignment: 'center',
+              margin: [0, 10, 0, 10],
+            },
+            subheader: {
+              fontSize: refSize,
+              bold: true,
+              alignment: 'center',
+              margin: [0, 10, 0, 10],
+            },
+            name: {
+              fontSize: refSize,
+              alignment: 'left',
+            },
+            jobTitle: {
+              fontSize: 14,
+              bold: true,
+              italics: true
+            },
+            sign: {
+              margin: [0, 50, 0, 10],
+              alignment: 'right',
+              italics: true
+            },
+            tableExample: {
+              margin: [0, 10, 0, 10]
+            },
+            tableHeader: {
+              bold: true,
+              fontSize: 11,
+              color: 'black'
+            }          
+          }   // fine style 
+        
+        };
+    
+        pdfMake.createPdf(documentEmptyDefinition).open();
+        // pdfMake.createPdf(documentEmptyDefinition).download('STAMPA MODELLO ORDINE VUOTO');
+        
+
+      }
   
 
 }

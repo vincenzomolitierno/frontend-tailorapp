@@ -18,6 +18,7 @@ import { Shirt } from 'src/app/shirts/shirt.model';
 import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
 import { Router } from '@angular/router';
 import { Base64Utility } from 'src/app/measure/data.model';
+import { PdfPrinterService } from 'src/app/utilities/pdf-printer.service';
 
 @Component({
   selector: 'app-customer-grid',
@@ -401,7 +402,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                              + result.torace_7_bottone + ";" 
                              + result.torace_8_bottone + ";" 
 
-        console.log('misurometro: ' + result.shirtIndicatorControl);
+        // console.log('misurometro: ' + result.shirtIndicatorControl);
 
         if(result.formModal == 'inserimento')  {
           console.log('inserimento');
@@ -642,6 +643,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });
+  }
+
+  stampaModelloVuotoConMisure(measure: Measure, nomeCliente: string, telefonoCliente: string){
+    PdfPrinterService.generateMeasureSheetPdf(measure, nomeCliente, telefonoCliente);
   }
    
 

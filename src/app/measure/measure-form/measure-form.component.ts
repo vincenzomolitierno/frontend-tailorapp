@@ -66,24 +66,25 @@ export class MeasureFormComponent implements OnInit  {
 
   //Dati cablati non recuperati con chiamata REST
   // 14.5, 15, 15.5, 16 ... 23
-  shirtIndicatorSizes: ShirtIndicatorSize[] = [
-    {taglia: '14,5'},
+  shirtIndicatorSizes: ShirtIndicatorSize[] = [    
+    {taglia: '14 ½'},
     {taglia: '15'},
-    {taglia: '15,5'},
+    {taglia: '15 ½'},
+    {taglia: '15 ¾'},
     {taglia: '16'},
-    {taglia: '16,5'},
+    {taglia: '16 ½'},
     {taglia: '17'},
-    {taglia: '17,5'},
+    {taglia: '17 ½'},
     {taglia: '18'},
-    {taglia: '18,5'},
+    {taglia: '18 ½'},
     {taglia: '19'},
-    {taglia: '19,5'},
+    {taglia: '19 ½'},
     {taglia: '20'},
-    {taglia: '20,5'},
+    {taglia: '20 ½'},
     {taglia: '21'},
-    {taglia: '21,5'},
+    {taglia: '21 ½'},
     {taglia: '22'},
-    {taglia: '22,5'},
+    {taglia: '22 ½'},
     {taglia: '23'}              
   ];  
 
@@ -203,7 +204,8 @@ export class MeasureFormComponent implements OnInit  {
               console.log('misura esistente');                       
               this.measure = this.resourceQuery[this.resourceQuery.length-1];  
               // console.log(this.measure);             
-              this.formModal = 'aggiornamento';
+              
+              // this.formModal = 'aggiornamento';
   
               //si inizializzano i campi del form
               console.log('MISUROMETRO: ' + this.measure.misurometro);

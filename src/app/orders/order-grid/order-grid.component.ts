@@ -303,11 +303,10 @@ export class OrderGridComponent extends GridModel implements OnInit {
         
         // console.log(customer);
 
-        this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
+        this.restBackendService.getResourceQuery('measuresQuery','idmisure=' + String(order.id_misure_ordinate)).subscribe(
           (data) => {   
             
-            var measure: Measure = data[0];            
-            // console.log(measure);
+            var measure: Measure = data[0];                       
 
             this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + order.idordini ).subscribe(
               (data) => {
