@@ -1422,7 +1422,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
               margin: [-12, 20, -30, 0],
               columns: [
                 {
-                  text: 'Data Misura: ' + measure.data_misure ,
+                  text: 'Data Misura: ' + measure.data_misure,
                   style: 'subheader',
                   alignment: 'left'
                 }

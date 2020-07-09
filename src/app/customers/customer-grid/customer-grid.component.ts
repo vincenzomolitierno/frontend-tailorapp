@@ -259,7 +259,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
            
           this.measureCustomerDetailView = this.resourceQuery[this.resourceQuery.length-1];
 
-          this.measureCustomerDetailView.data_misure = this.measureCustomerDetailView.data_misure.split(' ')[0];
+          
+          var dataMisura = this.measureCustomerDetailView.data_misure.split(' ')[0];
+          this.measureCustomerDetailView.data_misure = dataMisura.split('/')[1] + '/' + dataMisura.split('/')[0] + '/' + dataMisura.split('/')[2];
 
           console.log(this.measureCustomerDetailView);       
           if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[0])))
