@@ -723,7 +723,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
               columns: [
                 {
                   text: 'Collo: '        + measure.collo + '\n\n' +
-                        'Spalla: '       + this.convertipositivi(measure.spalla) + '\n\n' +
+                        'Spalla x Lato: '       + this.convertipositivi(measure.spalla) + '\n\n' +
                         'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n\n' +
                         'Bicipite Tot x B.: '     + this.convertipositivi(measure.bicipite) + '\n\n' +
                         'Avamb Tot x B.: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
@@ -941,7 +941,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                 columns: [
                   {
                     text: 'Collo: '        + measure.collo + '\n\n' +
-                          'Spalla: '       + this.convertipositivi(measure.spalla) + '\n\n' +
+                          'Spalla x Lato: '       + this.convertipositivi(measure.spalla) + '\n\n' +
                           'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n\n' +
                           'Bicipite Tot x B.: '     + this.convertipositivi(measure.bicipite) + '\n\n' +
                           'Avamb Tot x B.: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
@@ -1164,7 +1164,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                 columns: [
                   {
                     text: 'Collo: '         + '\n\n' +
-                          'Spalla: '       + '\n\n' +
+                          'Spalla x Lato: '       + '\n\n' +
                           'Lun. Manica: '   + '\n\n' +
                           'Bicipite Tot x B.: '   + '\n\n' +
                           'Avamb Tot x B.: '  + '\n' ,
@@ -1363,7 +1363,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                 columns: [
                   {
                     text: 'Collo: '   +  measure.collo      + '\n\n' +
-                          'Spalla: '  + this.convertipositivi(measure.spalla)     + '\n\n' +
+                          'Spalla x Lato: '  + this.convertipositivi(measure.spalla)     + '\n\n' +
                           'Lun. Manica: ' + this.convertipositivi(measure.lung_bicipite)   + '\n\n' +
                           'Bicipite Tot x B.: ' + this.convertipositivi(measure.bicipite)   + '\n\n' +
                           'Avamb Tot x B.: ' + this.convertipositivi(measure.avambraccio)  + '\n' ,
