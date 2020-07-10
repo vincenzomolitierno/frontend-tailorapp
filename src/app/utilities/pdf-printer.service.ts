@@ -1212,7 +1212,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
             ,
             {
               image: base64,
-              width: 500,
+              width: 250,
               alignment: 'center'
             },
             
@@ -1411,7 +1411,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
             ,
             {
               image: base64,
-              width: 500,
+              width: 250,
               alignment: 'center'
             },
             
