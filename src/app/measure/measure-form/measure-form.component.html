@@ -136,6 +136,25 @@
 
             <!-- SECONDA COLONNA DI INPUT -->
             <div class="grid-item">
+
+                <!-- INPUT campo Lunghezza Camicia Dietro mappato sul campo bacino dell'entità del DB -->
+                <div class="control-measure">
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('bacino')"><mat-icon>remove</mat-icon></button>
+                        </div>
+                    </div>
+                    <div class="value-set">
+                        <p>Lunghezza Camicia Dietro</p>
+                        <input type="text" formControlName="bacino" class="value-display" readonly>
+                    </div>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('bacino')"><mat-icon>add</mat-icon></button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- INPUT lung_camicia -->
                 <div class="control-measure">
                     <div class="container-button">
@@ -226,6 +245,7 @@
                     </div>
                 </div>
 
+
             </div>
 
             <!-- TERZA COLONNA DI INPUT -->
@@ -291,7 +311,7 @@
 
             <!-- QUARTA COLONNA DI INPUT -->
             <div class="grid-item">
-                <h3 style="color: white;">'</h3>
+                <h3>Aumentare solo avanti</h3>
                 <!-- INPUT torace_4_bottone -->
                 <div class="control-measure">
                     <div class="container-button">

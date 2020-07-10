@@ -128,6 +128,8 @@ export class MeasureFormComponent implements OnInit  {
           bacino_dietro: new FormControl(''),
           polso: new FormControl(''),          
 
+          bacino: new FormControl(''),    //INPUT campo Lunghezza Camicia Dietro mappato sul campo bacino dell'entità del DB 
+
           torace_1_bottone: new FormControl(''),
           torace_2_bottone: new FormControl(''),
           torace_3_bottone: new FormControl(''),
@@ -223,7 +225,8 @@ export class MeasureFormComponent implements OnInit  {
               this.reactiveForm.get('vita_dietro').setValue(parseFloat(this.measure.vita_dietro).toFixed(1));  
               this.reactiveForm.get('bacino_dietro').setValue(parseFloat(this.measure.bacino_dietro).toFixed(1));  
               this.reactiveForm.get('polso').setValue(parseFloat(this.measure.polso).toFixed(1));  
-  
+
+              this.reactiveForm.get('bacino').setValue(parseFloat(this.measure.bacino).toFixed(1));  
   
               if(!isNaN(parseFloat(this.measure.torace.split(';')[0])))
                 this.reactiveForm.get('torace_1_bottone').setValue(parseFloat(this.measure.torace.split(';')[0]).toFixed(1));  
@@ -328,7 +331,11 @@ export class MeasureFormComponent implements OnInit  {
         break; 
       case 'polso':
         this.reactiveForm.get('polso').setValue(  (parseFloat(this.reactiveForm.get('polso').value) + 0.5).toFixed(1)  ); 
-        break;         
+        break;   
+        
+      case 'bacino':
+        this.reactiveForm.get('bacino').setValue(  (parseFloat(this.reactiveForm.get('bacino').value) + 0.5).toFixed(1)  ); 
+        break;          
         
       case 'torace_1_bottone':
         this.reactiveForm.get('torace_1_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_1_bottone').value) + 0.5).toFixed(1)  ); 
@@ -395,6 +402,10 @@ export class MeasureFormComponent implements OnInit  {
       case 'polso':
         this.reactiveForm.get('polso').setValue(  (parseFloat(this.reactiveForm.get('polso').value) - 0.5).toFixed(1)  ); 
         break; 
+
+      case 'bacino':
+        this.reactiveForm.get('bacino').setValue(  (parseFloat(this.reactiveForm.get('bacino').value) - 0.5).toFixed(1)  ); 
+        break;            
         
       case 'torace_1_bottone':
         this.reactiveForm.get('torace_1_bottone').setValue(  (parseFloat(this.reactiveForm.get('torace_1_bottone').value) - 0.5).toFixed(1)  ); 
@@ -449,6 +460,8 @@ export class MeasureFormComponent implements OnInit  {
     this.reactiveForm.get('vita_dietro').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('bacino_dietro').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('polso').setValue(Number(20).toFixed(1));  
+
+    this.reactiveForm.get('bacino').setValue(Number(0).toFixed(1));  
 
     this.reactiveForm.get('torace_1_bottone').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('torace_2_bottone').setValue(Number(0).toFixed(1));                

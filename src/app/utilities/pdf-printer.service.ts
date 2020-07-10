@@ -94,496 +94,7 @@ export class PdfPrinterService {
     
 
   }  
-
-
-  // public static generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], subcontractor?: Subcontractor, type?: string){
-
-  //   var obj: Array<any> = new Array();
-
-  //   console.log('camicie da stampare', );
-
-  //   var stringa :string = '';
-
-  //   if(!shirts) {
-
-  //     obj.push([stringa.toUpperCase(),' ']);
-
-  //     console.log('STEP');
-
-  //   } else {
-
-  //     for (let index = 0; index < shirts.length; index++) {
-        
-  //       console.log('camicia ' + index, shirts[index]);
-  //       const element = shirts[index];
-
-  //       // console.log('camicie', element.iniziali);
-
-  //       console.log('element.iniziali index ' + index, element.iniziali);
-
-  //       if ( element.presenza_iniziali == 'SI' ) {
-  //         stringa = 
-  //         'colore: ' + element.colore + ' | ' +
-  //         'numero capi: ' + element.numero_capi + ' | ' +      
-  //         // 'idcamicie: ' + element.idcamicie + ' | ' +
-  //         'collo: ' + element.modellocollo + ' | ' +
-  //         'polso: ' + element.modellopolso + ' | ' +
-  //         'avanti: ' + element.avanti + ' | ' +
-  //         'indietro: ' + element.indietro + ' | ' +             
-  //         'stecche: ' + element.stecche_estraibili;
-          
-          
-  //         if ( element.tipo_bottone != '' )
-  //           stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
-                  
-  //         stringa = stringa + ' | ' +      
-  //         'tasca: ' + element.tasca + ' | ' +
-  //         'cuciture: ' + element.cuciture + ' | ' +
-  //         // 'ordini_idordini ' + element.idordini + ' | ' +
-  //         'iniziali: ' + element.presenza_iniziali + ' | ' +      
-  //         'let. iniziali: ' + element.iniziali + ' | ' +
-  //         'pos. iniziali: ' + element.pos_iniziali + ' | ' +
-  //         'corsivo: ' + element.stile_carattere + ' | ' +
-  //         'maiuscolo: ' + element.maiuscolo;
-          
-  //         if ( element.note != '' )
-  //           stringa = stringa + ' | ' + 'note: ' + element.note;        
-          
-  //       } else if ( element.presenza_iniziali == 'NO') {
-
-  //           stringa = 
-  //           'colore: ' + element.colore + ' | ' +
-  //           'numero capi: ' + element.numero_capi + ' | ' +      
-  //           // 'idcamicie: ' + element.idcamicie + ' | ' +
-  //           'collo: ' + element.modellocollo + ' | ' +
-  //           'polso: ' + element.modellopolso + ' | ' +
-  //           'avanti: ' + element.avanti + ' | ' +
-  //           'indietro: ' + element.indietro + ' | ' +             
-  //           'stecche: ' + element.stecche_estraibili;
-            
-            
-  //           if ( element.tipo_bottone != '' )
-  //             stringa = stringa + ' | ' + 'tipo bottone: ' + element.tipo_bottone;
-                    
-  //           stringa = stringa + ' | ' +      
-  //           'tasca: ' + element.tasca + ' | ' +
-  //           'cuciture: ' + element.cuciture + ' | ' +
-  //           // 'ordini_idordini ' + element.idordini + ' | ' +
-  //           'iniziali: ' + element.presenza_iniziali;    
-  //           // 'let. iniziali: ' + element.iniziali + ' | ' +
-  //           // 'pos. iniziali: ' + element.pos_iniziali + ' | ' +
-  //           // 'corsivo: ' + element.stile_carattere + ' | ' +
-  //           // 'maiuscolo: ' + element.maiuscolo;
-            
-  //           if ( element.note != '' )
-  //             stringa = stringa + ' | ' + 'note: ' + element.note;  
-
-  //       }
-
-  //       console.log('stringa formattata '+ index, stringa )
-  //       obj.push([stringa.toUpperCase(),' ']);
-        
-  //     } // fine ciclo for per le camicie
-
-  //   } // fine  if
-
-  //   var refSize:number = 14;
-
-  //   if ( order.note == '' )
-  //     var noteCliente: string = 'nessuna';
-  //   else  
-  //     var noteCliente: string = order.note;
-
-  //   if ( order.note_x_fasonista == '' )
-  //     var noteFasonista: string = 'nessuna';
-  //   else  
-  //     var noteFasonista: string = order.note_x_fasonista;   
-               
-  //   var base64: string = Base64Utility.base64ShirtEmpty;
-    
-  //   // if ( !isUndefined(measure.note_grafiche) )
-  //   if ( measure.note_grafiche != '' )
-  //     base64 = 'data:image/png;base64,' + measure.note_grafiche;
-
-  //    const documentCustomerDefinition = {
-       
-  //       content: [
-  //         {
-  //           text: 'STAMPA PER IL CLIENTE \n ORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
-  //           style: 'header'
-  //         } ,
-  //         {
-  //           columns: [
-  //             {
-  //               text: 'Committente: ' + customer.nominativo + ' ( ' + customer.telefono +' )',
-  //               style: 'subheader'
-  //             },
-  //             {
-  //               text: 'Misurometro: ' + measure.misurometro,
-  //               style: 'subheader'
-  //             }
-  //           ]
-  //         },  
-  //         {
-  //           columns: [
-  //             {
-  //               text: 'Collo: '        + measure.collo + '\n' +
-  //                     'Spalla: '       + this.convertipositivi(measure.spalla) + '\n' +
-  //                     'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n' +
-  //                     'Bicipite Tot x Braccio: '     + this.convertipositivi(measure.bicipite) + '\n' +
-  //                     'Avamb Tot x Braccio: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
-  //               style: 'name'
-  //             },
-  //             {
-  //               text: 'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n' +
-  //                     'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n' +
-  //                     'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n' +
-  //                     'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n' +
-  //                     'Polso: '    + measure.polso + '\n',
-  //               style: 'name'
-  //             },
-  //             {
-  //               text: 'TORACE AVANTI' + '\n' +
-  //                     '1° Bottone: '     + this.convertipositivi(measure.torace.split(';')[0]) + '\n' +
-  //                     '2° Bottone: '     + this.convertipositivi(measure.torace.split(';')[1]) + '\n' +
-  //                     '3° Bottone: '     + this.convertipositivi(measure.torace.split(';')[2]) + '\n',
-  //               style: 'name'
-  //             },
-  //             {
-  //               text: '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n' +
-  //                     '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n' +
-  //                     '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n' +
-  //                     '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n' +
-  //                     '8° Bottone: '     + this.convertipositivi(measure.torace.split(';')[7]) + '\n',
-  //               style: 'name'
-  //             }                                       
-  //           ]
-  //         },
-  //         '\n',
-  //         {
-  //           image: base64,
-  //           width: 250,
-  //           alignment: 'center'
-  //         },
-  //         '\n',
-  //         {
-  //           text: 'ELENCO CAMICIE',
-  //           style: 'subheader',
-  //           alignment: 'left',
-  //           margin: [0, 10, 0, 0]
-  //         },
-  //         {
-  //           style: 'name',
-  //           alignment: 'left',
-  //           table: {
-  //             heights: 70,
-  //             widths: ['*', 100],
-  //             body: obj
-  //           }
-  //         },                                       
-  //         // {
-  //         //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
-  //         //   style: 'subheader',
-  //         //   alignment: 'left',
-  //         // },
-  //         // 'NOTE PER IL FASONISTA',
-  //         // {
-  //         //   style: 'subheader',
-  //         //   alignment: 'left',
-  //         //   table: {
-  //         //     widths: ['*'],              
-  //         //     body: [
-  //         //       [noteFasonista],
-  //         //     ]
-  //         //   }
-  //         // },          
-  //         {
-  //           columns: [
-  //             {
-  //               text: 'Data consegna: ' + order.data_consegna,
-  //               style: 'subheader',
-  //               alignment: 'left'
-  //             },
-  //             {
-  //               text: 'Modalità consegna: ' + order.mod_consegna,
-  //               style: 'subheader',
-  //               alignment: 'left'
-  //             }
-  //           ]
-  //         },  
-  //         {
-  //           text: 'NOTE PER IL CLIENTE',
-  //           style: 'subheader',
-  //           alignment: 'left',
-  //           margin: [0, 10, 0, 0]
-  //         },          
-  //         {
-  //           style: 'name',
-  //           alignment: 'left',
-  //           table: {
-  //             widths: ['*'],
-  //             body: [
-  //               [noteCliente],
-  //             ]
-  //           }
-  //         },
-  //         {
-  //           columns: [
-  //             {
-  //               text: 'Totale: ' +  order.totale + '\n'
-  //                   + 'Acconto: ' + order.acconto + '\n'
-  //                   + 'Saldo: ' + order.saldo + '\n',
-  //               style: 'subheader'
-  //             },
-  //             {
-  //               text: 'Saldato: ' + order.saldato,
-  //               style: 'subheader'
-  //             }
-  //           ]
-  //         }          
-  //       ],       
-  //       info: {
-  //         title: 'STAMPA ORDINE N°' + order.idordini,
-  //         author: 'idealprogetti.com',
-  //         subject: 'Riepilogo Lavorazioni',
-  //         keywords: 'RESUME, ONLINE RESUME', 
-  //         producer: 'porfidiacamicie.com',
-  //         creator: 'porfidiacamicie.com'         
-  //       },
-        
-  //       styles: {
-  //         header: {
-  //           fontSize: refSize,
-  //           bold: true,
-  //           alignment: 'center',
-  //           margin: [0, 10, 0, 10],
-  //         },
-  //         subheader: {
-  //           fontSize: refSize-2,
-  //           bold: true,
-  //           alignment: 'center',
-  //           margin: [0, 10, 0, 10],
-  //         },
-  //         name: {
-  //           fontSize: refSize-4,
-  //           alignment: 'center',
-  //         },
-  //         jobTitle: {
-  //           fontSize: 14,
-  //           bold: true,
-  //           italics: true
-  //         },
-  //         sign: {
-  //           margin: [0, 50, 0, 10],
-  //           alignment: 'right',
-  //           italics: true
-  //         },
-  //         tableExample: {
-  //           margin: [0, 10, 0, 10]
-  //         },
-  //         tableHeader: {
-  //           bold: true,
-  //           fontSize: 11,
-  //           color: 'black'
-  //         }          
-  //       }   // fine style 
-      
-  //     };
-
-  //     const documentSubcontractorDefinition = {
-       
-  //       content: [
-  //         {
-  //           text: 'STAMPA PER IL FASONISTA ' + subcontractor.nome + ' ( ' + subcontractor.telefono + ' )\nORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
-  //           style: 'header'
-  //         } ,
-  //         {
-  //           columns: [
-  //             {
-  //               text: 'Committente: ' + customer.nominativo ,
-  //               style: 'subheader'
-  //             },
-  //             {
-  //               text: 'Misurometro: ' + measure.misurometro,
-  //               style: 'subheader'
-  //             }
-  //           ]
-  //         },  
-  //         {
-  //           columns: [
-  //             {
-  //               text: 'Collo: '        + measure.collo + '\n' +
-  //                     'Spalla: '       + this.convertipositivi(measure.spalla) + '\n' +
-  //                     'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n' +
-  //                     'Bicipite Tot x Braccio: '     + this.convertipositivi(measure.bicipite) + '\n' +
-  //                     'Avamb Tot x Braccio: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
-  //               style: 'name'
-  //             },
-  //             {
-  //               text: 'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n' +
-  //                     'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n' +
-  //                     'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n' +
-  //                     'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n' +
-  //                     'Polso: '    + measure.polso + '\n',
-  //               style: 'name'
-  //             },
-  //             {
-  //               text: 'TORACE AVANTI' + '\n' +
-  //                     '1° Bottone: '     + this.convertipositivi(measure.torace.split(';')[0]) + '\n' +
-  //                     '2° Bottone: '     + this.convertipositivi(measure.torace.split(';')[1]) + '\n' +
-  //                     '3° Bottone: '     + this.convertipositivi(measure.torace.split(';')[2]) + '\n',
-  //               style: 'name'
-  //             },
-  //             {
-  //               text: '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n' +
-  //                     '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n' +
-  //                     '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n' +
-  //                     '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n' +
-  //                     '8° Bottone: '     + this.convertipositivi(measure.torace.split(';')[7]) + '\n',
-  //               style: 'name'
-  //             }                                        
-  //           ]
-  //         },
-  //         '\n',
-  //         {
-  //           image: base64,
-  //           width: 250,
-  //           alignment: 'center'
-  //         },
-  //         '\n',
-  //         {
-  //           text: 'ELENCO CAMICIE',
-  //           style: 'subheader',
-  //           alignment: 'left',
-  //           margin: [0, 10, 0, 0]
-  //         },
-  //         {
-  //           style: 'name',
-  //           alignment: 'left',
-  //           table: {
-  //             heights: 70,
-  //             widths: ['*', 100],
-  //             body: obj
-  //           }
-  //         },                                       
-  //         // {
-  //         //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
-  //         //   style: 'subheader',
-  //         //   alignment: 'left',
-  //         // },
-  //         {
-  //           text: 'NOTE PER IL FASONISTA',
-  //           style: 'subheader',
-  //           alignment: 'left',
-  //           margin: [0, 10, 0, 0]
-  //         },
-  //         {
-  //           style: 'name',            
-  //           alignment: 'left',
-  //           table: {
-  //             widths: ['*'],              
-  //             body: [
-  //               [noteFasonista],
-  //             ]
-  //           }
-  //         },          
-  //         // {
-  //         //   columns: [
-  //         //     {
-  //         //       text: 'Data consegna: ' + order.data_consegna,
-  //         //       style: 'subheader',
-  //         //       alignment: 'left'
-  //         //     },
-  //         //     {
-  //         //       text: 'Modalità consegna: ' + order.mod_consegna,
-  //         //       style: 'subheader',
-  //         //       alignment: 'left'
-  //         //     }
-  //         //   ]
-  //         // },  
-  //         // 'NOTE PER IL CLIENTE ' ,
-  //         // {
-  //         //   style: 'subheader',
-  //         //   alignment: 'left',
-  //         //   table: {
-  //         //     widths: ['*'],
-  //         //     body: [
-  //         //       [noteClinte],
-  //         //     ]
-  //         //   }
-  //         // },
-  //         // {
-  //         //   columns: [
-  //         //     {
-  //         //       text: 'Totale: ' +  order.totale + '\n'
-  //         //           + 'Acconto: ' + order.acconto + '\n'
-  //         //           + 'Saldo: ' + order.saldo + '\n',
-  //         //       style: 'subheader'
-  //         //     },
-  //         //     {
-  //         //       text: 'Saldato: ' + order.saldato,
-  //         //       style: 'subheader'
-  //         //     }
-  //         //   ]
-  //         // }          
-  //       ],       
-  //       info: {
-  //         title: 'STAMPA ORDINE N°' + order.idordini,
-  //         author: 'idealprogetti.com',
-  //         subject: 'Riepilogo Lavorazioni',
-  //         keywords: 'RESUME, ONLINE RESUME', 
-  //         producer: 'porfidiacamicie.com',
-  //         creator: 'porfidiacamicie.com'         
-  //       },
-        
-  //       styles: {
-  //         header: {
-  //           fontSize: refSize,
-  //           bold: true,
-  //           alignment: 'center',
-  //           margin: [0, 10, 0, 10],
-  //         },
-  //         subheader: {
-  //           fontSize: refSize-2,
-  //           bold: true,
-  //           alignment: 'center',
-  //           margin: [0, 10, 0, 10],
-  //         },
-  //         name: {
-  //           fontSize: refSize-4,
-  //           alignment: 'center',
-  //         },
-  //         jobTitle: {
-  //           fontSize: 14,
-  //           bold: true,
-  //           italics: true
-  //         },
-  //         sign: {
-  //           margin: [0, 50, 0, 10],
-  //           alignment: 'right',
-  //           italics: true
-  //         },
-  //         tableExample: {
-  //           margin: [0, 10, 0, 10]
-  //         },
-  //         tableHeader: {
-  //           bold: true,
-  //           fontSize: 11,
-  //           color: 'black'
-  //         }          
-  //       }   // fine style 
-      
-  //     };      
-
-  //   //  pdfMake.createPdf(documentDefinition).download();
-      
-  //     if ( type == 'for_customer') {
-  //       pdfMake.createPdf(documentCustomerDefinition).open();
-  //     } else if ( type == 'for_subcontractor' ) {
-  //       pdfMake.createPdf(documentSubcontractorDefinition).open();
-  //     }    
-     
-  //   }  
+ 
 
   public static generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], subcontractor?: Subcontractor, type?: string){
 
@@ -730,7 +241,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                   style: 'name'
                 },
                 {
-                  text: 'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
+                  text: 'Lun Camicia Dietro: '           + this.convertipositivi(measure.bacino) + '\n\n' +
+                        'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
                         'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
                         'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
                         'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
@@ -745,7 +257,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                   style: 'name'
                 },
                 {
-                  text: '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n\n' +
+                  text: 'AUMENTARE SOLO AVANTI' + '\n\n' +
+                        '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n\n' +
                         '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n\n' +
                         '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n\n' +
                         '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n\n' +
@@ -948,7 +461,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                     style: 'name'
                   },
                   {
-                    text: 'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
+                    text: 'Lun Camicia Dietro: '           + this.convertipositivi(measure.bacino) + '\n\n' +
+                          'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
                           'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
                           'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
                           'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
@@ -963,7 +477,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                     style: 'name'
                   },
                   {
-                    text: '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n\n' +
+                    text: 'AUMENTARE SOLO AVANTI' + '\n\n' +
+                          '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n\n' +
                           '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n\n' +
                           '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n\n' +
                           '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n\n' +
@@ -1171,7 +686,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                     style: 'name'
                   },
                   {
-                    text: 'Lun Camicia: '          + '\n\n' +
+                    text: 'Lun Camicia Dietro: ' + '\n\n' +
+                          'Lun Camicia: '          + '\n\n' +
                           'Centro Schiena: '     + '\n\n' +
                           'Vita Dietro: '       + '\n\n' +
                           'Bacino Dietro: '  + '\n\n' +
@@ -1186,7 +702,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                     style: 'name'
                   },
                   {
-                    text: '',
+                    text: 'AUMENTARE SOLO AVANTI',
                     style: 'name'
                   }                                       
                 ]
@@ -1194,7 +710,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                   {  margin: [-12, 0, -30,20],
                     columns: [
                   {
-                    text:  '1° Bottone: '     + '\n\n' +
+                    text: '1° Bottone: '     + '\n\n' +
                           '2° Bottone: '    + '\n\n' +
                           '3° Bottone: '      + '\n',
                     style: 'name'
@@ -1370,7 +886,8 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                     style: 'name'
                   },
                   {
-                    text: 'Lun Camicia: '   + this.convertipositivi(measure.lung_camicia)       + '\n\n' +
+                    text: 'Lun Camicia Dietro: ' + this.convertipositivi(measure.bacino) + '\n\n' +
+                          'Lun Camicia: '   + this.convertipositivi(measure.lung_camicia)       + '\n\n' +
                           'Centro Schiena: ' + this.convertipositivi(measure.lung_avambraccio)    + '\n\n' +
                           'Vita Dietro: '  + this.convertipositivi(measure.vita_dietro)     + '\n\n' +
                           'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro)  + '\n\n' +
@@ -1385,7 +902,7 @@ if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
                     style: 'name'
                   },
                   {
-                    text: '',
+                    text: 'AUMENTARE SOLO AVANTI',
                     style: 'name'
                   }                                       
                 ]

@@ -407,8 +407,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
         // console.log('misurometro: ' + result.shirtIndicatorControl);
 
         if(result.formModal == 'inserimento')  {
-          console.log('inserimento');
-          console.log('MISUROMETRO: ' + result.shirtIndicatorControl);
+          // console.log('inserimento');
+          // console.log('MISUROMETRO: ' + result.shirtIndicatorControl);
 
           //chiamata REST
           this.postDataLess('measures',        
@@ -424,7 +424,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "avambraccio": result.avambraccio,
             "lung_avambraccio": result.centro_schiena,
             "bacino_dietro": result.bacino_dietro,
-            "bacino": '',
+            "bacino": result.bacino,
             "torace": torace,
             "misurometro": result.shirtIndicatorControl,
             "note_grafiche": base64,
@@ -434,7 +434,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           
         }
         else if (result.formModal == 'aggiornamento'){
-          console.log('aggiornamento');
+          // console.log('aggiornamento');
 
           //chiamata REST
           this.putDataLess('measures',        
