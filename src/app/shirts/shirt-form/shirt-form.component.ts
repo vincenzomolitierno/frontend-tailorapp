@@ -46,13 +46,6 @@ export class ShirtFormComponent implements OnInit {
         public restBackendService: RESTBackendService) {
     
     this.formModal = data.formModal;    
-    // this.shirt = data.formModal;  
-    // this.ordini_idordini = data.formModal;  
-
-    console.log('inizio camicie');
-    // console.log(data);
-
-    // this.ordini_idordini = data.ordini_idordini;
 
     //costruzione del reactive form
     this.reactiveForm = new FormGroup({
@@ -65,7 +58,7 @@ export class ShirtFormComponent implements OnInit {
       cuciture: new FormControl(''),
       tipo_bottone: new FormControl(''),
       iniziali: new FormControl(''),
-      switchIniziali: new FormControl(''),
+      switchIniziali: new FormControl(''),//apre il pannello per inserire le iniziali
       stile_carattere: new FormControl('SI'),
       posizione_iniziali: new FormControl(''),
       maiuscolo: new FormControl('SI'),

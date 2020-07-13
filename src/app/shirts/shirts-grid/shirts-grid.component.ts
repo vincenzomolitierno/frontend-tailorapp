@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { MatDialog, MatSort, MatPaginator, MatDialogConfig, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { ShirtFormComponent } from '../shirt-form/shirt-form.component';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
@@ -16,7 +16,7 @@ import { stringify } from 'querystring';
   templateUrl: './shirts-grid.component.html',
   styleUrls: ['./shirts-grid.component.css']
 })
-export class ShirtsGridComponent extends GridModel implements OnInit {
+export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges {
 
   @Input() ordini_idordini: string;
 
@@ -40,7 +40,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     'indietro',
 
     'presenza_iniziali',
-    // 'update',
+    'update',
     'view',
     'delete'
   ];
@@ -53,9 +53,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
   }
 
   ngOnInit() {
-    
-    console.log(this.ordini_idordini);
-    
+       
     if ( this.ordini_idordini ) {
       console.log('ordine preesistente');
       this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
@@ -66,27 +64,21 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
   }
 
+  ngOnChanges() {
+    this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
+  }  
+
   // OVERRIDE
   public getRemoteDataQuery(tagResourse: string, queryParameter: QueryParameter):any {
 
-    // this.resourceQuery = [];
-
     var key = Object.keys(queryParameter);
     var value = Object.values(queryParameter);
-
-    console.log(key);
-    console.log(value);
     
    // chiamata RESTFul per ottenere la risorsa, cioè l'elenco di tutti gli item
    this.restBackendService.getResourceQuery(tagResourse,
      key + '=' + value).subscribe(
      (data) => {
 
-            console.log('CAMICIE ASSOCIATE ALL\'ORDINE');
-            console.log(data);
-
-            // this.resourceQuery = data;
-            // this.shirtsAdded = data;
             var shirts: Shirt[] = data;
             shirts.sort((a, b) => (a.idcamicie < b.idcamicie) ? 1 : -1);
 
@@ -112,63 +104,47 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
       shirt: shirt,
       ordini_idordini: this.ordini_idordini, 
       formModal: formModal };
-
     dialogConfig.disableClose = true;      
-
+    dialogConfig.autoFocus = true;
     const dialogRef = this.dialog.open(ShirtFormComponent, dialogConfig);    
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('shirt', result);
 
-      if ( result ) { //INSERIMENTO DELLA NUOVA CAMICIA
+      if ( result ) { // si è scelto di confermare
 
-        var tasca: string;
-        if(result.tasca)
-          tasca = 'SI';
-        else  
-          tasca = 'NO';
+        var shirt: Shirt = result;        
+        if ( formModal == 'inserimento' ) { //INSERIMENTO DELLA NUOVA CAMICIA
 
-        var cuciture: string;
-        if(result.cuciture)
-          cuciture = 'SI';
-        else  
-          cuciture = 'NO';    
-         
-        var stecche_estraibili: string;
-        if(result.stecche_estraibili)
-          stecche_estraibili = 'SI';
-        else  
-          stecche_estraibili = 'NO';   
-        
-        var presenza_iniziali: string;
-        if(result.switchIniziali)
-          presenza_iniziali = 'SI';
-        else  
-          presenza_iniziali = 'NO';   
-
-        // var maiuscolo: string;          
-        // if(result.maiuscolo)
-        //   maiuscolo = 'SI';
-        // else  
-        //   maiuscolo = 'NO'; 
-        // console.log('maiuscolo',result.maiuscolo);   
-        // console.log('maiuscolo var',maiuscolo);   
+          var tasca: string;
+          if(result.tasca)
+            tasca = 'SI';
+          else  
+            tasca = 'NO';
+  
+          var cuciture: string;
+          if(result.cuciture)
+            cuciture = 'SI';
+          else  
+            cuciture = 'NO';    
+           
+          var stecche_estraibili: string;
+          if(result.stecche_estraibili)
+            stecche_estraibili = 'SI';
+          else  
+            stecche_estraibili = 'NO';   
           
-        // var stile_carattere: string;
-        // if( result.stile_carattere )
-        //   stile_carattere = 'SI';
-        // else  
-        //   stile_carattere = 'NO';    
-        // console.log('stile_carattere',result.stile_carattere);         
-        // console.log('stile_carattere var',stile_carattere); 
-
-        var posizione_iniziali: string;
-        if(result.posizione_iniziali.descrizione)
-          posizione_iniziali = result.posizione_iniziali.descrizione;
-        else  
-          posizione_iniziali = '';            
-          
-        var obj = {    
+          var presenza_iniziali: string;
+          if(result.switchIniziali)
+            presenza_iniziali = 'SI';
+          else  
+            presenza_iniziali = 'NO';   
+  
+          var posizione_iniziali: string;
+          if(result.posizione_iniziali.descrizione)
+            posizione_iniziali = result.posizione_iniziali.descrizione;
+          else  
+            posizione_iniziali = '';            
+            
+          var obj = {    
             'avanti_idavanti': result.avanti_idavanti,
             "colore": result.colore,
             "cuciture": cuciture,
@@ -186,21 +162,36 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
             "stile_carattere": result.stile_carattere,
             "tasca": tasca,
             "tipo_bottone": result.tipo_bottone
-          }
+          };
+  
+          this.postData('shirts', obj);           
+          
+        } else if ( formModal == 'aggiornamento' ) { //AGGIORNAMENTO DELLA CAMICIA
 
-        console.log('CAMICIA DA INSERIRE');
-        console.log(obj);
-        this.postData('shirts', obj);       
+          var obj = {    
+            'avanti_idavanti': result.avanti_idavanti,
+            "colore": result.colore,
+            "cuciture": cuciture,
+            "indietro_idindietro": result.indietro_idindietro,
+            "iniziali": result.iniziali,
+            "maiuscolo": result.maiuscolo,
+            "modellocollo_idmodello": result.modellocollo_idmodello,
+            "modellopolso_idmodello": result.modellopolso_idmodello,
+            "note": result.note,
+            "numero_capi": parseInt(result.numero_capi),
+            "ordini_idordini": this.ordini_idordini,
+            "pos_iniziali": posizione_iniziali,
+            "presenza_iniziali": presenza_iniziali,
+            "stecche_estraibili": stecche_estraibili,
+            "stile_carattere": result.stile_carattere,
+            "tasca": tasca,
+            "tipo_bottone": result.tipo_bottone
+          };
 
-        // //SI AGGIUNGE L'OGGETTO CAMICIA ALLA RACCOLTA E LO SI NOTIFICA AL PARENT
-        // this.shirtsAdded.push(obj);
-        // this.shirtsAddEvent.emit(this.shirtsAdded);   
+          this.postData('shirts', obj);            
 
-        // //si aggiornano i dati in tabella
-        // this.dataSource = new MatTableDataSource(this.shirtsAdded);                 
-        // this.dataSource.paginator = this.paginatorTable;    
-        // this.dataSource.sort = this.sortTable;  
-        // //
+          
+        }
         
       }
 
@@ -224,14 +215,6 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
       
       if( result ) { 
 
-        console.log(result);
-
-        // const index = this.shirtsAdded.indexOf('idcamicie', shirts.idcamicie);
-        // if (index > -1) {
-        //   this.shirtsAdded.splice(index, 1);
-        // }  
-        // this.shirtsAddEvent.emit(this.shirtsAdded);      
-       
         this.restBackendService.delResource('shirts',
         {
           "idcamicie": shirts.idcamicie
@@ -270,9 +253,6 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
   openView(shirt: any) {
 
-    // this.openSnackBar(this.creaStringaCamicia(shirt));
-    
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true;
@@ -282,7 +262,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
     };          
     const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      // console.log(result);
     });  
 
 
@@ -291,8 +271,6 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
   creaStringaCamicia(shirt: any): string {
     var element = shirt;
     var stringa: string = '';
-
-    console.log('shirt',shirt);
 
     if ( element.presenza_iniziali == 'SI' ) {
 
@@ -326,13 +304,11 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
       'lettere iniziali: ' + element.iniziali + '\n' +
       'posizioni iniziali: ' + element.pos_iniziali;
       
-      console.log('stile_carattere',element.stile_carattere);
       if ( element.stile_carattere == 'SI' )
         stringa = stringa + '\n' + 'corsivo';
       else if ( element.stile_carattere == 'NO' )
         stringa = stringa + '\n' + 'stampato';      
       
-        console.log('maiuscolo',element.maiuscolo);
       if ( element.maiuscolo == 'SI' )
         stringa = stringa + '\n' + 'maiuscolo';
       else if ( element.maiuscolo == 'NO' )
@@ -372,7 +348,6 @@ export class ShirtsGridComponent extends GridModel implements OnInit {
 
     }   
 
-    // console.log('dettagli camicia', stringa);
     return stringa;
   }
 

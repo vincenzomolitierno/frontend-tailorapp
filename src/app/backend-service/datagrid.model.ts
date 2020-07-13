@@ -218,9 +218,14 @@ export class GridModel {
     );
   }
 
-  openSnackBar(message: string) {
+  openSnackBar(message: string, _duration?: number) {
+    var duration: number = 4000; 
+    if( _duration ){
+      duration = _duration;
+    }
+
     this.snackBar.open(message.toUpperCase(), 'Chiudi', {
-      duration: 4000,
+      duration: duration,
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });

@@ -1,6 +1,11 @@
 <div class="confirm-dialog">
     <h1 mat-dialog-title>{{titolo}}</h1>
-    <div mat-dialog-content>{{messaggio}}</div>
+    <div mat-dialog-content>
+        <p>{{messaggio}}</p>
+        <p>{{messaggioOK}}</p>
+        <p>{{messaggioDiscard}}</p>
+    </div>
+
     <div mat-dialog-actions align="end">
         <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
         <button mat-button [mat-dialog-close]="true">Conferma</button>

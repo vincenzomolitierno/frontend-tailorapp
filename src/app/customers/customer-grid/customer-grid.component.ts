@@ -261,7 +261,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
 
           
           var dataMisura = this.measureCustomerDetailView.data_misure.split(' ')[0];
-          this.measureCustomerDetailView.data_misure = dataMisura.split('/')[1] + '/' + dataMisura.split('/')[0] + '/' + dataMisura.split('/')[2];
+          var oraMisura = this.measureCustomerDetailView.data_misure.split(' ')[1];
+          this.measureCustomerDetailView.data_misure = dataMisura.split('/')[1] + '/' + dataMisura.split('/')[0] + '/' + dataMisura.split('/')[2] + ' alle ore ' + oraMisura.split(':')[0]+ ':' + oraMisura.split(':')[1];
 
           console.log(this.measureCustomerDetailView);       
           if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[0])))
@@ -478,129 +479,154 @@ export class CustomerGridComponent extends GridModel implements OnInit {
           var array: Array<Measure> = data;
           if ( array.length > 0 ) { // se c'è la misura si procede all'inserimento dell'ordine
 
-              var measure: Measure = array[0];
-              const dialogConfig = new MatDialogConfig();
-              dialogConfig.data = {
-                customer: customer, 
-                order: {},
-                measure: measure,
-                formModal: formModal, //inserimento
-              };
+              var measure: Measure = array[0]; //la chiamate al backend restituisce sempre la misura più recente ecco perchè è corretto usare data[0]
 
-              dialogConfig.autoFocus = true;
-              dialogConfig.disableClose = true;   
-          
-              const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
-          
-              dialogRef.afterClosed().subscribe(result => {
-                // azioni dopo la chiusura della dialog
-                if (result) {
-                  //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE                 
-                  console.log('SALVATAGGIO ORDINE');
+              // # INIZIO - controllo esistenza di un ordine
+              this.restBackendService.getResourceQuery('ordersTemplate','idclienti' + '=' + customer.idclienti).subscribe(
+                (data) => {
 
-                  var shirts: Shirt[] = result.shirts;
-                  var order: Order = result.order;
+                  var arrayData: any[] = data;
+                  var orderToForm: Order = null;
+                  var shirtsToForm: Shirt[] = null;
 
-                  var data_consegna = new Date(order.data_consegna);
-                  // INIZIO formattazione della data di consegna
-                  var giorno: number = data_consegna.getDate() ;
-                  var strGiorno: string;
-                  if ( giorno < 10 ) 
-                    strGiorno = '0' + giorno.toFixed(0);
-                  else
-                    strGiorno = giorno.toFixed(0);    
+                  console.log('ordini esistenti', arrayData);
+                  if ( arrayData.length > 0 ) {                     
+                    orderToForm = data[0].ordine;
+                    shirtsToForm = data[0].camicie;
+                  }
 
-                  var mese: number = data_consegna.getMonth() + 1 ;
-                  var strMese: string;
-                  if ( mese < 10 ) 
-                    strMese = '0' + mese.toFixed(0);
-                  else
-                    strMese = mese.toFixed(0);                
-
-                  var strDataConsegna = strGiorno + '/' +
-                                        strMese + '/' +
-                                        data_consegna.getFullYear().toFixed(0);
-                  // FINE formattazione della data di consegna
-
-                  if( order.saldato )
-                    var saldato = 'SI';
-                  else
-                    var saldato = 'NO';
-
-                  if( order.consegnato )
-                    var consegnato = 'SI';
-                  else
-                    var consegnato = 'NO';    
+                  // Gestione nuovo ordine
+                  const dialogConfig = new MatDialogConfig();
+                  dialogConfig.data = {
+                    customer: customer, 
+                    order: orderToForm, // orderToForm è l'ordine utile per precaricare la form su volontà dell'utente nel caso di inserimento di nuovo ordine
+                    orderMeasure: measure,  // misura utilizzata al momento della creazione dell'ordine, corrisponde all'ultima presente
+                    latestMeasure: measure, // ultima misura disponibile del cliente 
+                    shirtsInOrder: shirtsToForm,                   
+                    formModal: formModal, //inserimento
+                  };  
+                  dialogConfig.autoFocus = true;
+                  dialogConfig.disableClose = true;                 
+                  const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);              
+                  dialogRef.afterClosed().subscribe(result => {
+                    // azioni dopo la chiusura della dialog
+                    if (result) {
+                      //CHIAMATA REST PER L'INSERIMENTO DELL'ORDINE                 
+                      console.log('SALVATAGGIO ORDINE');
+    
+                      var shirts: Shirt[] = result.shirts;
+                      var order: Order = result.order;
+    
+                      var data_consegna = new Date(order.data_consegna);
+                      // INIZIO formattazione della data di consegna
+                      var giorno: number = data_consegna.getDate() ;
+                      var strGiorno: string;
+                      if ( giorno < 10 ) 
+                        strGiorno = '0' + giorno.toFixed(0);
+                      else
+                        strGiorno = giorno.toFixed(0);    
+    
+                      var mese: number = data_consegna.getMonth() + 1 ;
+                      var strMese: string;
+                      if ( mese < 10 ) 
+                        strMese = '0' + mese.toFixed(0);
+                      else
+                        strMese = mese.toFixed(0);                
+    
+                      var strDataConsegna = strGiorno + '/' +
+                                            strMese + '/' +
+                                            data_consegna.getFullYear().toFixed(0);
+                      // FINE formattazione della data di consegna
+    
+                      if( order.saldato )
+                        var saldato = 'SI';
+                      else
+                        var saldato = 'NO';
+    
+                      if( order.consegnato )
+                        var consegnato = 'SI';
+                      else
+                        var consegnato = 'NO';    
+                        
+                      // console.log('ordine',{
+                      //   "note": order.note,
+                      //   "acconto": order.acconto,
+                      //   "saldo": order.saldo,
+                      //   "totale": order.totale,
+                      //   "data_consegna": strDataConsegna,
+                      //   "consegnato": consegnato,
+                      //   "saldato": saldato,
+                      //   "note_x_fasonista": order.note_x_fasonista,
+                      //   "mod_consegna": order.mod_consegna,
+                      //   "data_ordine": order.data_ordine,
+                      //   "clienti_idclienti": order.clienti_idclienti,
+                      //   "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
+                      //   "id_misure_ordinate": order.id_misure_ordinate
+                      // });              
+    
+                      // this.restBackendService.postResource('orders',                  
+                      this.restBackendService.putResource('orders',                  
+                      {
+                        "idordini": order.idordini,
+                        "note": order.note,
+                        "acconto": order.acconto,
+                        "saldo": order.saldo,
+                        "totale": order.totale,
+                        "data_consegna": strDataConsegna,
+                        "consegnato": consegnato,
+                        "saldato": saldato,
+                        "note_x_fasonista": order.note_x_fasonista,
+                        "mod_consegna": order.mod_consegna,
+                        "data_ordine": order.data_ordine,
+                        "clienti_idclienti": order.clienti_idclienti,
+                        "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
+                        "id_misure_ordinate": order.id_misure_ordinate
+                      }).subscribe(
+                        (data) =>{
+    
+                          //   var orderAdded: Order = new Order();
+                          //   orderAdded = data;
+                          //   // si provvede ad inserire le camicie
+                          //   var idordine = orderAdded.idordini;
+                          //   console.log('ID ORDINE: ' + idordine);
+                          // if(shirts){
+                          //   for (let index = 0; index < shirts.length; index++) {
+                              
+                          //     const shirt = shirts[index];
+                          //     console.log('INSERIMENTO CAMICIA')
+                          //     console.log(shirt);
+                          //     shirt.ordini_idordini = orderAdded.idordini;
+                          //     this.postData('shirts', shirt);       
+                              
+                          //   }
+                          // }
+    
+                            this.getRemoteData('customers');
+    
+                            this.openSnackBar('Ordine inserito con successo', 1500);
+    
+                            // routing verso il form ordini
+                            this.router.navigateByUrl('/dashboard/orders');
+                        },
+                        (error) =>{
+                          console.error(error);
+                          console.error('Message: ' + error.message);                      
+                        }
+                      );
                     
-                  console.log('ordine',{
-                    "note": order.note,
-                    "acconto": order.acconto,
-                    "saldo": order.saldo,
-                    "totale": order.totale,
-                    "data_consegna": strDataConsegna,
-                    "consegnato": consegnato,
-                    "saldato": saldato,
-                    "note_x_fasonista": order.note_x_fasonista,
-                    "mod_consegna": order.mod_consegna,
-                    "data_ordine": order.data_ordine,
-                    "clienti_idclienti": order.clienti_idclienti,
-                    "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
-                    "id_misure_ordinate": order.id_misure_ordinate
-                  });
-              
-
-                  // this.restBackendService.postResource('orders',                  
-                  this.restBackendService.putResource('orders',                  
-                  {
-                    "idordini": order.idordini,
-                    "note": order.note,
-                    "acconto": order.acconto,
-                    "saldo": order.saldo,
-                    "totale": order.totale,
-                    "data_consegna": strDataConsegna,
-                    "consegnato": consegnato,
-                    "saldato": saldato,
-                    "note_x_fasonista": order.note_x_fasonista,
-                    "mod_consegna": order.mod_consegna,
-                    "data_ordine": order.data_ordine,
-                    "clienti_idclienti": order.clienti_idclienti,
-                    "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
-                    "id_misure_ordinate": order.id_misure_ordinate
-                  }).subscribe(
-                    (data) =>{
-
-                      //   var orderAdded: Order = new Order();
-                      //   orderAdded = data;
-                      //   // si provvede ad inserire le camicie
-                      //   var idordine = orderAdded.idordini;
-                      //   console.log('ID ORDINE: ' + idordine);
-                      // if(shirts){
-                      //   for (let index = 0; index < shirts.length; index++) {
-                          
-                      //     const shirt = shirts[index];
-                      //     console.log('INSERIMENTO CAMICIA')
-                      //     console.log(shirt);
-                      //     shirt.ordini_idordini = orderAdded.idordini;
-                      //     this.postData('shirts', shirt);       
-                          
-                      //   }
-                      // }
-
-                        this.getRemoteData('customers');
-
-                        this.openSnackBar('Ordine inserito con successo', 1500);
-
-                        // routing verso il form ordini
-                        this.router.navigateByUrl('/dashboard/orders');
-                    },
-                    (error) =>{
-                      console.error(error);
-                      console.error('Message: ' + error.message);                      
                     }
-                  );
-                
-                }
-              });                    
+                  }); 
+                  // FINE - gestione nuovo ordine                  
+
+
+
+
+                },
+                (error) => {}
+              );
+              // # FINE - controllo esistenza di un ordine
+
+                                
 
           } else { // non c'è una misura per il cliente
 

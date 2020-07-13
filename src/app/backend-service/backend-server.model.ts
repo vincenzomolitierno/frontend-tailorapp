@@ -19,6 +19,7 @@ export class BackendServer {
     // ORDINI
     private apiResourceOrders: string = this.base + '/ordini';
     private apiResourceOrdersQuery: string = this.base + '/OrdiniValues';
+    private apiResourceOrdersTemplateQuery: string = this.base + '/OrdiniTemplate';
 
     // CATALOGHI
     private apiResourceNeckModels: string = this.base + '/modellocollo';
@@ -81,6 +82,9 @@ export class BackendServer {
             
             case 'ordersValues':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceOrdersQuery;
+
+            case 'ordersTemplate':
+                return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceOrdersTemplateQuery;
 
             case 'subcontractors':
                 return this.protocol + '://' + this.host + ':' + this.port + this.apiResourceSubcontractors;                  

@@ -70,145 +70,149 @@ export class OrderGridComponent extends GridModel implements OnInit {
         var customers: Customer[] = data;
         var customer: Customer = customers.find(x => x.idclienti === order.clienti_idclienti);
 
-        this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
-          (data) => {          
+        
+          this.restBackendService.getResourceQuery('measuresQuery','idmisure=' + String(order.id_misure_ordinate)).subscribe(
+          (data) => {    
             
-            //INIZIO
-            const dialogConfig = new MatDialogConfig();
-            dialogConfig.data = {
-              customer: customer,
-              order: order, 
-              measure: data[0],
-              formModal: formModal, 
-            };
+            var measureInOrder: Measure = data[0]; // indica le misure del cliente associate all'ordine al momento della sua creazione
 
-            dialogConfig.autoFocus = true;
-            dialogConfig.disableClose = true; 
-        
-            const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
-        
-            dialogRef.afterClosed().subscribe(result => {
-      
-              if (result) {      
-                console.log('AGGIORNAMENTO ORDINE');
+            // this.restBackendService.getResourceQuery('measuresQuery','idclienti=' + String(order.clienti_idclienti)).subscribe(
+              this.restBackendService.getResource('measures').subscribe(
+              (data) => {
 
-                var shirtsToAdd: Shirt[] = result.shirts;
-                var updatedOrder: Order = result.order;                
+                var measureByCustomer: Measure[] = data; // indica l'ultima misura fatta al cliente, potrebbe essere più recente di quella utilizzata nell'ordine
+                measureByCustomer.filter(m => m.clienti_idclienti === order.clienti_idclienti);
 
-                var data_consegna = new Date(updatedOrder.data_consegna);
-                // INIZIO formattazione della data di consegna
-                var giorno: number = data_consegna.getDate() ;
-                var strGiorno: string;
-                if ( giorno < 10 ) 
-                  strGiorno = '0' + giorno.toFixed(0);
-                else
-                  strGiorno = giorno.toFixed(0);    
+                //INIZIO FORM ORDINE
+                const dialogConfig = new MatDialogConfig();
+                dialogConfig.data = {
+                  customer: customer,
+                  order: order, 
+                  orderMeasure: measureInOrder,  // misura utilizzata al momento della creazione dell'ordine
+                  latestMeasure: measureByCustomer[measureByCustomer.length-1], // ultima misura possibile del cliente, potrebbe anche essere successiva a quella con cui è fatto l'ordine
+                  formModal: formModal, 
+                };
 
-                var mese: number = data_consegna.getMonth() + 1 ;
-                var strMese: string;
-                if ( mese < 10 ) 
-                  strMese = '0' + mese.toFixed(0);
-                else
-                  strMese = mese.toFixed(0);                
+                dialogConfig.autoFocus = true;
+                dialogConfig.disableClose = true; 
+            
+                const dialogRef = this.dialog.open(OrderFormComponent, dialogConfig);
+            
+                dialogRef.afterClosed().subscribe(result => {
+                    // si ha l'aggiornamento dell'ordine
+                    if (result) {      
+                      console.log('AGGIORNAMENTO ORDINE');
 
-                var strDataConsegna = strGiorno + '/' +
-                                      strMese + '/' +
-                                      data_consegna.getFullYear().toFixed(0);
-               // FINE formattazione della data di consegna
+                      var shirtsToAdd: Shirt[] = result.shirts;
+                      var updatedOrder: Order = result.order;                
 
-                if( updatedOrder.saldato )
-                  var saldato = 'SI';
-                else
-                  var saldato = 'NO';
+                      var data_consegna = new Date(updatedOrder.data_consegna);
+                      // INIZIO formattazione della data di consegna
+                      var giorno: number = data_consegna.getDate() ;
+                      var strGiorno: string;
+                      if ( giorno < 10 ) 
+                        strGiorno = '0' + giorno.toFixed(0);
+                      else
+                        strGiorno = giorno.toFixed(0);    
 
-                if( updatedOrder.consegnato )
-                  var consegnato = 'SI';
-                else
-                  var consegnato = 'NO';   
-                
-                  console.log('ordine',{
-                    "note": order.note,
-                    "acconto": order.acconto,
-                    "saldo": order.saldo,
-                    "totale": order.totale,
-                    "data_consegna": strDataConsegna,
-                    "consegnato": consegnato,
-                    "saldato": saldato,
-                    "note_x_fasonista": order.note_x_fasonista,
-                    "mod_consegna": order.mod_consegna,
-                    "data_ordine": order.data_ordine,
-                    "clienti_idclienti": order.clienti_idclienti,
-                    "fasonatori_idfasonatori": order.fasonatori_idfasonatori,
-                    "id_misure_ordinate": order.id_misure_ordinate
-                  });
+                      var mese: number = data_consegna.getMonth() + 1 ;
+                      var strMese: string;
+                      if ( mese < 10 ) 
+                        strMese = '0' + mese.toFixed(0);
+                      else
+                        strMese = mese.toFixed(0);                
 
-                  this.restBackendService.putResource('orders', {
-                    "idordini": updatedOrder.idordini, 
-                    "note": updatedOrder.note,
-                    "acconto": updatedOrder.acconto,
-                    "saldo": updatedOrder.saldo,
-                    "totale": updatedOrder.totale,
-                    "data_consegna": strDataConsegna,
-                    "consegnato": consegnato,
-                    "saldato": saldato,
-                    "note_x_fasonista": updatedOrder.note_x_fasonista,
-                    "mod_consegna": updatedOrder.mod_consegna,
-                    "data_ordine": updatedOrder.data_ordine,
-                    "clienti_idclienti": updatedOrder.clienti_idclienti,
-                    "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
-                    "id_misure_ordinate": updatedOrder.id_misure_ordinate
-                  }).subscribe(
-                    (data)=>{
-                      this.getRemoteData('ordersValues');   
-                    },
-                  );
+                      var strDataConsegna = strGiorno + '/' +
+                                            strMese + '/' +
+                                            data_consegna.getFullYear().toFixed(0);
+                    // FINE formattazione della data di consegna
 
-                //AGGIORNAMENTO CAMICIE DELL'ORDINI
-                // si eliminano prima tutte le camicie preesistenti
-                // this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + updatedOrder.idordini ).subscribe(
-                //   (data) => {
-    
-                //     var shirtsToDelete: Shirt[] = data;            
-                //     console.log('CAMICIE DA CANCELLARE');   
-                //     console.log(shirtsToDelete);   
-                    
-                //     for (let index = 0; index < shirtsToDelete.length; index++) {
-                //       const shirtToDelete = shirtsToDelete[index];
+                      if( updatedOrder.saldato )
+                        var saldato = 'SI';
+                      else
+                        var saldato = 'NO';
 
-                //       this.restBackendService.delResource('shirts', {'idcamicie': shirtToDelete.idcamicie }).subscribe(
-                //         (data) => {     
-                             
-                //         },
-                //         (error) => {
-                //           this.errorHttpErrorResponse = error;
-                //           this.errorMessage = error.message;        
-                //         });                           
-                //     }                    
-                //   },
-                //   (error) => {},
-                // );
+                      if( updatedOrder.consegnato )
+                        var consegnato = 'SI';
+                      else
+                        var consegnato = 'NO';   
 
-                // //si aggiungono le nuove camicie
-                // console.log('CAMICIE DA INSERIRE');   
-                // console.log(shirtsToAdd);  
-                // if ( shirtsToAdd ) {
-                //   for (let index = 0; index < shirtsToAdd.length; index++) {                  
-                //     const shirtToAdd = shirtsToAdd[index];
-                //     console.log('INSERIMENTO CAMICIA ' + index);   
-                //     console.log(shirtToAdd);   
-                //     this.restBackendService.postResource('shirts',shirtToAdd).subscribe(
-                //       (data) => {},
-                //       (error) => {
-                //         console.error(error);
-                //         console.error('Message: ' + error.message);
-                //       },
-                //     );
-                    
-                //   }
-                // }
+                        this.restBackendService.putResource('orders', {
+                          "idordini": updatedOrder.idordini, 
+                          "note": updatedOrder.note,
+                          "acconto": updatedOrder.acconto,
+                          "saldo": updatedOrder.saldo,
+                          "totale": updatedOrder.totale,
+                          "data_consegna": strDataConsegna,
+                          "consegnato": consegnato,
+                          "saldato": saldato,
+                          "note_x_fasonista": updatedOrder.note_x_fasonista,
+                          "mod_consegna": updatedOrder.mod_consegna,
+                          "data_ordine": updatedOrder.data_ordine,
+                          "clienti_idclienti": updatedOrder.clienti_idclienti,
+                          "fasonatori_idfasonatori": updatedOrder.fasonatori_idfasonatori,
+                          "id_misure_ordinate": updatedOrder.id_misure_ordinate
+                        }).subscribe(
+                          (data)=>{
+                            this.getRemoteData('ordersValues');   
+
+                            this.openSnackBar('Ordine aggiornato con successo', 1500);
+
+                          },
+                        );
+
+                      //AGGIORNAMENTO CAMICIE DELL'ORDINI
+                      // si eliminano prima tutte le camicie preesistenti
+                      // this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + updatedOrder.idordini ).subscribe(
+                      //   (data) => {
+          
+                      //     var shirtsToDelete: Shirt[] = data;            
+                      //     console.log('CAMICIE DA CANCELLARE');   
+                      //     console.log(shirtsToDelete);   
+                          
+                      //     for (let index = 0; index < shirtsToDelete.length; index++) {
+                      //       const shirtToDelete = shirtsToDelete[index];
+
+                      //       this.restBackendService.delResource('shirts', {'idcamicie': shirtToDelete.idcamicie }).subscribe(
+                      //         (data) => {     
+                                  
+                      //         },
+                      //         (error) => {
+                      //           this.errorHttpErrorResponse = error;
+                      //           this.errorMessage = error.message;        
+                      //         });                           
+                      //     }                    
+                      //   },
+                      //   (error) => {},
+                      // );
+
+                      // //si aggiungono le nuove camicie
+                      // console.log('CAMICIE DA INSERIRE');   
+                      // console.log(shirtsToAdd);  
+                      // if ( shirtsToAdd ) {
+                      //   for (let index = 0; index < shirtsToAdd.length; index++) {                  
+                      //     const shirtToAdd = shirtsToAdd[index];
+                      //     console.log('INSERIMENTO CAMICIA ' + index);   
+                      //     console.log(shirtToAdd);   
+                      //     this.restBackendService.postResource('shirts',shirtToAdd).subscribe(
+                      //       (data) => {},
+                      //       (error) => {
+                      //         console.error(error);
+                      //         console.error('Message: ' + error.message);
+                      //       },
+                      //     );
+                          
+                      //   }
+                      // }
+                    }
+
+                  }); //FINE FORM ORDINE
+              },
+              (error) => {
+                this.errorHttpErrorResponse = error;
+                this.errorMessage = error.message;                  
               }
-
-              }); //FINE
+            );            
           },
           (error) => {
             this.errorHttpErrorResponse = error;

@@ -47,7 +47,7 @@ export class RESTBackendService {
     const now = new Date();
     var diff = Math.abs(now.getTime() - this.dateTimeToken.getTime());
     
-    console.log(JSON.parse(sessionStorage.getItem('currentUser')));
+    // console.log(JSON.parse(sessionStorage.getItem('currentUser')));
     //dopo 5 giorni
     if( diff > 432000000 ) {
       console.log('ora corrente', this.printDate(now));          
