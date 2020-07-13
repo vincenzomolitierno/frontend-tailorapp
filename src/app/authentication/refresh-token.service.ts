@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RefreshTokenService {
 
-  private checkTimePeriod: number = 60000; //48 * 60 * 60 * 1000; // h * min/h * sec/min * mill/sec [millisec]
+  private checkTimePeriod: number = 24 * 60 * 60 * 1000; // h * min/h * sec/min * mill/sec [millisec]
   private tolleranceTime: number = 24 * 60 * 60 * 1000; // h * min/h * sec/min * mill/sec [millisec]
 
   private handlerRestBackendService: RESTBackendService;
@@ -24,7 +24,7 @@ export class RefreshTokenService {
    }
 
   public startRefreshCheckService() {
-    const source = timer(1000, this.checkTimePeriod);
+    const source = timer(this.checkTimePeriod,this.checkTimePeriod);   
     const abc = source.subscribe(val => {
       console.log('refresh del token');
 
@@ -53,9 +53,6 @@ export class RefreshTokenService {
           }
           );
       }
-
-
-
       }); // fine sottoscrizione timer
   }
 
