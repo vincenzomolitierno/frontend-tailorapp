@@ -185,7 +185,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
             "modellocollo_idmodello": shirt.modellocollo_idmodello,
             "modellopolso_idmodello": shirt.modellopolso_idmodello,
             "note": shirt.note,
-            "numero_capi": shirt.numero_capi,
+            "numero_capi": Number(shirt.numero_capi),
             "ordini_idordini": shirt.ordini_idordini,
             "pos_iniziali": posizione_iniziali,
             "presenza_iniziali": shirt.presenza_iniziali,
@@ -197,8 +197,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
 
           console.log('camicia da aggironare', updatingShirt);
 
-          this.putData('shirts', updatingShirt);            
-
+          this.putDataLess('shirts', updatingShirt);            
+          this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});    
           
         }
         

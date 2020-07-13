@@ -735,10 +735,17 @@ export class PdfPrinterService {
               width: 250,
               alignment: 'center'
             },
-            
-            
-                                                  
-                  
+            {
+              margin: [-12, 20, -30, 0],
+              columns: [
+                {
+                  text: 'NOTE: ' ,
+                  style: 'subheader',
+                  alignment: 'left'
+                }
+               
+              ]
+            },                                                                                        
             {
               margin: [-12, 20, -30, 0],
               columns: [
