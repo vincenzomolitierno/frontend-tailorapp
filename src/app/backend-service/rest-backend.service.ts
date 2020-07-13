@@ -43,21 +43,6 @@ export class RESTBackendService {
     this.dateTimeToken = new Date();
   }
 
-  public checkToken(){
-    const now = new Date();
-    var diff = Math.abs(now.getTime() - this.dateTimeToken.getTime());
-    
-    // console.log(JSON.parse(sessionStorage.getItem('currentUser')));
-    //dopo 5 giorni
-    if( diff > 432000000 ) {
-      console.log('ora corrente', this.printDate(now));          
-      console.log('rilascio del token',this.printDate(this.dateTimeToken));
-      console.log('tempo trascorso', this.printElapsedTime(diff)); 
-      
-    }
-    
-  }
-
   private printDate(date: Date): string{
     var dateToString: string;
     var gg: string; 
@@ -107,8 +92,6 @@ export class RESTBackendService {
  * @memberof RESTBackendService
  */
 public getResource(tagResource: string): Observable<any> {
-
-  this.checkToken();
 
   this.httpOptions = {
     headers: new HttpHeaders({

@@ -9,6 +9,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { RESTBackendService } from './backend-service/rest-backend.service';
 import { ScriptService } from './customers/customer-grid/script.service';
 import { PdfPrinterService } from './utilities/pdf-printer.service';
+import { RefreshTokenService } from './authentication/refresh-token.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PdfPrinterService } from './utilities/pdf-printer.service';
   providers: [
     RESTBackendService,
     ScriptService,
-    PdfPrinterService
+    PdfPrinterService,
+    RefreshTokenService
   ],
   bootstrap: [
     AppComponent
