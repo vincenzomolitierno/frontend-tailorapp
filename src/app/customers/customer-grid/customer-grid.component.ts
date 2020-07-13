@@ -41,6 +41,7 @@ export class CustomerGridComponent extends GridModel implements OnInit {
   torace_7_bottone: string = '';
   torace_8_bottone: string = '';
 
+  note: string = '';
   // dummy_data: string = 'X,Y';
 
   item_empty: Customer; // per aprire il dialog per la creazione di un cliente
@@ -287,8 +288,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                   this.torace_7_bottone = this.measureCustomerDetailView.torace.split(';')[6];
 
           if(!isNaN(parseFloat(this.measureCustomerDetailView.torace.split(';')[7])))
-                  this.torace_8_bottone = this.measureCustomerDetailView.torace.split(';')[7];          
-              
+                  this.torace_8_bottone = this.measureCustomerDetailView.torace.split(';')[7];    
+                  
+          this.note = this.measureCustomerDetailView.note;                
           
           if ( this.measureCustomerDetailView.note_grafiche != '' ){
             this.dataURItoBlob(this.measureCustomerDetailView.note_grafiche).subscribe(

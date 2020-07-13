@@ -351,8 +351,6 @@ export class PdfPrinterService {
           {
             style: 'name',
             alignment: 'left',
-           
-            
             table: {
               widths: ['*'],
               body: [
@@ -566,13 +564,11 @@ export class PdfPrinterService {
             },          
             {
               style: 'name',
-              alignment: 'left',
-             
-              
+              alignment: 'left',                        
               table: {
                 widths: ['*'],
                 body: [
-                  [ noteFasonista],
+                  [noteCliente + ' ' + noteFasonista + ' ' + noteMisura],,
                 ]
               }
             }         
@@ -756,22 +752,7 @@ export class PdfPrinterService {
                 }
                
               ]
-            },  
-            // {  
-            //   text: 'NOTE',
-            //   style: 'subheader',
-            //   alignment: 'left',
-            //   margin: [0,0, 0, 0]
-            // },          
-            // {
-            //   style: 'name',
-            //   alignment: 'left',                           
-            //   table: {
-            //     widths: ['*'],
-            //     body: [''],
-                
-            //   }
-            // }         
+            },     
           ],       
           info: {
             title: 'STAMPA MODULO',
