@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ɵConsole } from '@angular/core';
+import { Component, OnInit, Inject, ɵConsole, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, DateAdapter, MatSnackBar, MatDialogConfig, MatDialog } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
@@ -8,6 +8,7 @@ import { Customer } from 'src/app/customers/data.model';
 import { Shirt } from 'src/app/shirts/shirt.model';
 import { isUndefined } from 'util';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
+import { ShirtsGridComponent } from 'src/app/shirts/shirts-grid/shirts-grid.component';
 
 interface Subcontractor {
   idfasonatori: number,
@@ -167,8 +168,8 @@ export class OrderFormComponent implements OnInit {
             const dialogRef = this.dialog.open(ActionConfirmDummyComponent, dialogConfig);    
             dialogRef.afterClosed().subscribe(result => {
               if(result){
-                console.log('inserimento ordine, esiste un ordine precedente e si è scelto di usarlo come partenza');
-                console.log('camicie dell\'ultimo ordine', this.shirtsInOrder);
+                // console.log('inserimento ordine, esiste un ordine precedente e si è scelto di usarlo come partenza');
+                // console.log('camicie dell\'ultimo ordine', this.shirtsInOrder);
                 // l 'utente vuole utilizzare i dati dell'ultimo ordine
                 // STEP 1: si creano copie delle camicie
                 
@@ -178,17 +179,14 @@ export class OrderFormComponent implements OnInit {
                   this.restBackendService.postResource('shirts',shirt).subscribe(
                     (data) => {
                        // serve per indicare al componente figlio shirts l'id ordine per recuperare le camicie
-                       console.log('si aggiornano le camicie');
-                      this.idOrdineAperto = this.dataTemporaryOrder.idordini;
+                       console.log('si comunica al child, ordine n°', this.dataTemporaryOrder.idordini);
+                       this.idOrdineAperto = this.dataTemporaryOrder.idordini;
+                       this.onUpdateShirtGrid();
                     }
                   );
                 });
 
-
-
-                this.idOrdineAperto = this.dataTemporaryOrder.idordini; // serve per indicare al componente figlio shirts l'id ordine per recuperare le camicie
-
-
+                // this.idOrdineAperto = this.dataTemporaryOrder.idordini; // serve per indicare al componente figlio shirts l'id ordine per recuperare le camicie
 
                 //si modificano i campi delldell'ultimo ordine che devono cambiare
                 this.dataOrder.idordini = this.dataTemporaryOrder.idordini;                
@@ -294,6 +292,12 @@ export class OrderFormComponent implements OnInit {
   
 
   } // ngOnInit fine
+
+
+  @ViewChild(ShirtsGridComponent, { static: false }) childHandler: ShirtsGridComponent;
+  private onUpdateShirtGrid() {
+    this.childHandler.update();
+  }    
 
 
   private loadFormFields(){
@@ -605,21 +609,17 @@ export class OrderFormComponent implements OnInit {
   ordineAnnullato() {
     
 
-    if ( this.formModal == 'inserimento' )
+    if ( this.formModal == 'inserimento' ) {
       //si cancellano tutte le camice dell'ordine
       this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + this.dataTemporaryOrder.idordini ). subscribe(
         (data) => {
           var shirtsToDelete: Shirt[] = data;
-          console.log('camicie da cacellare',shirtsToDelete);
-
-
+          // console.log('camicie da cacellare',shirtsToDelete);
           shirtsToDelete.forEach(shirt => {
             this.restBackendService.delResource('shirts',{
               'idcamicie': shirt.idcamicie
             }).subscribe();            
           });
-
-
         },
         (error) => {
           console.error(error);
@@ -636,6 +636,8 @@ export class OrderFormComponent implements OnInit {
           console.error('Message: ' + error.message);  
         }
       );
+
+    }
 
   }
 

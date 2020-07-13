@@ -57,8 +57,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
   }
 
   ngOnChanges() {
-    this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
     console.log('aggiornamento griglia');
+    this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});    
   }  
 
   // OVERRIDE
@@ -359,6 +359,11 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
 
     return stringa;
   }
+
+  update(): void {
+    // console.log('AGGIORNAMENTO GRIGLIA CAMICIE');
+    this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});   
+    }
 
 
 }

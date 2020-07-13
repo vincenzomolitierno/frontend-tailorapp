@@ -142,6 +142,8 @@ export class MeasureFormComponent implements OnInit  {
 
           note_grafiche: new FormControl(''),
 
+          note: new FormControl(''),
+
           formModal: new FormControl('')
 
         });
@@ -276,6 +278,8 @@ export class MeasureFormComponent implements OnInit  {
                 this.Appunti = this.AppuntiBase64;
               }
               // FINE COMPONENTE DISEGNO
+
+              this.reactiveForm.get('note').setValue(this.measure.note);  
 
               this.reactiveForm.get('formModal').setValue(this.formModal); 
                 
@@ -471,6 +475,8 @@ export class MeasureFormComponent implements OnInit  {
     this.reactiveForm.get('torace_6_bottone').setValue(Number(0).toFixed(1));                
     this.reactiveForm.get('torace_7_bottone').setValue(Number(0).toFixed(1));                
     this.reactiveForm.get('torace_8_bottone').setValue(Number(0).toFixed(1));  
+
+    this.reactiveForm.get('note').setValue('');  
     
     this.Appunti = "../../assets/images/CamiciaCompleta.jpg";
 

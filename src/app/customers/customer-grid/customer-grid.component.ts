@@ -430,7 +430,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "misurometro": result.shirtIndicatorControl,
             "note_grafiche": base64,
             "clienti_idclienti": result.idcliente,
-            "data_misure": ''            
+            "data_misure": '' ,  // inserita dal backend
+            "note": result.note,         
           });          
           
         }
@@ -457,7 +458,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "misurometro": result.shirtIndicatorControl,
             "note_grafiche": base64,
             "clienti_idclienti": result.idcliente,
-            "data_misure": ''            
+            "data_misure": '', // inserita dal backend
+            "note": result.note,            
           });            
 
         } //fine PUT

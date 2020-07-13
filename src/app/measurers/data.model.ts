@@ -22,6 +22,7 @@
     torace: string; // i bottoni
     misurometro: string;  //
     note_grafiche: string;  // immagine base64
+    note: string;  // immagine base64
     clienti_idclienti: number;
     data_misure: string; 
   }

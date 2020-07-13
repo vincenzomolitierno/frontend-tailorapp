@@ -411,12 +411,6 @@
         <input type="text" formControlName="formModal" style="display: none;">
 
         <mat-divider></mat-divider>
-        <!-- INIZIO MODIFICA -->
-        <!-- inserimento input grafico -->
-        <!-- <div style="text-align: center;">
-            <app-shirt-marks (sendBase64)="catchAppuntiBase64($event)" [base64]='measure.note_grafiche'></app-shirt-marks>
-        </div> -->
-
 
         <div style="width: 100%; margin-top: 25px; text-align: center;">
             <div style="float: left; width: 100%; text-align: center; margin-bottom: 15px;">
@@ -430,7 +424,13 @@
             </div>
         </div>
 
-        <!-- FINE MODIFICA -->
+        <mat-divider></mat-divider>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Note</mat-label>
+            <textarea matInput placeholder="inserisre nota..." formControlName="note"></textarea>
+            <mat-icon matSuffix>keyboard</mat-icon>
+        </mat-form-field>
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
