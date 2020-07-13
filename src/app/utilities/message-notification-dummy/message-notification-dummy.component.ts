@@ -8,19 +8,23 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class MessageNotificationDummyComponent implements OnInit {
 
+  messages: any;
   titolo: string = "empty";
   messaggio: string = "empty";
+  messaggio2: string = "empty";
 
   constructor(
     public dialogRef: MatDialogRef<MessageNotificationDummyComponent>,
     @Inject(MAT_DIALOG_DATA) data
     ) {
-    this.titolo = data.titolo;    
-    this.messaggio = data.messaggio;    
-
+      this.messages = data;
    }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.titolo = this.messages.titolo;    
+    this.messaggio = this.messages.messaggio;    
+    this.messaggio2 = this.messages.messaggio2;    
+
     document.getElementById('message').innerText = this.messaggio;
   }
 }

@@ -1,5 +1,8 @@
+.confirm-dialog {
+    width: 50vw;
+}
+
 .mat-dialog-content {
-    width: 40vw;
     text-align: left;
 }
 

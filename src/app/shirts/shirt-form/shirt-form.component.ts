@@ -49,7 +49,9 @@ export class ShirtFormComponent implements OnInit {
 
     //costruzione del reactive form
     this.reactiveForm = new FormGroup({
-        
+      
+      idcamicie: new FormControl(''),
+
       colore: new FormControl('', Validators.required),
       stecche_estraibili: new FormControl(''),
       tasca: new FormControl(''),
@@ -86,25 +88,32 @@ export class ShirtFormComponent implements OnInit {
     
         } else if ( this.formModal == 'aggiornamento' ) {
           console.log('camicia da caricare', this.dataShirt);
+
+          this.reactiveForm.controls['idcamicie'].setValue(this.dataShirt.idcamicie);
           // se la form è in modalità aggiornamento si caricano i valori della camicia aperta
           this.reactiveForm.controls['colore'].setValue(this.dataShirt.colore);
-          this.reactiveForm.controls['stecche_estraibili'].setValue(this.dataShirt.stecche_estraibili);
-          this.reactiveForm.controls['tasca'].setValue(this.dataShirt.tasca);
-          this.reactiveForm.controls['cuciture'].setValue(this.dataShirt.cuciture);
+          
+          if ( this.dataShirt.stecche_estraibili == 'SI' ) this.reactiveForm.controls['stecche_estraibili'].setValue(this.dataShirt.stecche_estraibili);                  
+          if ( this.dataShirt.tasca == 'SI' ) this.reactiveForm.controls['tasca'].setValue(this.dataShirt.tasca);          
+          if ( this.dataShirt.cuciture == 'SI' ) this.reactiveForm.controls['cuciture'].setValue(this.dataShirt.cuciture);
+
           this.reactiveForm.controls['tipo_bottone'].setValue(this.dataShirt.tipo_bottone);
+          
+          if ( this.dataShirt.presenza_iniziali == 'SI' ) { 
+            this.reactiveForm.controls['switchIniziali'].setValue(this.dataShirt.presenza_iniziali);
+            this.switchPanel();
+          }
+
           this.reactiveForm.controls['iniziali'].setValue(this.dataShirt.iniziali);
-          this.reactiveForm.controls['posizione_iniziali'].setValue(this.dataShirt.posizione_iniziali);
+          this.reactiveForm.controls['posizione_iniziali'].setValue(this.dataShirt.pos_iniziali);
           this.reactiveForm.controls['stile_carattere'].setValue(this.dataShirt.stile_carattere);
           this.reactiveForm.controls['maiuscolo'].setValue(this.dataShirt.maiuscolo);
-          this.reactiveForm.controls['presenza_iniziali'].setValue(this.dataShirt.presenza_iniziali);
+
           this.reactiveForm.controls['note'].setValue(this.dataShirt.note);
           this.reactiveForm.controls['numero_capi'].setValue(this.dataShirt.numero_capi);
     
-          this.reactiveForm.controls['modellocollo_idmodello'].setValue(this.dataShirt.modelli_collo_idmodelli_collo);
-          console.log('elenco modelli collo', this.neckModelIndicators );
-          console.log('modello collo da precaricare ', this.dataShirt.modellocollo );
-          
-          this.reactiveForm.controls['modellopolso_idmodello'].setValue(this.dataShirt.modello_polso_idmodello_polso);
+          this.reactiveForm.controls['modellocollo_idmodello'].setValue(this.dataShirt.modellocollo_idmodello);          
+          this.reactiveForm.controls['modellopolso_idmodello'].setValue(this.dataShirt.modellopolso_idmodello);
           this.reactiveForm.controls['avanti_idavanti'].setValue(this.dataShirt.avanti_idavanti);
           this.reactiveForm.controls['indietro_idindietro'].setValue(this.dataShirt.indietro_idindietro);
           
@@ -121,10 +130,10 @@ export class ShirtFormComponent implements OnInit {
   backModelIndicators;
   forwardModelIndicators;
   listIndicators = [
-    {descrizione: 'Davanti'},
-    {descrizione: 'Collo'},
-    {descrizione: 'Polso'},
-    {descrizione: 'Tasca'}];
+    {descrizione: 'DAVANTI'},
+    {descrizione: 'COLLO'},
+    {descrizione: 'POLSO'},
+    {descrizione: 'TASCA'}];
 
   private loadControlsForm(){
 
@@ -194,6 +203,7 @@ export class ShirtFormComponent implements OnInit {
     if( this.pannello_iniziali ) {
       this.reactiveForm.get('posizione_iniziali').setValidators([Validators.required]);
       this.reactiveForm.get('posizione_iniziali').updateValueAndValidity();
+      this.reactiveForm.get('posizione_iniziali').markAsTouched();
     } else {
       this.reactiveForm.get('posizione_iniziali').clearValidators();
       this.reactiveForm.get('posizione_iniziali').updateValueAndValidity();

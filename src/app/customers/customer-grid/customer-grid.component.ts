@@ -614,13 +614,9 @@ export class CustomerGridComponent extends GridModel implements OnInit {
                         }
                       );
                     
-                    }
+                    } 
                   }); 
                   // FINE - gestione nuovo ordine                  
-
-
-
-
                 },
                 (error) => {}
               );

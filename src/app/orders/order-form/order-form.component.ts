@@ -151,7 +151,6 @@ export class OrderFormComponent implements OnInit {
           this.reactiveForm.get('idordini').setValue(this.dataTemporaryOrder.idordini);
 
           this.idOrdineAperto = this.dataTemporaryOrder.idordini; // per comunicare al child shirts l'id del'ordine
-          this.idOrdineAperto = 357;
           this.dataOrdineAperto = this.getCurrentDateFormatted('onlyDate');   // per stampare sul form l'etichetta della data
 
           // GESTIONE DELLA PRESENZA DI UN ORDINE PRECEDENTE
@@ -172,21 +171,40 @@ export class OrderFormComponent implements OnInit {
                 console.log('camicie dell\'ultimo ordine', this.shirtsInOrder);
                 // l 'utente vuole utilizzare i dati dell'ultimo ordine
                 // STEP 1: si creano copie delle camicie
+                
                 this.shirtsInOrder.forEach(shirt => {
                   console.log('camicia', shirt);
-                  shirt.ordini_idordini = this.dataTemporaryOrder.idordini;
-                  this.restBackendService.postResource('shirts',shirt).subscribe();
+                  shirt.ordini_idordini = this.dataTemporaryOrder.idordini; // si cambia l'id con quello del nuovo ordine
+                  this.restBackendService.postResource('shirts',shirt).subscribe(
+                    (data) => {
+                       // serve per indicare al componente figlio shirts l'id ordine per recuperare le camicie
+                       console.log('si aggiornano le camicie');
+                      this.idOrdineAperto = this.dataTemporaryOrder.idordini;
+                    }
+                  );
                 });
 
+
+
                 this.idOrdineAperto = this.dataTemporaryOrder.idordini; // serve per indicare al componente figlio shirts l'id ordine per recuperare le camicie
+
+
+
                 //si modificano i campi delldell'ultimo ordine che devono cambiare
                 this.dataOrder.idordini = this.dataTemporaryOrder.idordini;                
                 this.dataOrder.data_ordine = this.dataTemporaryOrder.data_ordine;
-                this.dataOrder.fasonatori_idfasonatori = this.dataTemporaryOrder.fasonatori_idfasonatori;
+                
                 //STEP 2: si precarica il form con i dati derivanti dall'ultimo ordine
                 this.loadFormFields(); // caricano i campi
-                this.reactiveForm.get('fasonatori_idfasonatori').setErrors({ 'invalid': true });
-                this.reactiveForm.get('fasonatori_idfasonatori').markAsTouched();
+
+                // SI ANNULLA LA DATA DI CONSEGNA                
+                this.reactiveForm.get('data_consegna').setValue('');
+                this.reactiveForm.get('data_consegna').setErrors({ 'invalid': true });
+                this.reactiveForm.get('data_consegna').markAsTouched();
+
+                // this.dataOrder.fasonatori_idfasonatori = this.dataTemporaryOrder.fasonatori_idfasonatori;
+                // this.reactiveForm.get('fasonatori_idfasonatori').setErrors({ 'invalid': true });
+                // this.reactiveForm.get('fasonatori_idfasonatori').markAsTouched();
 
               } else {
                 //se non si vuole utilizzare l'ordine vecchio non 
@@ -280,7 +298,6 @@ export class OrderFormComponent implements OnInit {
 
   private loadFormFields(){
 
-    console.log('fasonatori_idfasonatori',this.dataOrder.fasonatori_idfasonatori);
     this.reactiveForm.get('fasonatori_idfasonatori').setValue(this.dataOrder.fasonatori_idfasonatori);
 
     this.reactiveForm.get('totale').setValue(this.dataOrder.totale);
@@ -586,12 +603,33 @@ export class OrderFormComponent implements OnInit {
 
 
   ordineAnnullato() {
-    this.openSnackBar(this.formModal + ' Ordine Annullato', 2500);
+    
 
     if ( this.formModal == 'inserimento' )
+      //si cancellano tutte le camice dell'ordine
+      this.restBackendService.getResourceQuery('shirtsQuery', 'idordini=' + this.dataTemporaryOrder.idordini ). subscribe(
+        (data) => {
+          var shirtsToDelete: Shirt[] = data;
+          console.log('camicie da cacellare',shirtsToDelete);
+
+
+          shirtsToDelete.forEach(shirt => {
+            this.restBackendService.delResource('shirts',{
+              'idcamicie': shirt.idcamicie
+            }).subscribe();            
+          });
+
+
+        },
+        (error) => {
+          console.error(error);
+          console.error('Message: ' + error.message);  
+        }
+      );
+
       this.restBackendService.delResource('orders',{'idordini': this.dataTemporaryOrder.idordini}).subscribe(
         (data) => {
-          
+          this.openSnackBar(this.formModal + ' Ordine Annullato', 2500);
         },
         (error) => {
           console.error(error);

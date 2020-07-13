@@ -58,6 +58,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
 
   ngOnChanges() {
     this.getRemoteDataQuery('shirtsQuery',{idordini: String(this.ordini_idordini)});
+    console.log('aggiornamento griglia');
   }  
 
   // OVERRIDE
@@ -103,7 +104,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
 
       if ( result ) { // si è scelto di confermare
 
-        var shirt: Shirt = result;        
+        var shirt: Shirt = result;   
+
         if ( formModal == 'inserimento' ) { //INSERIMENTO DELLA NUOVA CAMICIA
 
           var tasca: string;
@@ -160,27 +162,42 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
           
         } else if ( formModal == 'aggiornamento' ) { //AGGIORNAMENTO DELLA CAMICIA
 
-          var obj = {    
-            'avanti_idavanti': result.avanti_idavanti,
-            "colore": result.colore,
+          var posizione_iniziali = '';
+          if ( shirt.pos_iniziali ) posizione_iniziali = shirt.pos_iniziali;
+
+          var tasca = 'NO';
+          if ( shirt.tasca ) tasca = 'SI';
+
+          var stecche_estraibili = 'NO';
+          if ( shirt.stecche_estraibili ) stecche_estraibili = 'SI';     
+          
+          var cuciture = 'NO';
+          if ( shirt.cuciture ) cuciture = 'SI';   
+
+          var updatingShirt = {  
+            "idcamicie": shirt.idcamicie,  
+            "avanti_idavanti": shirt.avanti_idavanti,
+            "colore": shirt.colore,
             "cuciture": cuciture,
-            "indietro_idindietro": result.indietro_idindietro,
-            "iniziali": result.iniziali,
-            "maiuscolo": result.maiuscolo,
-            "modellocollo_idmodello": result.modellocollo_idmodello,
-            "modellopolso_idmodello": result.modellopolso_idmodello,
-            "note": result.note,
-            "numero_capi": parseInt(result.numero_capi),
-            "ordini_idordini": this.ordini_idordini,
+            "indietro_idindietro": shirt.indietro_idindietro,
+            "iniziali": shirt.iniziali,
+            "maiuscolo": shirt.maiuscolo,
+            "modellocollo_idmodello": shirt.modellocollo_idmodello,
+            "modellopolso_idmodello": shirt.modellopolso_idmodello,
+            "note": shirt.note,
+            "numero_capi": shirt.numero_capi,
+            "ordini_idordini": shirt.ordini_idordini,
             "pos_iniziali": posizione_iniziali,
-            "presenza_iniziali": presenza_iniziali,
+            "presenza_iniziali": shirt.presenza_iniziali,
             "stecche_estraibili": stecche_estraibili,
-            "stile_carattere": result.stile_carattere,
+            "stile_carattere": shirt.stile_carattere,
             "tasca": tasca,
-            "tipo_bottone": result.tipo_bottone
+            "tipo_bottone": shirt.tipo_bottone
           };
 
-          this.putData('shirts', obj);            
+          console.log('camicia da aggironare', updatingShirt);
+
+          this.putData('shirts', updatingShirt);            
 
           
         }

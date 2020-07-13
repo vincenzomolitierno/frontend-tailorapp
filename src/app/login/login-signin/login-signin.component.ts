@@ -21,6 +21,7 @@ export class LoginSigninComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   errorMessage: string;
+  errorMessage2: string;
 
   constructor( 
     private formBuilder: FormBuilder,
@@ -76,21 +77,26 @@ export class LoginSigninComponent implements OnInit {
             (error) => {
               var errorCatch: HttpErrorResponse = error;
               if( errorCatch.status == 400) {
-                this.errorMessage = 'Account non Valido!!'.toUpperCase();
+                this.errorMessage = 'Account non Valido!! Reinserire username e password'.toUpperCase();
+                this.errorMessage2 = 'Reinserire username e password'.toUpperCase();
+              } else if( errorCatch.status == 404) {
+                this.errorMessage = 'Servizio momentaneamente non disponibile!!'.toUpperCase();
+                this.errorMessage2 = 'Riprovare'.toUpperCase();
               } else {
                 this.errorMessage = errorCatch.message;
+                this.errorMessage2 = errorCatch.status.toString();
               }
 
               const dialogConfig = new MatDialogConfig();
               dialogConfig.autoFocus = true;
               dialogConfig.disableClose = true;
               dialogConfig.data = {
-                messaggio: 'Account non Valido!! Reinserire username e password'.toUpperCase(), 
+                messaggio: this.errorMessage.toUpperCase(), 
+                messaggio2: this.errorMessage2.toUpperCase(), 
                 titolo: 'ERRORE', 
               };          
               const dialogRef = this.dialog.open(MessageNotificationDummyComponent, dialogConfig);
-              dialogRef.afterClosed().subscribe(result => {
-                console.log(result);
+              dialogRef.afterClosed().subscribe(result => {                
                 this.errorMessage = '';
                 this.loginForm.get('username').setValue('');
                 this.loginForm.get('password').setValue('');

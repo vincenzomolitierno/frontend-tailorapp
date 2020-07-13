@@ -40,22 +40,20 @@ export class AuthenticationService {
             { username, password }
             )
             .pipe(map(
-                user => {    
+                (user) => {    
                     this.handlerRestBackendService.setToken(user.token);
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes               
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes    
+                    user.password = password;
                     sessionStorage.setItem('currentUser', JSON.stringify(user));                
+                    
                     this.currentUserSubject.next(user);
 
                     // si inizializza il servizio di refresh del token
-                    RefreshTokenService.observableTimer();
+                    this.handlerRefreshTokenService.startRefreshCheckService();
 
                     //
                     return user;
-                },
-                (error) => {
-                    console.error('error');
-                }
-                ));
+                }));
     }
 
     public logout() {
