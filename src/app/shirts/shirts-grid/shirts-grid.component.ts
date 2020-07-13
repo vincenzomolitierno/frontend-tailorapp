@@ -7,9 +7,6 @@ import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-du
 import { Shirt } from '../shirt.model';
 import { QueryParameter } from 'src/app/backend-service/data.model';
 import { MessageNotificationDummyComponent } from 'src/app/utilities/message-notification-dummy/message-notification-dummy.component';
-import { stringify } from 'querystring';
-
-
 
 @Component({
   selector: 'app-shirts-grid',
@@ -19,11 +16,6 @@ import { stringify } from 'querystring';
 export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges {
 
   @Input() ordini_idordini: string;
-
-  // shirtsAdded: Array<any> = new Array();
-  // @Output() shirtsAddEvent = new EventEmitter<Array<any>>();
-  
-
   // Dati coinvolti nel binding
   dummy_data: string = "dummy_data"
   testo_ricerca: string = "";  
@@ -101,8 +93,8 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      shirt: shirt,
-      ordini_idordini: this.ordini_idordini, 
+      shirt: shirt, // camicia, parametro valorizzato nel caso di apertura in modalità aggiornamento
+      ordini_idordini: this.ordini_idordini, // numero dell'ordine di riferimento
       formModal: formModal };
     dialogConfig.disableClose = true;      
     dialogConfig.autoFocus = true;
@@ -188,7 +180,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
             "tipo_bottone": result.tipo_bottone
           };
 
-          this.postData('shirts', obj);            
+          this.putData('shirts', obj);            
 
           
         }

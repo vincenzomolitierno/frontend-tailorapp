@@ -22,5 +22,10 @@ export class Shirt {
     modelli_collo_idmodelli_collo: 0;
     avanti_idavanti: 0;
     indietro_idindietro: 0;
+
+    modellopolso: '';
+    modellocollo: '';
+    avanti: '';
+    indietro: '';
        
 }

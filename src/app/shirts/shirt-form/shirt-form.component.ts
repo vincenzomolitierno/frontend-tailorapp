@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Shirt } from '../shirt.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { Observable } from 'rxjs';
 
 interface NeckModelIndicator {
   tag: string,
@@ -33,25 +34,22 @@ export class ShirtFormComponent implements OnInit {
   dummy_data: string = 'X,Y';
 
   pannello_iniziali: boolean = false;
-
-  // ordini_idordini: number;
-
+  
   colour: string = '';
   tipo_bottone: string = '';
 
   // attributi della camicia
-  // shirt: Shirt;
+  private dataShirt: Shirt;
 
   constructor(@Inject(MAT_DIALOG_DATA) data,
         public restBackendService: RESTBackendService) {
     
-    this.formModal = data.formModal;    
+    this.formModal = data.formModal;       
+    this.dataShirt = data.shirt;
 
     //costruzione del reactive form
     this.reactiveForm = new FormGroup({
         
-      idcamicie: new FormControl(''),
-
       colore: new FormControl('', Validators.required),
       stecche_estraibili: new FormControl(''),
       tasca: new FormControl(''),
@@ -77,17 +75,44 @@ export class ShirtFormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadControlsForm();
+    this.loadControlsForm(); // si popolano gli elenchi dei modelli da catalogo
 
-    if ( this.formModal == 'inserimento' ) {
-
-      this.reactiveForm.get('numero_capi').setValue('0'); 
-
-    } else if ( this.formModal == 'aggiornamento' ) {
-
-    }
-
+        console.log('controlli caricati');
+        // **************
+        if ( this.formModal == 'inserimento' ) { 
+          // se la form è in modalità inserimento si inizializza solo il numero dei capi a zero
+          // gli altri campi sono vuoti di default
+          this.reactiveForm.get('numero_capi').setValue('0'); 
     
+        } else if ( this.formModal == 'aggiornamento' ) {
+          console.log('camicia da caricare', this.dataShirt);
+          // se la form è in modalità aggiornamento si caricano i valori della camicia aperta
+          this.reactiveForm.controls['colore'].setValue(this.dataShirt.colore);
+          this.reactiveForm.controls['stecche_estraibili'].setValue(this.dataShirt.stecche_estraibili);
+          this.reactiveForm.controls['tasca'].setValue(this.dataShirt.tasca);
+          this.reactiveForm.controls['cuciture'].setValue(this.dataShirt.cuciture);
+          this.reactiveForm.controls['tipo_bottone'].setValue(this.dataShirt.tipo_bottone);
+          this.reactiveForm.controls['iniziali'].setValue(this.dataShirt.iniziali);
+          this.reactiveForm.controls['posizione_iniziali'].setValue(this.dataShirt.posizione_iniziali);
+          this.reactiveForm.controls['stile_carattere'].setValue(this.dataShirt.stile_carattere);
+          this.reactiveForm.controls['maiuscolo'].setValue(this.dataShirt.maiuscolo);
+          this.reactiveForm.controls['presenza_iniziali'].setValue(this.dataShirt.presenza_iniziali);
+          this.reactiveForm.controls['note'].setValue(this.dataShirt.note);
+          this.reactiveForm.controls['numero_capi'].setValue(this.dataShirt.numero_capi);
+    
+          this.reactiveForm.controls['modellocollo_idmodello'].setValue(this.dataShirt.modelli_collo_idmodelli_collo);
+          console.log('elenco modelli collo', this.neckModelIndicators );
+          console.log('modello collo da precaricare ', this.dataShirt.modellocollo );
+          
+          this.reactiveForm.controls['modellopolso_idmodello'].setValue(this.dataShirt.modello_polso_idmodello_polso);
+          this.reactiveForm.controls['avanti_idavanti'].setValue(this.dataShirt.avanti_idavanti);
+          this.reactiveForm.controls['indietro_idindietro'].setValue(this.dataShirt.indietro_idindietro);
+          
+          this.reactiveForm.controls['ordini_idordini'].setValue(this.dataShirt.ordini_idordini);
+        }
+        // *************
+
+     
 
   }
 
@@ -102,6 +127,8 @@ export class ShirtFormComponent implements OnInit {
     {descrizione: 'Tasca'}];
 
   private loadControlsForm(){
+
+    console.log('INIZIO caricamento controlli');
 
     // POPOLAZIONE DEL COMBOBOX MODELLI COLLO
     this.restBackendService.getResource('neckmodels').subscribe(
@@ -145,13 +172,14 @@ export class ShirtFormComponent implements OnInit {
           console.error(error);
           console.error('Message: ' + error.message);
       }
-    );      
+    );   
 
-  }  
-  
-  
-  buttonIncreaseQty(){
+    console.log('FINE caricamento controlli');
     
+  }  // FINE loadControlsForm()
+  
+  
+  buttonIncreaseQty(){    
     this.reactiveForm.get('numero_capi').setValue(  (parseFloat(this.reactiveForm.get('numero_capi').value) + 1).toFixed(0) ); 
   }
 
@@ -172,10 +200,6 @@ export class ShirtFormComponent implements OnInit {
     }
 
   }
-
-  // changeMaiuscolo(){
-  //   this.reactiveForm.get('maiuscolo').setValue(this.reactiveForm.get('maiuscolo').value);
-  // }
 
 
 }
