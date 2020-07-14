@@ -109,19 +109,19 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
         if ( formModal == 'inserimento' ) { //INSERIMENTO DELLA NUOVA CAMICIA
 
           var tasca: string;
-          if(result.tasca)
+          if(shirt.tasca)
             tasca = 'SI';
           else  
             tasca = 'NO';
   
           var cuciture: string;
-          if(result.cuciture)
+          if(shirt.cuciture)
             cuciture = 'SI';
           else  
             cuciture = 'NO';    
            
           var stecche_estraibili: string;
-          if(result.stecche_estraibili)
+          if(shirt.stecche_estraibili)
             stecche_estraibili = 'SI';
           else  
             stecche_estraibili = 'NO';   
@@ -131,13 +131,10 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
             presenza_iniziali = 'SI';
           else  
             presenza_iniziali = 'NO';   
-  
-          var posizione_iniziali: string;
-          if(result.posizione_iniziali.descrizione)
-            posizione_iniziali = result.posizione_iniziali.descrizione;
-          else  
-            posizione_iniziali = '';            
-            
+
+          var posizione_iniziali = '';
+            if ( shirt.pos_iniziali ) posizione_iniziali = shirt.pos_iniziali;            
+
           var obj = {    
             'avanti_idavanti': result.avanti_idavanti,
             "colore": result.colore,
