@@ -15,6 +15,9 @@ import { MessageNotificationDummyComponent } from 'src/app/utilities/message-not
 })
 export class LoginSigninComponent implements OnInit {
 
+  // private baseHemURL: string = '/dashboard'; configurazione classica
+  private baseHomeURL: string = '/dashboard/customers';
+
   hide = true;
 
   loginForm: FormGroup;
@@ -31,7 +34,7 @@ export class LoginSigninComponent implements OnInit {
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) { 
-          this.router.navigate(['/dashboard']);
+          this.router.navigate([this.baseHomeURL]);
       }       
      }
 
@@ -43,7 +46,7 @@ export class LoginSigninComponent implements OnInit {
 
     // get return url from route parameters or default to '/'
     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';    
-    this.returnUrl = '/dashboard';
+    this.returnUrl = this.baseHomeURL;
   }
 
   // form: FormGroup = new FormGroup({
@@ -104,7 +107,7 @@ export class LoginSigninComponent implements OnInit {
               
             });  
 
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([this.baseHomeURL]);
   }
 
 }

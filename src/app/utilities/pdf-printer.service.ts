@@ -173,14 +173,13 @@ export class PdfPrinterService {
         if ( element.note != '' )
         stringa3 = stringa3 + 'note: ' + element.note;        
         
-      
+      // console.log('camicia n° '+ (index + 1), [stringa.toUpperCase(),stringa2.toUpperCase(),stringa3.toUpperCase(),' '] )
 
-      console.log('stringa formattata '+ index, stringa )
       obj.push([stringa.toUpperCase(),stringa2.toUpperCase(),stringa3.toUpperCase(),' ']);
       
     } // fine ciclo for per le camicie
     
-    if (shirts.length==0)   obj.push([' ',' ',' ',' ']);
+    if ( shirts.length == 0 )   obj.push([' ',' ',' ',' ']);    
 
     var refSize:number = 14;
 
@@ -197,7 +196,7 @@ export class PdfPrinterService {
     if ( measure.note == '' )
       var noteMisura: string = '';
     else  
-      var noteMisura: string = measure.note; 
+      var noteMisura: string = measure.note.toUpperCase(); 
                
     var base64: string = Base64Utility.base64ShirtEmpty;
   
@@ -205,7 +204,7 @@ export class PdfPrinterService {
     if ( measure.note_grafiche != '' )
       base64 = 'data:image/png;base64,' + measure.note_grafiche;
 
-     const documentCustomerDefinition = {
+    const documentCustomerDefinition = {
        
       content: [
         { margin: [-20, -20, -30, 0],
@@ -346,7 +345,7 @@ export class PdfPrinterService {
             text: 'NOTE',
             style: 'subheader',
             alignment: 'left',
-            margin: [0,0, 0, 0]
+            margin: [0, 0, 0, 0]
           },          
           {
             style: 'name',
@@ -354,7 +353,7 @@ export class PdfPrinterService {
             table: {
               widths: ['*'],
               body: [
-                [noteCliente + ' ' + noteFasonista + ' ' + noteMisura],
+                [noteFasonista + '\n' + noteMisura + '\n' + noteCliente],
               ]
             }
           },
@@ -375,261 +374,260 @@ export class PdfPrinterService {
             ]
           }          
         ],       
-        info: {
-          title: 'STAMPA ORDINE N°' + order.idordini,
-          author: 'idealprogetti.com',
-          subject: 'Riepilogo Lavorazioni',
-          keywords: 'RESUME, ONLINE RESUME', 
-          producer: 'porfidiacamicie.com',
-          creator: 'porfidiacamicie.com'         
+      info: {
+        title: 'STAMPA ORDINE N°' + order.idordini,
+        author: 'idealprogetti.com',
+        subject: 'Riepilogo Lavorazioni',
+        keywords: 'RESUME, ONLINE RESUME', 
+        producer: 'porfidiacamicie.com',
+        creator: 'porfidiacamicie.com'         
+      },        
+      styles: {
+        header: {
+          fontSize: refSize,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 10, 0, 10],
         },
-        
-        styles: {
-          header: {
-            fontSize: refSize,
-            bold: true,
-            alignment: 'center',
-            margin: [0, 10, 0, 10],
-          },
-          subheader: {
-            fontSize: refSize-2,
-            bold: true,
-            alignment: 'center',
-            margin: [0, 10, 0, 10],
-          },
-          name: {
-            fontSize: refSize-3,
-            alignment: 'left',
-          },
-          jobTitle: {
-            fontSize: 14,
-            bold: true,
-            italics: true
-          },
-          sign: {
-            margin: [0, 50, 0, 10],
-            alignment: 'right',
-            italics: true
-          },
-          tableExample: {
-            margin: [0, 10, 0, 10]
-          },
-          tableHeader: {
-            bold: true,
-            fontSize: 11,
-            color: 'black'
-          }          
-        }   // fine style 
+        subheader: {
+          fontSize: refSize-2,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 10, 0, 10],
+        },
+        name: {
+          fontSize: refSize-3,
+          alignment: 'left',
+        },
+        jobTitle: {
+          fontSize: 14,
+          bold: true,
+          italics: true
+        },
+        sign: {
+          margin: [0, 50, 0, 10],
+          alignment: 'right',
+          italics: true
+        },
+        tableExample: {
+          margin: [0, 10, 0, 10]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 11,
+          color: 'black'
+        }          
+      }   // fine style 
       
-      };
+    };
 
-      const documentSubcontractorDefinition  = {
-       
-        content: [
-          { margin: [-20, -20, -30, 0],
-                columns: [ 
-                  {
-                        text: 'PORFIDIA CAMICIE',
-                        style: 'header',
-                  alignment: 'left',
-                  fontSize: 20
-                      } ,
-          
-                      {
-                        text: 'STAMPA PER IL FASONISTA\n' + subcontractor.nome + ' ( ' + subcontractor.telefono + ' )\nORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
-                        style: 'header'
-                      } 
-            ]} ,
-              { margin: [-20, -20, -30, 0],
-                columns: [
-                  {
-                    text: 'Committente: ' + customer.nominativo ,
-                    style: 'subheader'
-                  },
-                  {
-                    text: 'Misurometro: ' + measure.misurometro + '\nTaglia Misurometro: ' +measure.taglia_misurometro,
-                    style: 'subheader'
-                  }
-                ]
-              },  
-              {  margin: [-12, 0, -30, 0],
-                columns: [
-                  {
-                    text: 'Collo: '        + measure.collo + '\n\n' +
-                          'Spalla x Lato: '       + this.convertipositivi(measure.spalla) + '\n\n' +
-                          'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n\n' +
-                          'Bicipite Tot x B.: '     + this.convertipositivi(measure.bicipite) + '\n\n' +
-                          'Avamb Tot x B.: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
-                    style: 'name'
-                  },
-                  {
-                    text: 'Lun Camicia Dietro: '           + this.convertipositivi(measure.bacino) + '\n\n' +
-                          'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
-                          'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
-                          'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
-                          'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
-                          'Polso: '    + measure.polso + '\n',
-                    style: 'name'
-                  },
-                  {
-                    text: 'TORACE AVANTI' + '\n\n' +
-                          '1° Bottone: '     + this.convertipositivi(measure.torace.split(';')[0]) + '\n\n' +
-                          '2° Bottone: '     + this.convertipositivi(measure.torace.split(';')[1]) + '\n\n' +
-                          '3° Bottone: '     + this.convertipositivi(measure.torace.split(';')[2]) + '\n',
-                    style: 'name'
-                  },
-                  {
-                    text: 'AUMENTARE SOLO AVANTI' + '\n\n' +
-                          '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n\n' +
-                          '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n\n' +
-                          '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n\n' +
-                          '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n\n' +
-                          '8° Bottone: '     + this.convertipositivi(measure.torace.split(';')[7]) + '\n',
-                    style: 'name'
-                  }                                       
-                ]
-            },
-            ,
-            {
-              image: base64,
-              width: 250,
-              alignment: 'center'
-            },
-            ,
-            {
-              text: 'ELENCO CAMICIE',
-              style: 'subheader',
-              alignment: 'left',
-              margin: [0, 10, 0, 0]
-            },
-            {
-              margin: [-12, 0, -12, 0],
-              style: 'name',
-              layout: {
-                hLineWidth: function (i, node) { return 1;},
-                hLineColor: function (i, node) { return 'black';},
-                vLineWidth: function (i, node) {
-                  return ( i === node.table.widths.length-1 || i === node.table.widths.length || i === 0) ? 1 : 0;
-                },
-                
-                vLineColor: function (i, node) {
-                  return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
-                },
-                // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-                // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-                // paddingLeft: function(i, node) { return 4; },
-                // paddingRight: function(i, node) { return 4; },
-                // paddingTop: function(i, node) { return 2; },
-                // paddingBottom: function(i, node) { return 2; },
-                // fillColor: function (rowIndex, node, columnIndex) { return null; }
-              },
-              alignment: 'left',
-              table: {
-                heights: 70,
-                widths: ['*','*','*', 70],
-                body: obj
-              }
-            },                                       
-            // {
-            //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
-            //   style: 'subheader',
-            //   alignment: 'left',
-            // },
-            // 'NOTE PER IL FASONISTA',
-            // {
-            //   style: 'subheader',
-            //   alignment: 'left',
-            //   table: {
-            //     widths: ['*'],              
-            //     body: [
-            //       [noteFasonista],
-            //     ]
-            //   }
-            // },          
-            {
+    const documentSubcontractorDefinition  = {
+      
+      content: [
+        { margin: [-20, -20, -30, 0],
+              columns: [ 
+                {
+                      text: 'PORFIDIA CAMICIE',
+                      style: 'header',
+                alignment: 'left',
+                fontSize: 20
+                    } ,
+        
+                    {
+                      text: 'STAMPA PER IL FASONISTA\n' + subcontractor.nome + ' ( ' + subcontractor.telefono + ' )\nORDINE N° ' + order.idordini + ' DEL ' + order.data_ordine,
+                      style: 'header'
+                    } 
+          ]} ,
+            { margin: [-20, -20, -30, 0],
               columns: [
                 {
-                  text: 'Data consegna: ' + order.data_consegna,
-                  style: 'subheader',
-                  alignment: 'left'
+                  text: 'Committente: ' + customer.nominativo ,
+                  style: 'subheader'
+                },
+                {
+                  text: 'Misurometro: ' + measure.misurometro + '\nTaglia Misurometro: ' +measure.taglia_misurometro,
+                  style: 'subheader'
                 }
-               
               ]
             },  
-            {
-              text: 'NOTE',
-              style: 'subheader',
-              alignment: 'left',
-              margin: [0,0, 0, 0]
-            },          
-            {
-              style: 'name',
-              alignment: 'left',                        
-              table: {
-                widths: ['*'],
-                body: [
-                  [noteCliente + ' ' + noteFasonista + ' ' + noteMisura],,
-                ]
-              }
-            }         
-          ],       
-          info: {
-            title: 'STAMPA ORDINE N°' + order.idordini,
-            author: 'idealprogetti.com',
-            subject: 'Riepilogo Lavorazioni',
-            keywords: 'RESUME, ONLINE RESUME', 
-            producer: 'porfidiacamicie.com',
-            creator: 'porfidiacamicie.com'         
+            {  margin: [-12, 0, -30, 0],
+              columns: [
+                {
+                  text: 'Collo: '        + measure.collo + '\n\n' +
+                        'Spalla x Lato: '       + this.convertipositivi(measure.spalla) + '\n\n' +
+                        'Lun. Manica: '  + this.convertipositivi(measure.lung_bicipite) + '\n\n' +
+                        'Bicipite Tot x B.: '     + this.convertipositivi(measure.bicipite) + '\n\n' +
+                        'Avamb Tot x B.: '  + this.convertipositivi(measure.avambraccio) + '\n' ,
+                  style: 'name'
+                },
+                {
+                  text: 'Lun Camicia Dietro: '           + this.convertipositivi(measure.bacino) + '\n\n' +
+                        'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
+                        'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
+                        'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
+                        'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
+                        'Polso: '    + measure.polso + '\n',
+                  style: 'name'
+                },
+                {
+                  text: 'TORACE AVANTI' + '\n\n' +
+                        '1° Bottone: '     + this.convertipositivi(measure.torace.split(';')[0]) + '\n\n' +
+                        '2° Bottone: '     + this.convertipositivi(measure.torace.split(';')[1]) + '\n\n' +
+                        '3° Bottone: '     + this.convertipositivi(measure.torace.split(';')[2]) + '\n',
+                  style: 'name'
+                },
+                {
+                  text: 'AUMENTARE SOLO AVANTI' + '\n\n' +
+                        '4° Bottone: '     + this.convertipositivi(measure.torace.split(';')[3]) + '\n\n' +
+                        '5° Bottone: '     + this.convertipositivi(measure.torace.split(';')[4]) + '\n\n' +
+                        '6° Bottone: '     + this.convertipositivi(measure.torace.split(';')[5]) + '\n\n' +
+                        '7° Bottone: '     + this.convertipositivi(measure.torace.split(';')[6]) + '\n\n' +
+                        '8° Bottone: '     + this.convertipositivi(measure.torace.split(';')[7]) + '\n',
+                  style: 'name'
+                }                                       
+              ]
           },
-          
-          styles: {
-            header: {
-              fontSize: refSize,
-              bold: true,
-              alignment: 'center',
-              margin: [0, 10, 0, 10],
+          ,
+          {
+            image: base64,
+            width: 250,
+            alignment: 'center'
+          },
+          ,
+          {
+            text: 'ELENCO CAMICIE',
+            style: 'subheader',
+            alignment: 'left',
+            margin: [0, 10, 0, 0]
+          },
+          {
+            margin: [-12, 0, -12, 0],
+            style: 'name',
+            layout: {
+              hLineWidth: function (i, node) { return 1;},
+              hLineColor: function (i, node) { return 'black';},
+              vLineWidth: function (i, node) {
+                return ( i === node.table.widths.length-1 || i === node.table.widths.length || i === 0) ? 1 : 0;
+              },
+              
+              vLineColor: function (i, node) {
+                return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+              },
+              // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+              // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+              // paddingLeft: function(i, node) { return 4; },
+              // paddingRight: function(i, node) { return 4; },
+              // paddingTop: function(i, node) { return 2; },
+              // paddingBottom: function(i, node) { return 2; },
+              // fillColor: function (rowIndex, node, columnIndex) { return null; }
             },
-            subheader: {
-              fontSize: refSize-2,
-              bold: true,
-              alignment: 'center',
-              margin: [0, 10, 0, 10],
-            },
-            name: {
-              fontSize: refSize-3,
-              alignment: 'left',
-            },
-            jobTitle: {
-              fontSize: 14,
-              bold: true,
-              italics: true
-            },
-            sign: {
-              margin: [0, 50, 0, 10],
-              alignment: 'right',
-              italics: true
-            },
-            tableExample: {
-              margin: [0, 10, 0, 10]
-            },
-            tableHeader: {
-              bold: true,
-              fontSize: 11,
-              color: 'black'
-            }          
-          }   // fine style 
-        
-        };
+            alignment: 'left',
+            table: {
+              heights: 70,
+              widths: ['*','*','*', 70],
+              body: obj
+            }
+          },                                       
+          // {
+          //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
+          //   style: 'subheader',
+          //   alignment: 'left',
+          // },
+          // 'NOTE PER IL FASONISTA',
+          // {
+          //   style: 'subheader',
+          //   alignment: 'left',
+          //   table: {
+          //     widths: ['*'],              
+          //     body: [
+          //       [noteFasonista],
+          //     ]
+          //   }
+          // },          
+          {
+            columns: [
+              {
+                text: 'Data consegna: ' + order.data_consegna,
+                style: 'subheader',
+                alignment: 'left'
+              }
+              
+            ]
+          },  
+          {
+            text: 'NOTE',
+            style: 'subheader',
+            alignment: 'left',
+            margin: [0,0, 0, 0]
+          },          
+          {
+            style: 'name',
+            alignment: 'left',                        
+            table: {
+              widths: ['*'],
+              body: [
+                [noteFasonista + '\n' + noteMisura + '\n' + noteCliente],
+              ]
+            }
+          }         
+        ],       
+      info: {
+        title: 'STAMPA ORDINE N°' + order.idordini,
+        author: 'idealprogetti.com',
+        subject: 'Riepilogo Lavorazioni',
+        keywords: 'RESUME, ONLINE RESUME', 
+        producer: 'porfidiacamicie.com',
+        creator: 'porfidiacamicie.com'         
+      },
+      
+      styles: {
+        header: {
+          fontSize: refSize,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 10, 0, 10],
+        },
+        subheader: {
+          fontSize: refSize-2,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 10, 0, 10],
+        },
+        name: {
+          fontSize: refSize-3,
+          alignment: 'left',
+        },
+        jobTitle: {
+          fontSize: 14,
+          bold: true,
+          italics: true
+        },
+        sign: {
+          margin: [0, 50, 0, 10],
+          alignment: 'right',
+          italics: true
+        },
+        tableExample: {
+          margin: [0, 10, 0, 10]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 11,
+          color: 'black'
+        }          
+      }   // fine style 
+      
+    };
      
-      if ( type == 'for_customer') {
-        pdfMake.createPdf(documentCustomerDefinition).open();
-        // pdfMake.createPdf(documentCustomerDefinition).download('STAMPA ORDINE PER CLIENTE N° ' + order.idordini + ' DEL ' + order.data_ordine);
-      } else if ( type == 'for_subcontractor' ) {
-        pdfMake.createPdf(documentSubcontractorDefinition).open();
-        // pdfMake.createPdf(documentSubcontractorDefinition).download('STAMPA ORDINE PER FASONISTA N° ' + order.idordini + ' DEL ' + order.data_ordine);
-      }    
+    if ( type == 'for_customer') {
+      pdfMake.createPdf(documentCustomerDefinition).open();
+      // pdfMake.createPdf(documentCustomerDefinition).download('STAMPA ORDINE PER CLIENTE N° ' + order.idordini + ' DEL ' + order.data_ordine);
+    } else if ( type == 'for_subcontractor' ) {
+      pdfMake.createPdf(documentSubcontractorDefinition).open();
+      // pdfMake.createPdf(documentSubcontractorDefinition).download('STAMPA ORDINE PER FASONISTA N° ' + order.idordini + ' DEL ' + order.data_ordine);
+    }    
      
-    }  
+  }  
  
     public static generateEmptyOrderSheetPdf() {
       // NAZARO

@@ -19,7 +19,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: HomeSubpanelComponent, pathMatch: 'full' },
-      { path: 'customers', component: CustomersSubpanelComponent },
+      { path: 'customers', component: CustomersSubpanelComponent, pathMatch: 'full'  },
       { path: 'orders', component: OrdersSubpanelComponent },
       { path: 'subcontractors', component: SubcontractorsSubpanelComponent },
       { path: 'catalogs', component: CatalogsSubpanelComponent },

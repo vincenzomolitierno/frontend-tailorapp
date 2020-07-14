@@ -152,7 +152,7 @@
                 <div class="gap"></div>
                 <mat-form-field appearance="outline">
                     <mat-label>Posizione iniziali</mat-label>
-                    <mat-select formControlName="posizione_iniziali">
+                    <mat-select formControlName="pos_iniziali">
                         <mat-option [value]="{descrizione: ''}">--</mat-option>
                         <mat-option *ngFor="let listIndicator of listIndicators" [value]="listIndicator.descrizione">
                             {{listIndicator.descrizione}}

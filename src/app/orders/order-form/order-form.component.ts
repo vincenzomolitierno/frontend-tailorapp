@@ -200,9 +200,18 @@ export class OrderFormComponent implements OnInit {
                 this.reactiveForm.get('data_consegna').setErrors({ 'invalid': true });
                 this.reactiveForm.get('data_consegna').markAsTouched();
 
-                // this.dataOrder.fasonatori_idfasonatori = this.dataTemporaryOrder.fasonatori_idfasonatori;
-                // this.reactiveForm.get('fasonatori_idfasonatori').setErrors({ 'invalid': true });
-                // this.reactiveForm.get('fasonatori_idfasonatori').markAsTouched();
+                // SI ANNULLA LA PARTE ECONOMICA              
+                this.reactiveForm.get('totale').setValue((0).toFixed(2).replace('.',','));
+                this.reactiveForm.get('saldo').setValue((0).toFixed(2).replace('.',','));
+                this.reactiveForm.get('acconto').setValue((0).toFixed(2).replace('.',','));
+
+                // SI ANNULLA LA PARTE ECONOMICA    
+                this.reactiveForm.get('saldato').setValue('');
+                this.reactiveForm.get('consegnato').setValue('');                
+
+                // SI ANNULLA LA NOTA    
+                this.reactiveForm.get('note').setValue('');
+                this.reactiveForm.get('note_x_fasonista').setValue('');
 
               } else {
                 //se non si vuole utilizzare l'ordine vecchio non 

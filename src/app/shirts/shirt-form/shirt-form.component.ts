@@ -60,7 +60,7 @@ export class ShirtFormComponent implements OnInit {
       iniziali: new FormControl(''),
       switchIniziali: new FormControl(''),//apre il pannello per inserire le iniziali
       stile_carattere: new FormControl('SI'),
-      posizione_iniziali: new FormControl(''),
+      pos_iniziali: new FormControl(''),
       maiuscolo: new FormControl('SI'),
       presenza_iniziali: new FormControl('NO'),
       note: new FormControl(''),
@@ -105,7 +105,7 @@ export class ShirtFormComponent implements OnInit {
           }
 
           this.reactiveForm.controls['iniziali'].setValue(this.dataShirt.iniziali);
-          this.reactiveForm.controls['posizione_iniziali'].setValue(this.dataShirt.pos_iniziali);
+          this.reactiveForm.controls['pos_iniziali'].setValue(this.dataShirt.pos_iniziali);
           this.reactiveForm.controls['stile_carattere'].setValue(this.dataShirt.stile_carattere);
           this.reactiveForm.controls['maiuscolo'].setValue(this.dataShirt.maiuscolo);
 
@@ -201,12 +201,12 @@ export class ShirtFormComponent implements OnInit {
     this.pannello_iniziali = !this.pannello_iniziali;
 
     if( this.pannello_iniziali ) {
-      this.reactiveForm.get('posizione_iniziali').setValidators([Validators.required]);
-      this.reactiveForm.get('posizione_iniziali').updateValueAndValidity();
-      this.reactiveForm.get('posizione_iniziali').markAsTouched();
+      this.reactiveForm.get('pos_iniziali').setValidators([Validators.required]);
+      this.reactiveForm.get('pos_iniziali').updateValueAndValidity();
+      this.reactiveForm.get('pos_iniziali').markAsTouched();
     } else {
-      this.reactiveForm.get('posizione_iniziali').clearValidators();
-      this.reactiveForm.get('posizione_iniziali').updateValueAndValidity();
+      this.reactiveForm.get('pos_iniziali').clearValidators();
+      this.reactiveForm.get('pos_iniziali').updateValueAndValidity();
     }
 
   }

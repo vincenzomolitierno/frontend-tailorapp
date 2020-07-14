@@ -160,8 +160,10 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
   
           this.postData('shirts', obj);           
           
-        } else if ( formModal == 'aggiornamento' ) { //AGGIORNAMENTO DELLA CAMICIA
+        } else if ( formModal == 'aggiornamento' ) { //AGGIORNAMENTO DELLA CAMICIA          
 
+          console.log('camicia', shirt);
+          console.log('posizione iniziali', shirt.pos_iniziali);
           var posizione_iniziali = '';
           if ( shirt.pos_iniziali ) posizione_iniziali = shirt.pos_iniziali;
 
@@ -173,6 +175,9 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
           
           var cuciture = 'NO';
           if ( shirt.cuciture ) cuciture = 'SI';   
+
+          var presenza_iniziali: string = 'NO';
+          if( result.switchIniziali ) presenza_iniziali = 'SI';     
 
           var updatingShirt = {  
             "idcamicie": shirt.idcamicie,  
@@ -188,7 +193,7 @@ export class ShirtsGridComponent extends GridModel implements OnInit, OnChanges 
             "numero_capi": Number(shirt.numero_capi),
             "ordini_idordini": shirt.ordini_idordini,
             "pos_iniziali": posizione_iniziali,
-            "presenza_iniziali": shirt.presenza_iniziali,
+            "presenza_iniziali": presenza_iniziali,
             "stecche_estraibili": stecche_estraibili,
             "stile_carattere": shirt.stile_carattere,
             "tasca": tasca,
