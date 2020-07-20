@@ -171,8 +171,7 @@ export class OrderFormComponent implements OnInit {
                 // console.log('inserimento ordine, esiste un ordine precedente e si è scelto di usarlo come partenza');
                 // console.log('camicie dell\'ultimo ordine', this.shirtsInOrder);
                 // l 'utente vuole utilizzare i dati dell'ultimo ordine
-                // STEP 1: si creano copie delle camicie
-                
+                // STEP 1: si creano copie delle camicie                
                 this.shirtsInOrder.forEach(shirt => {
                   console.log('camicia', shirt);
                   shirt.ordini_idordini = this.dataTemporaryOrder.idordini; // si cambia l'id con quello del nuovo ordine
