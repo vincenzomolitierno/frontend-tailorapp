@@ -341,6 +341,8 @@ export class OrderFormComponent implements OnInit {
     this.dataOrdineAperto = this.dataOrder.data_ordine; 
     
     // SI controlla se esistono delle misure più recenti di quelle dell'ordine in modifica
+    console.log('id misure dell\'ordine',this.orderMeasure.idmisure);
+    console.log('id misure dell\'ulitima misura',this.latestMeasure.idmisure);
     if ( this.orderMeasure.idmisure != this.latestMeasure.idmisure ) {
       // l'ordine NON UTILIZZA la misura più recente disponibile per il cliente
 

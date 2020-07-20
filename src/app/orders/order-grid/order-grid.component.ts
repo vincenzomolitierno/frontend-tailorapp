@@ -81,7 +81,9 @@ export class OrderGridComponent extends GridModel implements OnInit {
               (data) => {
 
                 var measureByCustomer: Measure[] = data; // indica l'ultima misura fatta al cliente, potrebbe essere più recente di quella utilizzata nell'ordine
-                measureByCustomer.filter(m => m.clienti_idclienti === order.clienti_idclienti);
+                console.log('misure esistenti',measureByCustomer);
+                measureByCustomer = measureByCustomer.filter(m => m.clienti_idclienti == order.clienti_idclienti);
+                console.log('misure filtrate per il cliente ' + order.clienti_idclienti, measureByCustomer);
 
                 //INIZIO FORM ORDINE
                 const dialogConfig = new MatDialogConfig();
