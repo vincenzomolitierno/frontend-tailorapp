@@ -247,8 +247,8 @@ export class PdfPrinterService {
                   text: 'Lun Camicia Dietro: '           + this.convertipositivi(measure.bacino) + '\n\n' +
                         'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
                         'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
-                        'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
-                        'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
+                        'Vita: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
+                        'Bacino: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
                         'Polso: '    + measure.polso + '\n',
                   style: 'name'
                 },
@@ -464,8 +464,8 @@ export class PdfPrinterService {
                   text: 'Lun Camicia Dietro: '           + this.convertipositivi(measure.bacino) + '\n\n' +
                         'Lun Camicia: '           + this.convertipositivi(measure.lung_camicia) + '\n\n' +
                         'Centro Schiena: '     + this.convertipositivi(measure.lung_avambraccio) + '\n\n' +
-                        'Vita Dietro: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
-                        'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
+                        'Vita: '      + this.convertipositivi(measure.vita_dietro) + '\n\n' +
+                        'Bacino: ' + this.convertipositivi(measure.bacino_dietro) + '\n\n' +
                         'Polso: '    + measure.polso + '\n',
                   style: 'name'
                 },
@@ -687,8 +687,8 @@ export class PdfPrinterService {
                     text: 'Lun Camicia Dietro: ' + '\n\n' +
                           'Lun Camicia: '          + '\n\n' +
                           'Centro Schiena: '     + '\n\n' +
-                          'Vita Dietro: '       + '\n\n' +
-                          'Bacino Dietro: '  + '\n\n' +
+                          'Vita: '       + '\n\n' +
+                          'Bacino: '  + '\n\n' +
                           'Polso: '     + '\n',
                     style: 'name'
                   }] },
@@ -884,8 +884,8 @@ export class PdfPrinterService {
                     text: 'Lun Camicia Dietro: ' + this.convertipositivi(measure.bacino) + '\n\n' +
                           'Lun Camicia: '   + this.convertipositivi(measure.lung_camicia)       + '\n\n' +
                           'Centro Schiena: ' + this.convertipositivi(measure.lung_avambraccio)    + '\n\n' +
-                          'Vita Dietro: '  + this.convertipositivi(measure.vita_dietro)     + '\n\n' +
-                          'Bacino Dietro: ' + this.convertipositivi(measure.bacino_dietro)  + '\n\n' +
+                          'Vita: '  + this.convertipositivi(measure.vita_dietro)     + '\n\n' +
+                          'Bacino: ' + this.convertipositivi(measure.bacino_dietro)  + '\n\n' +
                           'Polso: ' + measure.polso + '\n',
                     style: 'name'
                   }] },
