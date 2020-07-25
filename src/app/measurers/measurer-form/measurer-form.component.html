@@ -15,20 +15,20 @@
 
                 <mat-form-field appearance="fill">
                     <mat-label>Fasonista</mat-label>
-                    <mat-select name="fasonista" id="fasonista" formControlName="fasonista" required>
+                    <mat-select name="fasonista" id="idfasonatori" formControlName="idfasonatori" required>
                         <mat-option>--</mat-option>
-                        <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor">
-                            {{subcontractor}}
+                        <mat-option *ngFor="let subcontractor of subcontractors" [value]="subcontractor.idfasonatori">
+                            {{subcontractor.descrizione}}
                         </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="reactiveForm.controls.fasonista.hasError('required')">Selezionare un fasonatore</mat-error>
+                    <mat-error *ngIf="reactiveForm.controls.idfasonatori.hasError('required')">Selezionare un fasonatore</mat-error>
                     <mat-icon matSuffix>list_alt</mat-icon>
                 </mat-form-field>
             </p>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
             <button mat-raised-button matTooltip="Annulla {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="false" cdkFocusInitial>Annulla</button>
-            <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.controls" [disabled]="reactiveForm.invalid">Conferma</button>
+            <button mat-raised-button matTooltip="Conferma {{formModal}} del modello di {{nome_catalogo}}" matTooltipPosition="above" [mat-dialog-close]="reactiveForm.value" [disabled]="reactiveForm.invalid">Conferma</button>
         </mat-dialog-actions>
 
     </div>

@@ -5,6 +5,7 @@ import { Subcontractor } from '../subcontractor.model';
 import { GridModel } from 'src/app/backend-service/datagrid.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { ActionConfirmDummyComponent } from 'src/app/utilities/action-confirm-dummy/action-confirm-dummy.component';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-subcontractors-grid',
@@ -60,11 +61,11 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
 
         var subcontractor = new Subcontractor();
         subcontractor = result;
-
-        if(formModal=='inserimento'){
-
-          
         
+        if ( isUndefined(subcontractor.email) ) subcontractor.email = '';
+
+        if(formModal=='inserimento'){     
+          
           this.postData('subcontractors',        
           {
             "nome": subcontractor.nome,
@@ -72,7 +73,7 @@ export class SubcontractorsGridComponent extends GridModel implements OnInit {
             "email": subcontractor.email
         });
 
-        } else if(formModal=='aggiornamento'){
+        } else if(formModal=='aggiornamento') {
 
           this.putData('subcontractors',        
           {

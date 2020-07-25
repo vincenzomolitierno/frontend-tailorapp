@@ -53,7 +53,29 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
     const dialogRef = this.dialog.open(MeasurerFormComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result: ${result}');
+      
+      if(result) {
+
+        var measurer = new Measurer();
+        measurer = result;
+        
+        console.log('post misurometro', measurer);
+
+        if(formModal=='inserimento'){     
+          
+          this.postData('measurers',        
+          {
+            "descrizione": measurer.descrizione,
+            "idfasonatori": measurer.idfasonatori
+          });
+
+        } else if(formModal=='aggiornamento') {
+            
+          //  
+
+        }
+
+      }      
     });    
     
   } 
@@ -74,13 +96,14 @@ export class MeasurersGridComponent extends GridModel implements OnInit {
             this.restBackendService.getResource('subcontractors').subscribe(
               (data) => {
                 
-                    console.log(data);
+                    console.log('fasonatori',data);
                     this.recorSetFasonatori = data;    
                     
                     for(let i = 0; i < recorSetMisurometri.length; i++) {
                       
                       var idFasonatore: number = recorSetMisurometri[i].idfasonatori;
-                      var nomeFasonatore = this.recorSetFasonatori.find(x => x.idfasonatori === idFasonatore).nome + 
+                      var nomeFasonatore = '';
+                      nomeFasonatore = this.recorSetFasonatori.find(x => x.idfasonatori === idFasonatore).nome + 
                       ' - ( tel: ' + this.recorSetFasonatori.find(x => x.idfasonatori === idFasonatore).telefono + ' )';
                       recorSetMisurometri[i].nome_fasonatore = nomeFasonatore;
         

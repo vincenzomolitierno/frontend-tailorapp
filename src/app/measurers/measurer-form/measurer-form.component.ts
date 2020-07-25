@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Subcontractor } from 'src/app/subcontractors/subcontractor.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
+import { Measurer } from '../data.model';
 
 @Component({
   selector: 'app-measurer-form',
@@ -19,7 +20,9 @@ export class MeasurerFormComponent implements OnInit {
 
   reactiveForm: FormGroup;
 
-  subcontractors: Subcontractor[];
+  subcontractors: Array<any> = new Array();
+
+  measurer: Measurer;
 
   constructor(@Inject(MAT_DIALOG_DATA) data,
     public restBackendService: RESTBackendService) {
@@ -27,7 +30,7 @@ export class MeasurerFormComponent implements OnInit {
 
     this.reactiveForm = new FormGroup({
       descrizione: new FormControl('', Validators.required),
-      fasonista: new FormControl('', Validators.required)
+      idfasonatori: new FormControl('', Validators.required)
     });
    }
 
@@ -35,11 +38,20 @@ export class MeasurerFormComponent implements OnInit {
 
     //SI popola il combobox con l'elenco dei fasonatori
     this.restBackendService.getResource('subcontractors').subscribe(
-      (data) => {
-        console.log(data);
-            
+      (data) => {   
+            // console.log('misurometro',data);
             var result = data.map(a => a.nome + ' - ( tel: ' + a.telefono  + ' )');
-            this.subcontractors = result;   
+
+            var i = 0;
+            result.forEach(element => {
+              this.subcontractors.push({
+                'descrizione': element,
+                'idfasonatori': data[i].idfasonatori 
+              });
+              i++; 
+            });
+            // this.subcontractors = result;   
+            // console.log('misurometro',this.subcontractors);
 
             },
       (error) => {
