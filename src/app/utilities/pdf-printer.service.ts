@@ -30,6 +30,16 @@ export class PdfPrinterService {
   }
 
 
+
+  /**
+   * Static method to realize reachable printer service inside the frontend
+   *
+   * @static
+   * @param {Order} order
+   * @param {string} key
+   * @param {RESTBackendService} restBackendService
+   * @memberof PdfPrinterService
+   */
   public static generatePdfPrint(order: Order, key: string, restBackendService: RESTBackendService) {
 
     // console.log(order);  
@@ -59,9 +69,6 @@ export class PdfPrinterService {
 
                       var subcontractors: Subcontractor[] = data;
                       var subcontractor: Subcontractor = subcontractors.find(x => x.idfasonatori === order.fasonatori_idfasonatori);
-
-
-                      // this.generatePdf(order, measure, customer, shirts, subcontractor, key);
 
                       PdfPrinterService.generatePdf(order, measure, customer, shirts, subcontractor, key);
 
@@ -96,6 +103,18 @@ export class PdfPrinterService {
   }  
  
 
+  /**
+   * Method to create a pdf print starting from passed information through parameter
+   *
+   * @static
+   * @param {Order} [order]
+   * @param {Measure} [measure]
+   * @param {Customer} [customer]
+   * @param {any[]} [shirts]
+   * @param {Subcontractor} [subcontractor]
+   * @param {string} [type]
+   * @memberof PdfPrinterService
+   */
   public static generatePdf(order?: Order, measure?: Measure, customer?: Customer, shirts?: any[], subcontractor?: Subcontractor, type?: string){
 
     var obj: Array<any> = new Array();
@@ -116,7 +135,6 @@ export class PdfPrinterService {
       
       console.log('camicia ' + index, shirts[index]);
       const element = shirts[index];
-
 
       // console.log('camicie', element.iniziali);
 
@@ -372,7 +390,19 @@ export class PdfPrinterService {
                 style: 'subheader'
               }
             ]
-          }          
+          },
+          {
+            columns: [
+              {
+                text: 'Saldato: ' +  order.saldato ,
+                style: 'subheader'
+              },
+              {
+                text:   'Consegnato: ' + order.consegnato  ,
+                style: 'subheader'
+              }
+            ]
+          }                      
         ],       
       info: {
         title: 'STAMPA ORDINE N°' + order.idordini,
@@ -569,7 +599,19 @@ export class PdfPrinterService {
                 [noteFasonista + '\n' + noteMisura + '\n' + noteCliente],
               ]
             }
-          }         
+          },
+          {
+            columns: [
+              {
+                text: 'Saldato: ' +  order.saldato ,
+                style: 'subheader'
+              },
+              {
+                text:   'Consegnato: ' + order.consegnato  ,
+                style: 'subheader'
+              }
+            ]
+          }                     
         ],       
       info: {
         title: 'STAMPA ORDINE N°' + order.idordini,
@@ -750,7 +792,22 @@ export class PdfPrinterService {
                 }
                
               ]
-            },     
+            },
+            {
+              margin: [-12, 20, -30, 0],
+              columns: [
+                {
+                  text: 'Saldato: ' ,
+                  style: 'subheader',
+                  alignment: 'left'
+                },
+                {
+                  text: 'Consegnato: ' ,
+                  style: 'subheader',
+                  alignment: 'left'
+                }                               
+              ]
+            }                                              
           ],       
           info: {
             title: 'STAMPA MODULO',
