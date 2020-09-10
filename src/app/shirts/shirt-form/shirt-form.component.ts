@@ -105,6 +105,7 @@ export class ShirtFormComponent implements OnInit {
           }
 
           this.reactiveForm.controls['iniziali'].setValue(this.dataShirt.iniziali);
+
           this.reactiveForm.controls['pos_iniziali'].setValue(this.dataShirt.pos_iniziali);
           this.reactiveForm.controls['stile_carattere'].setValue(this.dataShirt.stile_carattere);
           this.reactiveForm.controls['maiuscolo'].setValue(this.dataShirt.maiuscolo);
