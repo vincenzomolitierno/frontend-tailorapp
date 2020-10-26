@@ -57,7 +57,8 @@
             <mat-form-field appearance="fill">
                 <mat-label>Totale</mat-label>
                 <input matInput placeholder="importo ordine" formControlName="totale" pattern="\d+(,\d{2})?" required (blur)="calcoloTotaleBlurTotale()" onfocus="this.select();" [readonly]="!editable" id="totale">
-                <mat-error *ngIf="reactiveForm.controls.totale.hasError('pattern')">inserire un importo nel corretto #...#,##</mat-error>
+                <!-- <input matInput placeholder="importo ordine" formControlName="totale" pattern="\d+(,\d{2})?" required onfocus="this.select();" [readonly]="!editable" id="totale"> -->
+                <mat-error *ngIf="reactiveForm.controls.totale.hasError('pattern')">inserire un importo nel formato corretto #...#,##</mat-error>
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
@@ -65,7 +66,8 @@
             <mat-form-field appearance="fill">
                 <mat-label>Acconto</mat-label>
                 <input matInput placeholder="acconto versato" formControlName="acconto" pattern="\d+(,\d{2})?" required (blur)="calcoloTotaleBlurAcconto()" onfocus="this.select();" [readonly]="!editable" id="acconto">
-                <mat-error *ngIf="reactiveForm.controls.acconto.hasError('pattern')">inserire un importo nel corretto #...#,##</mat-error>
+                <!-- <input matInput placeholder="acconto versato" formControlName="acconto" pattern="\d+(,\d{2})?" required onfocus="this.select();" [readonly]="!editable" id="acconto"> -->
+                <mat-error *ngIf="reactiveForm.controls.acconto.hasError('pattern')">inserire un importo nel formato corretto #...#,##</mat-error>
                 <mat-icon matSuffix>euro</mat-icon>
             </mat-form-field>
         </div>
@@ -77,7 +79,8 @@
             </mat-form-field>
         </div>
         <div class="right-side">
-            <mat-checkbox formControlName="saldato" (change)="setOrdineSaldato($event)">Saldato</mat-checkbox>
+            <!-- <mat-checkbox formControlName="saldato" (change)="setOrdineSaldato($event)">Saldato</mat-checkbox> -->
+            <mat-checkbox formControlName="saldato">Saldato</mat-checkbox>
         </div>
 
         <!-- note e consegna -->

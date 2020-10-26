@@ -503,16 +503,28 @@ export class OrderFormComponent implements OnInit {
     var totale = this.getValueTotaleAcconto().totale;
     var acconto = this.getValueTotaleAcconto().acconto;
 
+    // if( isNaN(totale) ){
+    //   this.reactiveForm.get('totale').setValue('0,00');
+    // } else if ( totale < acconto) {              
+    //   this.reactiveForm.get('totale').setValue(acconto.toFixed(2).replace('.',','));     
+    //   this.reactiveForm.get('saldo').setValue( (0).toFixed(2).replace('.',',') );     
+    //   this.openSnackBar('Errore, il totale è inferiore all\'acconto. Dato inserito annullato.\n Inserire un valore valido',1000);
+    //   document.getElementById('totale').focus();
+    // }  else {
+    //   this.reactiveForm.get('saldo').setValue( (totale-acconto).toFixed(2).replace('.',',') ); 
+    // }  
+
     if( isNaN(totale) ){
       this.reactiveForm.get('totale').setValue('0,00');
-    } else if ( totale < acconto) {              
-      this.reactiveForm.get('totale').setValue(acconto.toFixed(2).replace('.',','));     
-      this.reactiveForm.get('saldo').setValue( (0).toFixed(2).replace('.',',') );     
-      this.openSnackBar('Errore, il totale è inferiore all\'acconto. Dato inserito annullato.\n Inserire un valore valido',1000);
-      document.getElementById('totale').focus();
+    } else if ( totale < acconto) {   
+      this.reactiveForm.get('saldo').setValue('0,00');           
+      // this.reactiveForm.get('totale').setValue(acconto.toFixed(2).replace('.',','));     
+      // this.reactiveForm.get('saldo').setValue( (0).toFixed(2).replace('.',',') );     
+      // this.openSnackBar('Errore, il totale è inferiore all\'acconto. Dato inserito annullato.\n Inserire un valore valido',1000);
+      // document.getElementById('totale').focus();
     }  else {
       this.reactiveForm.get('saldo').setValue( (totale-acconto).toFixed(2).replace('.',',') ); 
-    }  
+    }    
 
   }
 
@@ -521,16 +533,28 @@ export class OrderFormComponent implements OnInit {
     var totale = this.getValueTotaleAcconto().totale;
     var acconto = this.getValueTotaleAcconto().acconto;
 
+    // if( isNaN(acconto) ){
+    //   this.reactiveForm.get('acconto').setValue('0,00');
+    // } else if ( totale < acconto) {              
+    //   this.reactiveForm.get('acconto').setValue('0,00');      
+    //   this.reactiveForm.get('saldo').setValue( (totale).toFixed(2).replace('.',',') );    
+    //   this.openSnackBar('Errore, l\'acconto inserito è maggiore. Dato inserito annullato.\n Inserire un valore valido',1000);
+    //   document.getElementById('acconto').focus();
+    // } else {
+    //   this.reactiveForm.get('saldo').setValue( (totale-acconto).toFixed(2).replace('.',',') ); 
+    // }  
+
     if( isNaN(acconto) ){
       this.reactiveForm.get('acconto').setValue('0,00');
-    } else if ( totale < acconto) {              
-      this.reactiveForm.get('acconto').setValue('0,00');      
-      this.reactiveForm.get('saldo').setValue( (totale).toFixed(2).replace('.',',') );    
-      this.openSnackBar('Errore, l\'acconto inserito è maggiore. Dato inserito annullato.\n Inserire un valore valido',1000);
-      document.getElementById('acconto').focus();
+    } else if ( totale < acconto) {           
+      this.reactiveForm.get('saldo').setValue('0,00');              
+      // this.reactiveForm.get('acconto').setValue('0,00');      
+      // this.reactiveForm.get('saldo').setValue( (totale).toFixed(2).replace('.',',') );    
+      // this.openSnackBar('Errore, l\'acconto inserito è maggiore. Dato inserito annullato.\n Inserire un valore valido',1000);
+      // document.getElementById('acconto').focus();
     } else {
       this.reactiveForm.get('saldo').setValue( (totale-acconto).toFixed(2).replace('.',',') ); 
-    }  
+    }      
 
   }
 

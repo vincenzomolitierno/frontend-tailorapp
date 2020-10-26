@@ -4,6 +4,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Shirt } from '../shirt.model';
 import { RESTBackendService } from 'src/app/backend-service/rest-backend.service';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 interface NeckModelIndicator {
   tag: string,
@@ -146,6 +147,7 @@ export class ShirtFormComponent implements OnInit {
              this.neckModelIndicators = data;   
             },
       (error) => {
+
           console.error(error);
           console.error('Message: ' + error.message);
       }

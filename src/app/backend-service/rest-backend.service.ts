@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { BackendServer } from './backend-server.model';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MessageNotificationDummyComponent } from '../utilities/message-notification-dummy/message-notification-dummy.component';
 
 
 @Injectable({
@@ -233,6 +235,16 @@ public getResourceQuery(tagQuery: string, tagParameter: string): Observable<any>
         `Error error: ${error.error}. ` + "\n" +
         `Error message: ${error.message}. `;
     }
+
+    // // START PATCH
+    // var dialog: MatDialog;
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.data = {
+    //   messaggio: 'Aggiornamento della Password riuscito', 
+    //   titolo: 'INFO', 
+    // };
+    // const dialogRef = dialog.open(MessageNotificationDummyComponent, dialogConfig);
+    // // END PATCH
 
     console.error(this.errorMessage);
     // return an observable with a user-facing error message
