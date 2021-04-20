@@ -615,6 +615,14 @@ export class OrderFormComponent implements OnInit {
     this.disableDeliveryControls = event.checked;
   }
 
+  addNote( event: any ) {
+    // console.log(event.checked);
+    if ( this.reactiveForm.get('note_x_fasonista').value )
+    this.reactiveForm.get('note_x_fasonista').setValue(this.reactiveForm.get('note_x_fasonista').value + "\n1 bottone a 5.5 cm\nUltima asola al contrario");
+    else
+    this.reactiveForm.get('note_x_fasonista').setValue("1 bottone a 5.5 cm\nUltima asola al contrario");
+  }
+
   controllaDataConsegna(event: any) {
     
     var selectedDay = new Date(event.value);

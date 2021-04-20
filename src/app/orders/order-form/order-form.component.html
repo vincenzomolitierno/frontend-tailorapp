@@ -113,6 +113,13 @@
             <mat-checkbox formControlName="consegnato" (change)="setOrdineConsegnato($event)">Consegnato</mat-checkbox>
         </div>
 
+        <div class="left-side">
+            <button mat-raised-button matTooltipPosition="above" (click)="addNote($event)">nota bottone</button>
+        </div> 
+        <div class="right-side">
+            <p>&nbsp;</p>
+        </div>       
+
         <mat-form-field appearance="fill" style="display: none;">
             <mat-label>Note (per il cliente)</mat-label>
             <textarea matInput placeholder="inserisre nota..." formControlName="note"></textarea>
