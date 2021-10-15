@@ -618,9 +618,9 @@ export class OrderFormComponent implements OnInit {
   addNote( event: any ) {
     // console.log(event.checked);
     if ( this.reactiveForm.get('note_x_fasonista').value )
-    this.reactiveForm.get('note_x_fasonista').setValue(this.reactiveForm.get('note_x_fasonista').value + "\n1 bottone a 5.5 cm\nUltima asola al contrario");
+    this.reactiveForm.get('note_x_fasonista').setValue(this.reactiveForm.get('note_x_fasonista').value + "\n1 bottone a 5.5 cm");
     else
-    this.reactiveForm.get('note_x_fasonista').setValue("1 bottone a 5.5 cm\nUltima asola al contrario");
+    this.reactiveForm.get('note_x_fasonista').setValue("1 bottone a 5.5 cm");
   }
 
   controllaDataConsegna(event: any) {

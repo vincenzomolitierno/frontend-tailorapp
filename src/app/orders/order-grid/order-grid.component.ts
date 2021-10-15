@@ -361,7 +361,6 @@ export class OrderGridComponent extends GridModel implements OnInit {
 
   }
 
-
  //OVERRIDE 
  public recorSetCustomer: Array<Customer> = [];
  public getRemoteData(tagResourse: string):any {

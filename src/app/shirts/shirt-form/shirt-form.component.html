@@ -137,16 +137,18 @@
 
         </div>
 
-        <div class="grid-container" style="border: 0.5px solid black; grid-template-columns: 50% 50%; padding-bottom: 20px; padding-top: 20px;" *ngIf="pannello_iniziali">
+        <div class="grid-container-100" style="border: 0.5px solid black; padding-bottom: 20px; padding-top: 20px;" *ngIf="pannello_iniziali">
 
             <div class="grid-item">
                 <div class="gap"></div>
                 <mat-form-field appearance="outline">
                     <mat-label>Iniziali</mat-label>
-                    <input matInput placeholder="inserire le iniziali" formControlName="iniziali" maxlength="4">
+                    <input matInput placeholder="inserire le iniziali" formControlName="iniziali">
                     <mat-icon matSuffix>keyboard</mat-icon>
                 </mat-form-field>
             </div>
+
+            <div class="grid-container">
 
             <div class="grid-item">
                 <div class="gap"></div>
@@ -161,7 +163,8 @@
                     <mat-icon matSuffix>list_alt</mat-icon>
                     <mat-error *ngIf="reactiveForm.controls.iniziali.hasError('required')">Selezionare posizione</mat-error>
                 </mat-form-field>
-            </div>
+            </div>                
+
 
             <div class="grid-item" style="text-align: left;">
                 <mat-radio-group aria-label="Select an option" formControlName="stile_carattere" style="display: flex; flex-direction: column;">
@@ -175,6 +178,8 @@
                     <mat-radio-button value="NO">Minuscole</mat-radio-button>
                 </mat-radio-group>
             </div>
+
+        </div>
 
             <!-- <div class="grid-item">
                         <div class="gap"></div>

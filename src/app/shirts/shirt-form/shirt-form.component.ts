@@ -133,7 +133,7 @@ export class ShirtFormComponent implements OnInit {
   forwardModelIndicators;
   listIndicators = [
     {descrizione: 'DAVANTI'},
-    {descrizione: 'COLLO'},
+    // {descrizione: 'COLLO'},
     {descrizione: 'POLSO'},
     {descrizione: 'TASCA'}];
 

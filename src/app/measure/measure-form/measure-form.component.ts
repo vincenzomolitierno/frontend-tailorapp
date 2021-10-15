@@ -329,7 +329,7 @@ export class MeasureFormComponent implements OnInit  {
         this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) + 0.5).toFixed(1)  ); 
         break;
       case 'spalla':
-        this.reactiveForm.get('spalla').setValue(  (parseFloat(this.reactiveForm.get('spalla').value) + 0.5).toFixed(1)  ); 
+        this.reactiveForm.get('spalla').setValue(  (parseFloat(this.reactiveForm.get('spalla').value) + 0.1).toFixed(1)  ); 
         break;   
       case 'lunghezza_manica':
         this.reactiveForm.get('lunghezza_manica').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_manica').value) + 0.5).toFixed(1)  ); 
@@ -399,7 +399,7 @@ export class MeasureFormComponent implements OnInit  {
         this.reactiveForm.get('collo').setValue(  (parseFloat(this.reactiveForm.get('collo').value) - 0.5).toFixed(1)  ); 
         break;
       case 'spalla':
-        this.reactiveForm.get('spalla').setValue(  (parseFloat(this.reactiveForm.get('spalla').value) - 0.5).toFixed(1)  ); 
+        this.reactiveForm.get('spalla').setValue(  (parseFloat(this.reactiveForm.get('spalla').value) - 0.1).toFixed(1)  ); 
         break;   
       case 'lunghezza_manica':
         this.reactiveForm.get('lunghezza_manica').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_manica').value) - 0.5).toFixed(1)  ); 
