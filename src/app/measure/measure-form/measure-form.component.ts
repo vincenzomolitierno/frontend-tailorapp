@@ -141,6 +141,9 @@ export class MeasureFormComponent implements OnInit  {
           lunghezza_manica: new FormControl(''),
           bicipite: new FormControl(''),
           avambraccio: new FormControl(''),
+
+          fondo_avambraccio: new FormControl(''),
+          passaggi_a_mano: new FormControl(''),
           
           lunghezza_camicia: new FormControl(''),
           centro_schiena: new FormControl(''),
@@ -227,7 +230,7 @@ export class MeasureFormComponent implements OnInit  {
 
               console.log('misura esistente');                       
               this.measure = this.resourceQuery[this.resourceQuery.length-1];  
-              // console.log(this.measure);             
+              console.log(this.measure);             
               
               // this.formModal = 'aggiornamento';
   
@@ -240,7 +243,10 @@ export class MeasureFormComponent implements OnInit  {
               this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
               this.reactiveForm.get('lunghezza_manica').setValue(parseFloat(this.measure.lung_bicipite).toFixed(1));   
               this.reactiveForm.get('bicipite').setValue(parseFloat(this.measure.bicipite).toFixed(1));   
-              this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));   
+              this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));  
+
+              this.reactiveForm.get('fondo_avambraccio').setValue(parseFloat(this.measure.fondo_avambraccio).toFixed(1));   
+              this.reactiveForm.get('passaggi_a_mano').setValue(parseFloat(this.measure.passaggi_a_mano).toFixed(1));   
                 
               this.reactiveForm.get('lunghezza_camicia').setValue(parseFloat(this.measure.lung_camicia).toFixed(1));  
               this.reactiveForm.get('centro_schiena').setValue(parseFloat(this.measure.lung_avambraccio).toFixed(1));  
@@ -339,7 +345,14 @@ export class MeasureFormComponent implements OnInit  {
         break;          
       case 'avambraccio':
         this.reactiveForm.get('avambraccio').setValue(  (parseFloat(this.reactiveForm.get('avambraccio').value) + 0.5).toFixed(1)  ); 
-        break;   
+        break;  
+
+      case 'fondo_avambraccio':
+        this.reactiveForm.get('fondo_avambraccio').setValue(  (parseFloat(this.reactiveForm.get('fondo_avambraccio').value) + 0.5).toFixed(1)  ); 
+        break;                  
+      case 'passaggi_a_mano':
+        this.reactiveForm.get('passaggi_a_mano').setValue(  (parseFloat(this.reactiveForm.get('passaggi_a_mano').value) + 0.5).toFixed(1)  ); 
+        break;            
                 
       case 'lunghezza_camicia':
         this.reactiveForm.get('lunghezza_camicia').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_camicia').value) + 0.5).toFixed(1)  ); 
@@ -409,7 +422,14 @@ export class MeasureFormComponent implements OnInit  {
         break;          
       case 'avambraccio':
         this.reactiveForm.get('avambraccio').setValue(  (parseFloat(this.reactiveForm.get('avambraccio').value) - 0.5).toFixed(1)  ); 
-        break;   
+        break;  
+
+      case 'fondo_avambraccio':
+        this.reactiveForm.get('fondo_avambraccio').setValue(  (parseFloat(this.reactiveForm.get('fondo_avambraccio').value) - 0.5).toFixed(1)  ); 
+        break; 
+      case 'passaggi_a_mano':
+        this.reactiveForm.get('passaggi_a_mano').setValue(  (parseFloat(this.reactiveForm.get('passaggi_a_mano').value) - 0.5).toFixed(1)  ); 
+        break;                  
                 
       case 'lunghezza_camicia':
         this.reactiveForm.get('lunghezza_camicia').setValue(  (parseFloat(this.reactiveForm.get('lunghezza_camicia').value) - 0.5).toFixed(1)  ); 

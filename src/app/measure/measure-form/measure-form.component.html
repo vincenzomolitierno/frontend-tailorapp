@@ -132,6 +132,24 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- INPUT Fondo Avambraccio -->
+                <div class="control-measure">
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('fondo_avambraccio')"><mat-icon>remove</mat-icon></button>
+                        </div>
+                    </div>
+                    <div class="value-set">
+                        <p>Fondo Avambraccio</p>
+                        <input type="text" formControlName="fondo_avambraccio" class="value-display" readonly>
+                    </div>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('fondo_avambraccio')"><mat-icon>add</mat-icon></button>
+                        </div>
+                    </div>
+                </div>                
             </div>
 
             <!-- SECONDA COLONNA DI INPUT -->
@@ -245,6 +263,23 @@
                     </div>
                 </div>
 
+                <!-- INPUT passaggio a mano -->
+                <div class="control-measure">
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonDecrease('passaggi_a_mano')"><mat-icon>remove</mat-icon></button>
+                        </div>
+                    </div>
+                    <div class="value-set">
+                        <p>Passaggi a Mano</p>
+                        <input type="text" formControlName="passaggi_a_mano" class="value-display" readonly>
+                    </div>
+                    <div class="container-button">
+                        <div class="center-button">
+                            <button mat-mini-fab color="primary" (click)="buttonIncrease('passaggi_a_mano')"><mat-icon>add</mat-icon></button>
+                        </div>
+                    </div>
+                </div>                  
 
             </div>
 

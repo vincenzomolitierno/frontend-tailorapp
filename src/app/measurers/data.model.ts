@@ -16,6 +16,8 @@
     vita_dietro: string;  //
     lung_camicia: string; //
     avambraccio: string;  //
+    fondo_avambraccio: string;  //
+    passaggi_a_mano: string;  //
     lung_avambraccio: string; //inutilizzato
     bacino_dietro: string;  //
     bacino: string; // centro_schiena

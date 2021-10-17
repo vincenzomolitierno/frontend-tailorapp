@@ -433,7 +433,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "note_grafiche": base64,
             "clienti_idclienti": result.idcliente,
             "data_misure": '' ,  // inserita dal backend
-            "note": result.note,         
+            "note": result.note, 
+            
+            // "fondo_avambraccio": result.fondo_avambraccio,
+            // "passaggi_a_mano": result.passaggi_a_mano,
           });          
           
         }
@@ -461,7 +464,10 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "note_grafiche": base64,
             "clienti_idclienti": result.idcliente,
             "data_misure": '', // inserita dal backend
-            "note": result.note,            
+            "note": result.note, 
+            
+            // "fondo_avambraccio": result.fondo_avambraccio,
+            // "passaggi_a_mano": result.passaggi_a_mano,            
           });            
 
         } //fine PUT
