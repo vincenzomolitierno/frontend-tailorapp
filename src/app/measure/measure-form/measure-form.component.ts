@@ -19,6 +19,10 @@ interface ShirtIndicatorSize {
   taglia: string,
 }
 
+interface HandStepsSize {
+  passo: string,
+}
+
 @Component({
   selector: 'app-measure-form',
   templateUrl: './measure-form.component.html',
@@ -106,6 +110,14 @@ export class MeasureFormComponent implements OnInit  {
     {taglia: '48'},
     {taglia: '49'},    
     {taglia: '50'}              
+  ]; 
+  
+  handStepsSizes: HandStepsSize[] = [    
+    {passo: '4'},           
+    {passo: '7'},
+    {passo: '8'},
+    {passo: '13'},
+    {passo: '17'}
   ];   
 
   reactiveForm: FormGroup;
@@ -135,6 +147,7 @@ export class MeasureFormComponent implements OnInit  {
 
           shirtIndicatorControl: new FormControl('', Validators.required),
           shirtIndicatorControlSize: new FormControl('', Validators.required),
+          handStepsControlSize: new FormControl('', Validators.required),
                     
           collo: new FormControl(''),
           spalla: new FormControl(''),
@@ -237,7 +250,8 @@ export class MeasureFormComponent implements OnInit  {
               //si inizializzano i campi del form
               console.log('MISUROMETRO: ' + this.measure.misurometro);
               this.reactiveForm.get('shirtIndicatorControl').setValue(this.measure.misurometro);              
-              this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);   
+              this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);  
+              this.reactiveForm.get('handStepsControlSize').setValue(this.measure.passaggi_a_mano);                 
   
               this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
               this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
@@ -246,7 +260,7 @@ export class MeasureFormComponent implements OnInit  {
               this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));  
 
               this.reactiveForm.get('fondo_avambraccio').setValue(parseFloat(this.measure.fondo_avambraccio).toFixed(1));   
-              this.reactiveForm.get('passaggi_a_mano').setValue(parseFloat(this.measure.passaggi_a_mano).toFixed(1));   
+              this.reactiveForm.get('passaggi_a_mano').setValue(this.measure.passaggi_a_mano);   
                 
               this.reactiveForm.get('lunghezza_camicia').setValue(parseFloat(this.measure.lung_camicia).toFixed(1));  
               this.reactiveForm.get('centro_schiena').setValue(parseFloat(this.measure.lung_avambraccio).toFixed(1));  
@@ -492,12 +506,16 @@ export class MeasureFormComponent implements OnInit  {
     this.flagB = false;
 
     this.reactiveForm.get('shirtIndicatorControlSize').setValue('');   
+    this.reactiveForm.get('handStepsControlSize').setValue('');   
 
     this.reactiveForm.get('collo').setValue(Number(45).toFixed(1));   
     this.reactiveForm.get('spalla').setValue(Number(0).toFixed(1));   
     this.reactiveForm.get('lunghezza_manica').setValue(Number(0).toFixed(1));   
     this.reactiveForm.get('bicipite').setValue(Number(0).toFixed(1));   
     this.reactiveForm.get('avambraccio').setValue(Number(0).toFixed(1));   
+
+    this.reactiveForm.get('fondo_avambraccio').setValue(Number(0).toFixed(1));  
+    this.reactiveForm.get('passaggi_a_mano').setValue('');  
       
     this.reactiveForm.get('lunghezza_camicia').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('centro_schiena').setValue(Number(0).toFixed(1));  

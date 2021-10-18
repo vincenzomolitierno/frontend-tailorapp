@@ -21,7 +21,6 @@
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
                     <mat-error *ngIf="reactiveForm.controls.shirtIndicatorControl.hasError('required')">Selezionare un misurometro</mat-error>
-                    <!-- <mat-hint>{{reactiveForm.controls.shirtIndicatorControl.value?.sound}}</mat-hint> -->
                 </mat-form-field>
             </div>
             <div class="right-si-bar">
@@ -35,7 +34,6 @@
                     </mat-select>
                     <mat-icon matSuffix>list_alt</mat-icon>
                     <mat-error *ngIf="reactiveForm.controls.shirtIndicatorControlSize.hasError('required')">Selezionare una taglia di misurometro</mat-error>
-                    <!-- <mat-hint>{{reactiveForm.controls.shirtIndicatorControl.value?.sound}}</mat-hint> -->
                 </mat-form-field>
             </div>
         </div>
@@ -263,23 +261,20 @@
                     </div>
                 </div>
 
-                <!-- INPUT passaggio a mano -->
-                <div class="control-measure">
-                    <div class="container-button">
-                        <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonDecrease('passaggi_a_mano')"><mat-icon>remove</mat-icon></button>
-                        </div>
-                    </div>
-                    <div class="value-set">
-                        <p>Passaggi a Mano</p>
-                        <input type="text" formControlName="passaggi_a_mano" class="value-display" readonly>
-                    </div>
-                    <div class="container-button">
-                        <div class="center-button">
-                            <button mat-mini-fab color="primary" (click)="buttonIncrease('passaggi_a_mano')"><mat-icon>add</mat-icon></button>
-                        </div>
-                    </div>
-                </div>                  
+                <!-- INPUT passaggio a mano -->                
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Passaggi a Mano</mat-label>
+                        <mat-select formControlName="handStepsControlSize">
+                            <mat-option>--</mat-option>
+                            <mat-option *ngFor="let handStepsSize of handStepsSizes" required [value]="handStepsSize.passo">
+                                {{handStepsSize.passo}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>list_alt</mat-icon>
+                        <mat-error *ngIf="reactiveForm.controls.handStepsControlSize.hasError('required')">Selezionare una misura per il passaggio a mano</mat-error>
+                    </mat-form-field>
+                </div>                
 
             </div>
 

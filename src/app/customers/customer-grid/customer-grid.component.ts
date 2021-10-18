@@ -435,8 +435,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "data_misure": '' ,  // inserita dal backend
             "note": result.note, 
             
-            // "fondo_avambraccio": result.fondo_avambraccio,
-            // "passaggi_a_mano": result.passaggi_a_mano,
+            "fondo_avambraccio": result.fondo_avambraccio,
+            "passaggi_a_mano": result.handStepsControlSize,
           });          
           
         }
@@ -466,8 +466,8 @@ export class CustomerGridComponent extends GridModel implements OnInit {
             "data_misure": '', // inserita dal backend
             "note": result.note, 
             
-            // "fondo_avambraccio": result.fondo_avambraccio,
-            // "passaggi_a_mano": result.passaggi_a_mano,            
+            "fondo_avambraccio": result.fondo_avambraccio,
+            "passaggi_a_mano": result.passaggi_a_mano,            
           });            
 
         } //fine PUT
