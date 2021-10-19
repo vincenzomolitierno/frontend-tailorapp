@@ -266,7 +266,6 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Passaggi a Mano</mat-label>
                         <mat-select formControlName="handStepsControlSize">
-                            <mat-option>--</mat-option>
                             <mat-option *ngFor="let handStepsSize of handStepsSizes" required [value]="handStepsSize.passo">
                                 {{handStepsSize.passo}}
                             </mat-option>

@@ -251,7 +251,7 @@ export class MeasureFormComponent implements OnInit  {
               console.log('MISUROMETRO: ' + this.measure.misurometro);
               this.reactiveForm.get('shirtIndicatorControl').setValue(this.measure.misurometro);              
               this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);  
-              this.reactiveForm.get('handStepsControlSize').setValue(this.measure.passaggi_a_mano);                 
+              this.reactiveForm.get('handStepsControlSize').setValue((this.measure.passaggi_a_mano == '' ? '4' : this.measure.passaggi_a_mano ));                 
   
               this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
               this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
@@ -259,8 +259,8 @@ export class MeasureFormComponent implements OnInit  {
               this.reactiveForm.get('bicipite').setValue(parseFloat(this.measure.bicipite).toFixed(1));   
               this.reactiveForm.get('avambraccio').setValue(parseFloat(this.measure.avambraccio).toFixed(1));  
 
-              this.reactiveForm.get('fondo_avambraccio').setValue(parseFloat(this.measure.fondo_avambraccio).toFixed(1));   
-              this.reactiveForm.get('passaggi_a_mano').setValue(this.measure.passaggi_a_mano);   
+              this.reactiveForm.get('fondo_avambraccio').setValue((this.measure.fondo_avambraccio == '' ? '0.0' : parseFloat(this.measure.fondo_avambraccio).toFixed(1) ));   
+              // this.reactiveForm.get('passaggi_a_mano').setValue(this.measure.passaggi_a_mano);   
                 
               this.reactiveForm.get('lunghezza_camicia').setValue(parseFloat(this.measure.lung_camicia).toFixed(1));  
               this.reactiveForm.get('centro_schiena').setValue(parseFloat(this.measure.lung_avambraccio).toFixed(1));  
@@ -506,7 +506,7 @@ export class MeasureFormComponent implements OnInit  {
     this.flagB = false;
 
     this.reactiveForm.get('shirtIndicatorControlSize').setValue('');   
-    this.reactiveForm.get('handStepsControlSize').setValue('');   
+    this.reactiveForm.get('handStepsControlSize').setValue('4');   
 
     this.reactiveForm.get('collo').setValue(Number(45).toFixed(1));   
     this.reactiveForm.get('spalla').setValue(Number(0).toFixed(1));   
@@ -515,7 +515,7 @@ export class MeasureFormComponent implements OnInit  {
     this.reactiveForm.get('avambraccio').setValue(Number(0).toFixed(1));   
 
     this.reactiveForm.get('fondo_avambraccio').setValue(Number(0).toFixed(1));  
-    this.reactiveForm.get('passaggi_a_mano').setValue('');  
+    // this.reactiveForm.get('passaggi_a_mano').setValue('');  
       
     this.reactiveForm.get('lunghezza_camicia').setValue(Number(0).toFixed(1));  
     this.reactiveForm.get('centro_schiena').setValue(Number(0).toFixed(1));  

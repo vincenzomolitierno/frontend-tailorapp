@@ -306,6 +306,9 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Avamb Tot x B.: " +
                 this.convertipositivi(measure.avambraccio) +
+                "\n\n" +
+                "Fondo Avamb.: " +
+                (this.convertipositivi(measure.fondo_avambraccio) == '' ? this.convertipositivi(measure.fondo_avambraccio) : '0.0' ) +
                 "\n",
               style: "name",
             },
@@ -328,6 +331,9 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Polso: " +
                 measure.polso +
+                "\n\n" +
+                "Passaggi a Mano: " +
+                (this.convertipositivi(measure.passaggi_a_mano) == '' ? this.convertipositivi(measure.passaggi_a_mano) : '4' ) +               
                 "\n",
               style: "name",
             },
@@ -601,6 +607,9 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Avamb Tot x B.: " +
                 this.convertipositivi(measure.avambraccio) +
+                "\n\n" +
+                "Fondo Avamb.: " +
+                (this.convertipositivi(measure.fondo_avambraccio) == '' ? this.convertipositivi(measure.fondo_avambraccio) : '0.0' ) +                
                 "\n",
               style: "name",
             },
@@ -623,6 +632,9 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Polso: " +
                 measure.polso +
+                "\n\n" +
+                "Passaggi a Mano: " +
+                (this.convertipositivi(measure.passaggi_a_mano) == '' ? this.convertipositivi(measure.passaggi_a_mano) : '4' ) +                  
                 "\n",
               style: "name",
             },
@@ -943,6 +955,8 @@ export class PdfPrinterService {
                 "Bicipite Alto Tot x B.: " +
                 "\n\n" +
                 "Avamb Tot x B.: " +
+                "\n\n" +
+                "Fondo Avambraccio: " +
                 "\n",
               style: "name",
             },
@@ -959,6 +973,8 @@ export class PdfPrinterService {
                 "Bacino: " +
                 "\n\n" +
                 "Polso: " +
+                "\n\n" +
+                "Passaggi a Mano: " +                
                 "\n",
               style: "name",
             },
@@ -1014,17 +1030,17 @@ export class PdfPrinterService {
           alignment: "center",
         },
         {
-          margin: [-12, 20, -30, 0],
+          margin: [0, 0, 0, 0],
           columns: [
             {
-              text: "NOTE: ",
+              text: "NOTE modificate: ",
               style: "subheader",
               alignment: "left",
             },
           ],
         },
         {
-          margin: [-12, 20, -30, 0],
+          margin: [0, 0, 0, 0],
           columns: [
             {
               text: "Data Misura: ",
@@ -1034,7 +1050,7 @@ export class PdfPrinterService {
           ],
         },
         {
-          margin: [-12, 20, -30, 0],
+          margin: [0, 0, 0, 0],
           columns: [
             {
               text: "Saldato: ",
@@ -1186,6 +1202,9 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Avamb Tot x B.: " +
                 this.convertipositivi(measure.avambraccio) +
+                "\n\n" +
+                "Fondo Avamb.: " +
+                (this.convertipositivi(measure.fondo_avambraccio) == '' ? this.convertipositivi(measure.fondo_avambraccio) : '0.0' ) +                
                 "\n",
               style: "name",
             },
@@ -1208,6 +1227,9 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Polso: " +
                 measure.polso +
+                "\n\n" +
+                "Passaggi a Mano: " +
+                (this.convertipositivi(measure.passaggi_a_mano) == '' ? this.convertipositivi(measure.passaggi_a_mano) : '4' ) +                  
                 "\n",
               style: "name",
             },
