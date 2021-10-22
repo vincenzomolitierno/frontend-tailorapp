@@ -308,7 +308,9 @@ export class PdfPrinterService {
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
                 "Fondo Avamb.: " +
-                (this.convertipositivi(measure.fondo_avambraccio) == '' ? this.convertipositivi(measure.fondo_avambraccio) : '0.0' ) +
+                (this.convertipositivi(measure.fondo_avambraccio) == ""
+                  ? this.convertipositivi(measure.fondo_avambraccio)
+                  : "0.0") +
                 "\n",
               style: "name",
             },
@@ -333,7 +335,9 @@ export class PdfPrinterService {
                 measure.polso +
                 "\n\n" +
                 "Passaggi a Mano: " +
-                (this.convertipositivi(measure.passaggi_a_mano) == '' ? this.convertipositivi(measure.passaggi_a_mano) : '4' ) +               
+                (this.convertipositivi(measure.passaggi_a_mano) == ""
+                  ? this.convertipositivi(measure.passaggi_a_mano)
+                  : "4") +
                 "\n",
               style: "name",
             },
@@ -609,7 +613,9 @@ export class PdfPrinterService {
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
                 "Fondo Avamb.: " +
-                (this.convertipositivi(measure.fondo_avambraccio) == '' ? this.convertipositivi(measure.fondo_avambraccio) : '0.0' ) +                
+                (this.convertipositivi(measure.fondo_avambraccio) == ""
+                  ? this.convertipositivi(measure.fondo_avambraccio)
+                  : "0.0") +
                 "\n",
               style: "name",
             },
@@ -634,7 +640,9 @@ export class PdfPrinterService {
                 measure.polso +
                 "\n\n" +
                 "Passaggi a Mano: " +
-                (this.convertipositivi(measure.passaggi_a_mano) == '' ? this.convertipositivi(measure.passaggi_a_mano) : '4' ) +                  
+                (this.convertipositivi(measure.passaggi_a_mano) == ""
+                  ? this.convertipositivi(measure.passaggi_a_mano)
+                  : "4") +
                 "\n",
               style: "name",
             },
@@ -837,8 +845,8 @@ export class PdfPrinterService {
         content: [
           documentCustomerDefinition.content,
           {
-            text: '',
-            pageBreak: 'after'
+            text: "",
+            pageBreak: "after",
           },
           documentSubcontractorDefinition.content,
         ],
@@ -914,7 +922,6 @@ export class PdfPrinterService {
               alignment: "left",
               fontSize: 20,
             },
-
             {
               text: "MODULO MISURE ",
               style: "header",
@@ -974,13 +981,12 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Polso: " +
                 "\n\n" +
-                "Passaggi a Mano: " +                
+                "Passaggi a Mano: " +
                 "\n",
               style: "name",
             },
           ],
         },
-
         {
           margin: [-12, 20, -30, 0],
           columns: [
@@ -1023,7 +1029,6 @@ export class PdfPrinterService {
             },
           ],
         },
-        ,
         {
           image: base64,
           width: 250,
@@ -1073,7 +1078,6 @@ export class PdfPrinterService {
         producer: "profidiacamicie.com",
         creator: "profidiacamicie.com",
       },
-
       styles: {
         header: {
           fontSize: refSize,
@@ -1112,7 +1116,63 @@ export class PdfPrinterService {
       }, // fine style
     };
 
-    pdfMake.createPdf(documentEmptyDefinition).open();
+    const documentFull = {
+      content: [
+        documentEmptyDefinition.content,
+        {
+          text: "",
+          pageBreak: "after",
+        },
+        this.getEmptyMeasureTemplate(),
+      ],
+      info: {
+        title: "STAMPA MODULO",
+        author: "idealprogetti.com",
+        subject: "Riepilogo Lavorazioni",
+        keywords: "RESUME, ONLINE RESUME",
+        producer: "profidiacamicie.com",
+        creator: "profidiacamicie.com",
+      },
+      styles: {
+        header: {
+          fontSize: refSize,
+          bold: true,
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+        },
+        subheader: {
+          fontSize: refSize,
+          bold: true,
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+        },
+        name: {
+          fontSize: refSize,
+          alignment: "left",
+        },
+        jobTitle: {
+          fontSize: 14,
+          bold: true,
+          italics: true,
+        },
+        sign: {
+          margin: [0, 50, 0, 10],
+          alignment: "right",
+          italics: true,
+        },
+        tableExample: {
+          margin: [0, 10, 0, 10],
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 11,
+          color: "black",
+        },
+      }, // fine style
+    };
+
+    pdfMake.createPdf(documentFull).open();
+    // pdfMake.createPdf(documentEmptyDefinition).open();
     // pdfMake.createPdf(documentEmptyDefinition).download('STAMPA MODELLO ORDINE VUOTO');
   }
 
@@ -1204,7 +1264,9 @@ export class PdfPrinterService {
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
                 "Fondo Avamb.: " +
-                (this.convertipositivi(measure.fondo_avambraccio) == '' ? this.convertipositivi(measure.fondo_avambraccio) : '0.0' ) +                
+                (this.convertipositivi(measure.fondo_avambraccio) == ""
+                  ? this.convertipositivi(measure.fondo_avambraccio)
+                  : "0.0") +
                 "\n",
               style: "name",
             },
@@ -1229,7 +1291,9 @@ export class PdfPrinterService {
                 measure.polso +
                 "\n\n" +
                 "Passaggi a Mano: " +
-                (this.convertipositivi(measure.passaggi_a_mano) == '' ? this.convertipositivi(measure.passaggi_a_mano) : '4' ) +                  
+                (this.convertipositivi(measure.passaggi_a_mano) == ""
+                  ? this.convertipositivi(measure.passaggi_a_mano)
+                  : "4") +
                 "\n",
               style: "name",
             },
@@ -1381,5 +1445,782 @@ export class PdfPrinterService {
 
     pdfMake.createPdf(documentEmptyDefinition).open();
     // pdfMake.createPdf(documentEmptyDefinition).download('STAMPA MODELLO ORDINE VUOTO');
+  }
+
+  private static getEmptyMeasureTemplate() {
+    const newPage = [
+      {
+        columns: [
+          {
+            text: "Modulo Camicia",
+            alignment: "left",
+            fontSize: 18,
+            margin: [-15, 2, 0, 0],
+            bold: true,
+          },
+          {
+            margin: [0, 0, -15, 0],
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              fontSize: 18,
+              headerRows: 1,
+              widths: ["*"],
+              body: [
+                [
+                  {
+                    text: " ",
+                    fontSize: 16,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        margin: [-15, 10, -15, 0],
+        columns: [
+          {
+            width: 75,
+            text: "Fasonista",
+            fontSize: 12,
+            margin: [0, 4, 0, 0],
+          },
+          {
+            width: 250,
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              fontSize: 16,
+              headerRows: 1,
+              widths: ["*"],
+              body: [
+                [
+                  {
+                    text: " ",
+                    fontSize: 16,
+                  },
+                ],
+              ],
+            },
+          },
+          {
+            width: 150,
+            text: "Quantità",
+            fontSize: 12,
+            alignment: "right",
+            margin: [0, 4, 5, 0],
+          },
+          {
+            width: "*",
+            table: {
+              fontSize: 16,
+              headerRows: 1,
+              widths: ["*"],
+              body: [
+                [
+                  {
+                    text: " ",
+                    fontSize: 16,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        margin: [-15, 10, -15, 0],
+        table: {
+          fontSize: 16,
+          headerRows: 1,
+          widths: ["*"],
+          body: [
+            [
+              {
+                stack: [
+                  {
+                    margin: [0, 5, 0, 0],
+                    columns: [
+                      {
+                        width: 85,
+                        text: "Colore Camicia",
+                        fontSize: 12,
+                        margin: [0, 4, 0, 0],
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 85,
+                        text: "Tipo Bottone",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 5, 0, 0],
+                    columns: [
+                      {
+                        width: 85,
+                        text: "Modello Polso",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 85,
+                        text: "Modello Polso",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 5, 0, 0],
+                    columns: [
+                      {
+                        width: 85,
+                        text: "Avanti",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 85,
+                        text: "Dietro",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 10, 0, 0],
+                    columns: [
+                      {
+                        width: 60,
+                        margin: [15, 0, 15, 0],
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: "STECCHE ESTRAIBILI",
+                                fontSize: 12,
+                                alignment: "center",
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 60,
+                        margin: [30, 0, 15, 0],
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: "CUCITURE A MANO",
+                                fontSize: 12,
+                                alignment: "center",
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 120,
+                        margin: [40, 0, 15, 0],
+                        table: {
+                          fontSize: 18,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                margin: [0, 7.2, 0, 7.2],
+                                text: "TASCA",
+                                fontSize: 12,
+                                alignment: "center",
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 70,
+                        text: "Iniziali",
+                        fontSize: 12,
+                        alignment: "right",
+                        margin: [0, 8, 5, 0],
+                      },
+                      {
+                        width: "*",
+                        margin: [0, 4, 0, 0],
+                        table: {
+                          // fontSize: 16,
+                          // headerRows: 1,
+                          // widths: ["*"],
+                          body: [
+                            [
+                              {
+                                width: 200,
+                                text: "  ",
+                                fontSize: 16,
+                                margin: [150, 0, 0, 0],
+                              },
+                              {
+                                text: "NO INIZIALI",
+                                fontSize: 10,
+                                margin: [0, 4, 0, 0],
+                              },
+                            ],
+                          ],
+                        },
+                      },                      
+                    ],                    
+                  },
+                  {
+                    margin: [0, 10, 0, 0],
+                    columns: [
+                      {
+                        width: 95,
+                        text: "Posizione Iniziali",
+                        fontSize: 12,
+                        margin: [0, 6, 0, 0],
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: [120],
+                          body: [
+                            [
+                              {
+                                text: "DAVANTI/POLSO/TASCA",
+                                fontSize: 10,
+                                alignment: "center",
+                                margin: [0, 5, 0, 5]
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: [120],
+                          body: [
+                            [
+                              {
+                                text: "CORSIVO/STAMPATO",
+                                fontSize: 10,
+                                alignment: "center",
+                                margin: [0, 5, 0, 5]
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: [120],
+                          body: [
+                            [
+                              {
+                                text: "MAIUSCOLE/minuscole",
+                                fontSize: 10,
+                                alignment: "center",
+                                margin: [0, 5, 0, 5]
+                              },
+                            ],
+                          ],
+                        },
+                      }                                          
+                    ],
+                  }, 
+                  {
+                    text: ' ',
+                    margin: [0, 120, 0, 0]
+                  }                                     
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      {
+        margin: [-15, 20, -15, 0],
+        columns: [
+          {
+            width: 325,
+            text: " ",
+            fontSize: 12,
+            margin: [0, 4, 0, 0],
+          }, 
+          {
+            width: 150,
+            text: "Quantità",
+            fontSize: 12,
+            alignment: "right",
+            margin: [0, 4, 5, 0],
+          },
+          {
+            width: "*",
+            table: {
+              fontSize: 16,
+              headerRows: 1,
+              widths: ["*"],
+              body: [
+                [
+                  {
+                    text: " ",
+                    fontSize: 16,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        margin: [-15, 10, -15, 0],
+        table: {
+          fontSize: 16,
+          headerRows: 1,
+          widths: ["*"],
+          body: [
+            [
+              {
+                stack: [
+                  {
+                    margin: [0, 5, 0, 0],
+                    columns: [
+                      {
+                        width: 85,
+                        text: "Colore Camicia",
+                        fontSize: 12,
+                        margin: [0, 4, 0, 0],
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 85,
+                        text: "Tipo Bottone",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 5, 0, 0],
+                    columns: [
+                      {
+                        width: 85,
+                        text: "Modello Polso",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 85,
+                        text: "Modello Polso",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 5, 0, 0],
+                    columns: [
+                      {
+                        width: 85,
+                        text: "Avanti",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 85,
+                        text: "Dietro",
+                        fontSize: 12,
+                        margin: [0, 4, 5, 0],
+                        alignment: "right",
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: " ",
+                                fontSize: 16,
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 10, 0, 0],
+                    columns: [
+                      {
+                        width: 60,
+                        margin: [15, 0, 15, 0],
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: "STECCHE ESTRAIBILI",
+                                fontSize: 12,
+                                alignment: "center",
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 60,
+                        margin: [30, 0, 15, 0],
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                text: "CUCITURE A MANO",
+                                fontSize: 12,
+                                alignment: "center",
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 120,
+                        margin: [40, 0, 15, 0],
+                        table: {
+                          fontSize: 18,
+                          headerRows: 1,
+                          widths: ["*"],
+                          body: [
+                            [
+                              {
+                                margin: [0, 7.2, 0, 7.2],
+                                text: "TASCA",
+                                fontSize: 12,
+                                alignment: "center",
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: 70,
+                        text: "Iniziali",
+                        fontSize: 12,
+                        alignment: "right",
+                        margin: [0, 8, 5, 0],
+                      },
+                      {
+                        width: "*",
+                        margin: [0, 4, 0, 0],
+                        table: {
+                          // fontSize: 16,
+                          // headerRows: 1,
+                          // widths: ["*"],
+                          body: [
+                            [
+                              {
+                                width: 200,
+                                text: "  ",
+                                fontSize: 16,
+                                margin: [150, 0, 0, 0],
+                              },
+                              {
+                                text: "NO INIZIALI",
+                                fontSize: 10,
+                                margin: [0, 4, 0, 0],
+                              },
+                            ],
+                          ],
+                        },
+                      },                      
+                    ],                    
+                  },
+                  {
+                    margin: [0, 10, 0, 0],
+                    columns: [
+                      {
+                        width: 95,
+                        text: "Posizione Iniziali",
+                        fontSize: 12,
+                        margin: [0, 6, 0, 0],
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: [120],
+                          body: [
+                            [
+                              {
+                                text: "DAVANTI/POLSO/TASCA",
+                                fontSize: 10,
+                                alignment: "center",
+                                margin: [0, 5, 0, 5]
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: [120],
+                          body: [
+                            [
+                              {
+                                text: "CORSIVO/STAMPATO",
+                                fontSize: 10,
+                                alignment: "center",
+                                margin: [0, 5, 0, 5]
+                              },
+                            ],
+                          ],
+                        },
+                      },
+                      {
+                        width: "*",
+                        table: {
+                          fontSize: 16,
+                          headerRows: 1,
+                          widths: [120],
+                          body: [
+                            [
+                              {
+                                text: "MAIUSCOLE/minuscole",
+                                fontSize: 10,
+                                alignment: "center",
+                                margin: [0, 5, 0, 5]
+                              },
+                            ],
+                          ],
+                        },
+                      }                                          
+                    ],
+                  }, 
+                  {
+                    text: ' ',
+                    margin: [0, 120, 0, 0]
+                  }                                     
+                ],
+              },
+            ],
+          ],
+        },
+      },      
+    ];
+    return newPage;
   }
 }
