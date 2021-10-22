@@ -326,6 +326,9 @@ export class OrderGridComponent extends GridModel implements OnInit {
                       var subcontractors: Subcontractor[] = data;
                       var subcontractor: Subcontractor = subcontractors.find(x => x.idfasonatori === order.fasonatori_idfasonatori);
 
+                      console.log('vincenzo');
+                      console.log(measure);
+
                       PdfPrinterService.generatePdf(order, measure, customer, shirts, subcontractor, key);
 
                   },

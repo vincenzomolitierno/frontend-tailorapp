@@ -307,11 +307,8 @@ export class PdfPrinterService {
                 "Avamb Tot x B.: " +
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
-                "Fondo Avamb.: " +
-                (this.convertipositivi(measure.fondo_avambraccio) == ""
-                  ? this.convertipositivi(measure.fondo_avambraccio)
-                  : "0.0") +
-                "\n",
+                "Fondo Avamb.: " + 
+                (measure.fondo_avambraccio == '' ? '0.0' : parseFloat(measure.fondo_avambraccio).toFixed(1) ) +  "\n",
               style: "name",
             },
             {
@@ -613,10 +610,7 @@ export class PdfPrinterService {
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
                 "Fondo Avamb.: " +
-                (this.convertipositivi(measure.fondo_avambraccio) == ""
-                  ? this.convertipositivi(measure.fondo_avambraccio)
-                  : "0.0") +
-                "\n",
+                (measure.fondo_avambraccio == '' ? '0.0' : parseFloat(measure.fondo_avambraccio).toFixed(1) ) +  "\n",
               style: "name",
             },
             {
@@ -640,9 +634,8 @@ export class PdfPrinterService {
                 measure.polso +
                 "\n\n" +
                 "Passaggi a Mano: " +
-                (this.convertipositivi(measure.passaggi_a_mano) == ""
-                  ? this.convertipositivi(measure.passaggi_a_mano)
-                  : "4") +
+                (measure.passaggi_a_mano == ""
+                  ? 4 : this.convertipositivi(measure.passaggi_a_mano)) +
                 "\n",
               style: "name",
             },

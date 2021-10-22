@@ -196,13 +196,13 @@ export class MeasureFormComponent implements OnInit  {
             // INIZIO - si eliminano i duplicati
             var measurers: Measurer[] = data;
             measurers.sort((a, b) => (a.descrizione > b.descrizione) ? 1 : -1);
-            console.log('misurometri ordinati',measurers);
+            // console.log('misurometri ordinati',measurers);
 
             var measurersDistinct = [measurers[0]];
             for (var i=1; i<measurers.length; i++) {
                if (measurers[i].descrizione!=measurers[i-1].descrizione) measurersDistinct.push(measurers[i]);
             }
-            console.log('misurometri selezionati',measurersDistinct);
+            // console.log('misurometri selezionati',measurersDistinct);
             // FINE
 
             this.shirtIndicators = measurersDistinct; 
