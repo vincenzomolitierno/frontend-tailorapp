@@ -113,6 +113,7 @@ export class MeasureFormComponent implements OnInit  {
   ]; 
   
   handStepsSizes: HandStepsSize[] = [    
+    {passo: '0'},  
     {passo: '4'},           
     {passo: '7'},
     {passo: '8'},
@@ -251,7 +252,7 @@ export class MeasureFormComponent implements OnInit  {
               console.log('MISUROMETRO: ' + this.measure.misurometro);
               this.reactiveForm.get('shirtIndicatorControl').setValue(this.measure.misurometro);              
               this.reactiveForm.get('shirtIndicatorControlSize').setValue(this.measure.taglia_misurometro);  
-              this.reactiveForm.get('handStepsControlSize').setValue((this.measure.passaggi_a_mano == '' ? '4' : this.measure.passaggi_a_mano ));                 
+              this.reactiveForm.get('handStepsControlSize').setValue((this.measure.passaggi_a_mano == '' ? '0' : this.measure.passaggi_a_mano ));                 
   
               this.reactiveForm.get('collo').setValue(parseFloat(this.measure.collo).toFixed(1));   
               this.reactiveForm.get('spalla').setValue(parseFloat(this.measure.spalla).toFixed(1));   
@@ -506,7 +507,7 @@ export class MeasureFormComponent implements OnInit  {
     this.flagB = false;
 
     this.reactiveForm.get('shirtIndicatorControlSize').setValue('');   
-    this.reactiveForm.get('handStepsControlSize').setValue('4');   
+    this.reactiveForm.get('handStepsControlSize').setValue('0');   
 
     this.reactiveForm.get('collo').setValue(Number(45).toFixed(1));   
     this.reactiveForm.get('spalla').setValue(Number(0).toFixed(1));   

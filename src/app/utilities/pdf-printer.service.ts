@@ -130,9 +130,7 @@ export class PdfPrinterService {
     subcontractor?: Subcontractor,
     type?: string
   ) {
-    var obj: Array<any> = new Array();
-
-    console.log("camicie da stampare", shirts);
+    // console.log("camicie da stampare", shirts);
 
     var stringa: string = "";
     var stringa2: string = "";
@@ -216,15 +214,24 @@ export class PdfPrinterService {
 
       // console.log('camicia n° '+ (index + 1), [stringa.toUpperCase(),stringa2.toUpperCase(),stringa3.toUpperCase(),' '] )
 
+      var obj: Array<any> = new Array();
+      var obj2: Array<any> = new Array();
       obj.push([
         stringa.toUpperCase(),
         stringa2.toUpperCase(),
         stringa3.toUpperCase(),
         " ",
       ]);
+      obj2.push([
+        stringa.toUpperCase(),
+        stringa2.toUpperCase(),
+        stringa3.toUpperCase(),
+        " ",
+      ]);      
     } // fine ciclo for per le camicie
 
     if (shirts.length == 0) obj.push([" ", " ", " ", " "]);
+    if (shirts.length == 0) obj2.push([" ", " ", " ", " "]);
 
     var refSize: number = 14;
 
@@ -307,8 +314,11 @@ export class PdfPrinterService {
                 "Avamb Tot x B.: " +
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
-                "Fondo Avamb.: " + 
-                (measure.fondo_avambraccio == '' ? '0.0' : parseFloat(measure.fondo_avambraccio).toFixed(1) ) +  "\n",
+                "Fondo Avamb.: " +
+                (measure.fondo_avambraccio == ""
+                  ? "0.0"
+                  : parseFloat(measure.fondo_avambraccio).toFixed(1)) +
+                "\n",
               style: "name",
             },
             {
@@ -412,13 +422,6 @@ export class PdfPrinterService {
                 ? "black"
                 : "black";
             },
-            // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-            // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-            // paddingLeft: function(i, node) { return 4; },
-            // paddingRight: function(i, node) { return 4; },
-            // paddingTop: function(i, node) { return 2; },
-            // paddingBottom: function(i, node) { return 2; },
-            // fillColor: function (rowIndex, node, columnIndex) { return null; }
           },
           alignment: "left",
           table: {
@@ -427,22 +430,6 @@ export class PdfPrinterService {
             body: obj,
           },
         },
-        // {
-        //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
-        //   style: 'subheader',
-        //   alignment: 'left',
-        // },
-        // 'NOTE PER IL FASONISTA',
-        // {
-        //   style: 'subheader',
-        //   alignment: 'left',
-        //   table: {
-        //     widths: ['*'],
-        //     body: [
-        //       [noteFasonista],
-        //     ]
-        //   }
-        // },
         {
           columns: [
             {
@@ -610,7 +597,10 @@ export class PdfPrinterService {
                 this.convertipositivi(measure.avambraccio) +
                 "\n\n" +
                 "Fondo Avamb.: " +
-                (measure.fondo_avambraccio == '' ? '0.0' : parseFloat(measure.fondo_avambraccio).toFixed(1) ) +  "\n",
+                (measure.fondo_avambraccio == ""
+                  ? "0.0"
+                  : parseFloat(measure.fondo_avambraccio).toFixed(1)) +
+                "\n",
               style: "name",
             },
             {
@@ -635,7 +625,8 @@ export class PdfPrinterService {
                 "\n\n" +
                 "Passaggi a Mano: " +
                 (measure.passaggi_a_mano == ""
-                  ? 4 : this.convertipositivi(measure.passaggi_a_mano)) +
+                  ? 4
+                  : this.convertipositivi(measure.passaggi_a_mano)) +
                 "\n",
               style: "name",
             },
@@ -685,7 +676,7 @@ export class PdfPrinterService {
         },
         ,
         {
-          text: "ELENCO CAMICIE",
+          text: "ELENCO CAMICIE 2",
           style: "subheader",
           alignment: "left",
           margin: [0, 10, 0, 0],
@@ -713,37 +704,14 @@ export class PdfPrinterService {
                 ? "black"
                 : "black";
             },
-            // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-            // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
-            // paddingLeft: function(i, node) { return 4; },
-            // paddingRight: function(i, node) { return 4; },
-            // paddingTop: function(i, node) { return 2; },
-            // paddingBottom: function(i, node) { return 2; },
-            // fillColor: function (rowIndex, node, columnIndex) { return null; }
           },
           alignment: "left",
           table: {
             heights: 70,
             widths: ["*", "*", "*", 70],
-            body: obj,
+            body: obj2,
           },
         },
-        // {
-        //   text: 'Fasonista: ' + order.fasonatori_idfasonatori,
-        //   style: 'subheader',
-        //   alignment: 'left',
-        // },
-        // 'NOTE PER IL FASONISTA',
-        // {
-        //   style: 'subheader',
-        //   alignment: 'left',
-        //   table: {
-        //     widths: ['*'],
-        //     body: [
-        //       [noteFasonista],
-        //     ]
-        //   }
-        // },
         {
           columns: [
             {
@@ -826,6 +794,8 @@ export class PdfPrinterService {
         },
       }, // fine style
     };
+
+    console.log("obj", obj);
 
     if (type == "for_customer") {
       pdfMake.createPdf(documentCustomerDefinition).open();
@@ -1773,8 +1743,8 @@ export class PdfPrinterService {
                             ],
                           ],
                         },
-                      },                      
-                    ],                    
+                      },
+                    ],
                   },
                   {
                     margin: [0, 10, 0, 0],
@@ -1797,7 +1767,7 @@ export class PdfPrinterService {
                                 text: "DAVANTI/POLSO/TASCA",
                                 fontSize: 10,
                                 alignment: "center",
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 5, 0, 5],
                               },
                             ],
                           ],
@@ -1815,7 +1785,7 @@ export class PdfPrinterService {
                                 text: "CORSIVO/STAMPATO",
                                 fontSize: 10,
                                 alignment: "center",
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 5, 0, 5],
                               },
                             ],
                           ],
@@ -1833,18 +1803,18 @@ export class PdfPrinterService {
                                 text: "MAIUSCOLE/minuscole",
                                 fontSize: 10,
                                 alignment: "center",
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 5, 0, 5],
                               },
                             ],
                           ],
                         },
-                      }                                          
+                      },
                     ],
-                  }, 
+                  },
                   {
-                    text: ' ',
-                    margin: [0, 120, 0, 0]
-                  }                                     
+                    text: " ",
+                    margin: [0, 120, 0, 0],
+                  },
                 ],
               },
             ],
@@ -1859,7 +1829,7 @@ export class PdfPrinterService {
             text: " ",
             fontSize: 12,
             margin: [0, 4, 0, 0],
-          }, 
+          },
           {
             width: 150,
             text: "Quantità",
@@ -2135,8 +2105,8 @@ export class PdfPrinterService {
                             ],
                           ],
                         },
-                      },                      
-                    ],                    
+                      },
+                    ],
                   },
                   {
                     margin: [0, 10, 0, 0],
@@ -2159,7 +2129,7 @@ export class PdfPrinterService {
                                 text: "DAVANTI/POLSO/TASCA",
                                 fontSize: 10,
                                 alignment: "center",
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 5, 0, 5],
                               },
                             ],
                           ],
@@ -2177,7 +2147,7 @@ export class PdfPrinterService {
                                 text: "CORSIVO/STAMPATO",
                                 fontSize: 10,
                                 alignment: "center",
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 5, 0, 5],
                               },
                             ],
                           ],
@@ -2195,24 +2165,24 @@ export class PdfPrinterService {
                                 text: "MAIUSCOLE/minuscole",
                                 fontSize: 10,
                                 alignment: "center",
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 5, 0, 5],
                               },
                             ],
                           ],
                         },
-                      }                                          
+                      },
                     ],
-                  }, 
+                  },
                   {
-                    text: ' ',
-                    margin: [0, 120, 0, 0]
-                  }                                     
+                    text: " ",
+                    margin: [0, 120, 0, 0],
+                  },
                 ],
               },
             ],
           ],
         },
-      },      
+      },
     ];
     return newPage;
   }
