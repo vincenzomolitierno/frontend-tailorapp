@@ -130,7 +130,7 @@ export class PdfPrinterService {
     subcontractor?: Subcontractor,
     type?: string
   ) {
-    // console.log("camicie da stampare", shirts);
+    console.log("camicie da stampare", shirts);
 
     var stringa: string = "";
     var stringa2: string = "";
@@ -142,13 +142,12 @@ export class PdfPrinterService {
     var dicituramaiuscoloNO: string = "MINUSCOLO";
     var dicituramaiuscoloSI: string = "MAIUSCOLO";
 
+    var obj: Array<any> = new Array();
+    var obj2: Array<any> = new Array();    
+
     for (let index = 0; index < shirts.length; index++) {
       console.log("camicia " + index, shirts[index]);
       const element = shirts[index];
-
-      // console.log('camicie', element.iniziali);
-
-      console.log("element.iniziali index " + index, element.iniziali);
 
       stringa =
         "numero capi: " +
@@ -214,8 +213,6 @@ export class PdfPrinterService {
 
       // console.log('camicia n° '+ (index + 1), [stringa.toUpperCase(),stringa2.toUpperCase(),stringa3.toUpperCase(),' '] )
 
-      var obj: Array<any> = new Array();
-      var obj2: Array<any> = new Array();
       obj.push([
         stringa.toUpperCase(),
         stringa2.toUpperCase(),
