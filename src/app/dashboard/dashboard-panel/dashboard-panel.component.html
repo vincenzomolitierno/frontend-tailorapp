@@ -19,9 +19,9 @@
         <div>
             <!-- menu di navigazione -->
             <mat-menu #appMenu="matMenu">
-                <p class="version-stamp">v.1.2.0</p>
                 <button mat-menu-item routerLink="profile">Profilo</button>
                 <button mat-menu-item (click)="logout()">Logout</button>
+                <p class="version-stamp">Frontend Ver. <b>{{app_setting.version}}</b> <br> Host Backend <b>{{server.host}}</b></p>                
             </mat-menu>
 
             <button mat-icon-button [matMenuTriggerFor]="appMenu">
