@@ -342,9 +342,9 @@ export class PdfPrinterService {
                 measure.polso +
                 "\n\n" +
                 "Passaggi a Mano: " +
-                (this.convertipositivi(measure.passaggi_a_mano) == ""
-                  ? this.convertipositivi(measure.passaggi_a_mano)
-                  : "4") +
+                (measure.passaggi_a_mano == ""
+                  ? 4
+                  : this.convertipositivi(measure.passaggi_a_mano)) +
                 "\n",
               style: "name",
             },
@@ -676,7 +676,7 @@ export class PdfPrinterService {
         },
         ,
         {
-          text: "ELENCO CAMICIE 2",
+          text: "ELENCO CAMICIE",
           style: "subheader",
           alignment: "left",
           margin: [0, 10, 0, 0],
@@ -1254,9 +1254,9 @@ export class PdfPrinterService {
                 measure.polso +
                 "\n\n" +
                 "Passaggi a Mano: " +
-                (this.convertipositivi(measure.passaggi_a_mano) == ""
-                  ? this.convertipositivi(measure.passaggi_a_mano)
-                  : "4") +
+                (measure.passaggi_a_mano == ""
+                  ? 4
+                  : this.convertipositivi(measure.passaggi_a_mano)) +
                 "\n",
               style: "name",
             },
